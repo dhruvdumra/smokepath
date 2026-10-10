@@ -47,6 +47,12 @@ def run_alerts(dataset="live"):
     return {"sent": sent, "skipped": skipped, "failed": failed}
 
 
+def fires_geojson(bundle):
+    return {"type": "FeatureCollection", "source": bundle["meta"]["sources"]["fires"],
+            "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [f["lon"], f["lat"]]},
+                          "properties": {"acq_utc": f["t"], "frp_mw": f["frp"]}} for f in bundle["fires"]]}
+
+
 def handler(event, context):
     secrets.load()
     event = event or {}
@@ -63,6 +69,10 @@ def handler(event, context):
     size = store.put_json(key, bundle, max_age=300 if mode == "live" else 3600)
     if mode == "live":
         store.put_json(f"data/live/runs/{bundle['meta']['t0']}.json", bundle["meta"], max_age=86400)
+        # Raw VIIRS detections as GeoJSON, one file per run: an auditable archive of what the satellites saw.
+        fires = fires_geojson(bundle)
+        store.put_json(f"data/raw/firms/{bundle['meta']['t0']}.geojson", fires, max_age=86400)
+        store.put_json("data/raw/firms/latest.geojson", fires, max_age=300)
     result = {"key": key, "bytes": size, **bundle["meta"]["counts"], "timings": bundle["meta"]["timings_s"]}
     if mode == "live" and not event.get("no_alerts"):
         result["alerts"] = run_alerts("live")

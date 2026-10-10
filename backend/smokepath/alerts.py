@@ -16,8 +16,14 @@ MODE = {
     "indoor": ("indoors", "अंदर"), "light": ("light activity only", "केवल हल्की गतिविधि"),
     "protect": ("masks, no waiting outside", "मास्क, बाहर इंतज़ार नहीं"), "outdoor": ("no change", "कोई बदलाव नहीं"),
 }
+WORK_MODE = {
+    "protect": ("N95 + hourly sheltered breaks", "N95 + हर घंटे शेड में आराम"),
+    "light": ("light work only", "केवल हल्का काम"), "indoor": ("rest indoors", "अंदर आराम"),
+    "outdoor": ("no change", "कोई बदलाव नहीं"),
+}
 L = {
     "timetable": ("Timetable", "समय-सारणी"),
+    "plan": ("Work plan", "काम की योजना"),
     "actions": ("Actions", "क्या करें"),
     "hourly": ("Hourly PM2.5 (school hours)", "प्रति घंटा PM2.5 (स्कूल समय)"),
     "footer": ("CAMS forecast × CPCB station correction ({conf} confidence). Guidance, not medical advice.",
@@ -35,8 +41,10 @@ def _l(key, lang):
     return L[key][0 if lang == "en" else 1]
 
 
-def _slot_line(r, lang):
+def _slot_line(r, lang, profile="school"):
     name = r["label_en"] if lang == "en" else r["label_hi"]
+    if profile == "work":
+        return f"{DOT[r['cat']]} {r['start']} {name}: {WORK_MODE[r['mode']][0 if lang == 'en' else 1]}"
     if r["mode"] in ("moved", "moved_light"):
         to = f"→ {r['new_start']}–{r['new_end']}" if lang == "en" else f"→ {r['new_start']}–{r['new_end']} पर"
         return f"{DOT[r['cat']]} {r['start']} {name} {to} {DOT[r['cat_new']]}"
@@ -50,9 +58,12 @@ def telegram_text(adv, lang="en", site_url=None):
         lines.append(f"⏪ <i>{_l('replay', lang)} ({adv['date']})</i>")
     lines.append(f"<b>{esc(adv['school']['name'])}</b>")
     lines.append(esc(adv["headline"][lang]))
-    strip = " ".join(f"{h['hour']:02d}{DOT[CAT_KEYS[i18n.category(h['pm'])]]}" for h in adv["hourly"][7:14])
-    lines += ["", f"<b>{_l('hourly', lang)}</b>", strip, "", f"<b>{_l('timetable', lang)}</b>"]
-    lines += [esc(_slot_line(r, lang)) for r in adv["timetable"]]
+    hours = adv["hourly"][7:14] if adv.get("profile", "school") == "school" else adv["hourly"][8:17]
+    strip = " ".join(f"{h['hour']:02d}{DOT[CAT_KEYS[i18n.category(h['pm'])]]}" for h in hours)
+    profile = adv.get("profile", "school")
+    lines += ["", f"<b>{_l('hourly', lang)}</b>", strip, "",
+              f"<b>{_l('plan' if profile == 'work' else 'timetable', lang)}</b>"]
+    lines += [esc(_slot_line(r, lang, profile)) for r in adv["timetable"]]
     lines += ["", f"<b>{_l('actions', lang)}</b>"]
     lines += [f"• {esc(a[lang])}" for a in adv["actions"][:8]]
     lines += ["", f"<i>{esc(_l('footer', lang).format(conf=adv['correction']['confidence']))}</i>"]

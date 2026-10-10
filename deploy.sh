@@ -11,10 +11,13 @@ PY="${PY:-.venv/Scripts/python.exe}"
 [ -f .env ] && "$PY" backend/scripts/push_secrets.py
 find backend -name __pycache__ -type d -prune -exec rm -rf {} +
 
+envval() { [ -f .env ] && tr -d '\r' < .env | sed -n "s/^$1=//p" | tail -1 || true; }
 out() { aws cloudformation describe-stacks --stack-name $STACK --region $REGION --query "Stacks[0].Outputs[?OutputKey=='$1'].OutputValue" --output text 2>/dev/null || true; }
 SITE=$(out SiteUrl)
 "$SAM" deploy -t infra/template.yaml --stack-name $STACK --region $REGION --resolve-s3 --capabilities CAPABILITY_IAM \
-  --parameter-overrides SesSender=dhruvdumra@gmail.com SiteUrl="${SITE}" --no-confirm-changeset --no-fail-on-empty-changeset
+  --parameter-overrides SesSender=dhruvdumra@gmail.com SiteUrl="${SITE}" \
+    BedrockModelId="$(envval BEDROCK_MODEL_ID)" BedrockRoleArn="$(envval BEDROCK_ROLE_ARN)" BedrockRegion="$(envval BEDROCK_REGION)" \
+  --no-confirm-changeset --no-fail-on-empty-changeset
 SITE=$(out SiteUrl); BUCKET=$(out BucketName); DIST=$(out DistributionId)
 
 BOT=""

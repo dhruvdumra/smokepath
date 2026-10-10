@@ -89,6 +89,37 @@ T = {
     "ask_mask": ("send your child with a mask for the commute", "बच्चे को आने-जाने के लिए मास्क दें"),
     "ask_inhaler": ("make sure children with asthma carry their inhaler", "अस्थमा वाले बच्चों का इनहेलर साथ भेजें"),
     "and": (" and ", " और "),
+    "work_window": (
+        "Schedule the heaviest tasks (digging, loading, cutting, mixing) for {window}: cleanest stretch of the day ({pm} µg/m³, {cat}).",
+        "सबसे भारी काम (खुदाई, ढुलाई, कटाई, मसाला) {window} में करवाएँ: दिन का सबसे साफ़ समय ({pm} µg/m³, {cat})।"),
+    "work_n95": (
+        "Give every outdoor worker an N95 mask (not cloth or surgical), check the fit, replace it daily.",
+        "हर बाहर काम करने वाले को N95 मास्क दें (कपड़े या सर्जिकल नहीं), सही फ़िट जाँचें, रोज़ नया दें।"),
+    "work_dust": (
+        "Wet the site and cover sand and debris; stop cutting, grinding and other dust-raising work during {ranges}.",
+        "साइट पर पानी छिड़कें, रेत-मलबा ढकें; {ranges} कटाई, घिसाई और धूल उड़ाने वाला काम रोकें।"),
+    "work_breaks": (
+        "Add a 10-minute break every hour during {ranges}, in a closed room or shelter; give water.",
+        "{ranges} हर घंटे 10 मिनट बंद कमरे या शेड में आराम दें; पानी दें।"),
+    "work_sensitive": (
+        "Workers with asthma, TB history or heart problems: indoor or light tasks only.",
+        "अस्थमा, टीबी के इतिहास या हृदय रोग वाले मज़दूर: केवल अंदर या हल्का काम।"),
+    "work_grap": (
+        "Daily mean forecast {pm24} µg/m³ (≈AQI {aqi}, {cat}): the GRAP Stage {stage} range, where non-essential "
+        "construction and demolition in Delhi NCR are banned. Check CAQM orders before starting work.",
+        "दैनिक औसत अनुमान {pm24} µg/m³ (≈AQI {aqi}, {cat}): GRAP चरण {stage} का स्तर, जिसमें दिल्ली NCR में ग़ैर-ज़रूरी "
+        "निर्माण और तोड़फोड़ पर रोक लगती है। काम शुरू करने से पहले CAQM के आदेश देखें।"),
+    "work_headline_bad": (
+        "{date}: {cat} air at {site} from {from_} to {to} (peak {peak} µg/m³ at {peak_at}). Do heavy work {window}.",
+        "{date}: {site} पर {from_} से {to} तक हवा {cat} (सबसे ज़्यादा {peak} µg/m³, {peak_at} बजे)। भारी काम {window} में करें।"),
+    "work_headline_ok": (
+        "{date}: air at {site} stays {cat} or better during working hours. No changes needed.",
+        "{date}: {site} पर काम के समय हवा {cat} या बेहतर रहेगी। कोई बदलाव ज़रूरी नहीं।"),
+    "work_share": (
+        "Tomorrow ({date}) the air will be {cat} from {from_} to {to}. Wear the N95 mask all day, rest 10 minutes "
+        "every hour in the shelter, and the heavy work will be done {window}.",
+        "कल ({date}) {from_} से {to} तक हवा {cat} रहेगी। पूरे दिन N95 मास्क पहनें, हर घंटे 10 मिनट शेड में आराम करें, "
+        "भारी काम {window} में होगा।"),
     "headline_bad": (
         "{date}: {cat} air at {school} from {from_} to {to} (peak {peak} µg/m³ at {peak_at}). {n} timetable changes.",
         "{date}: {school} में {from_} से {to} तक हवा {cat} (सबसे ज़्यादा {peak} µg/m³, {peak_at} बजे)। समय-सारणी में {n} बदलाव।"),

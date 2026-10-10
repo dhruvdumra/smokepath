@@ -27,7 +27,7 @@ def test_aqi_and_grap_bands():
 # --- advisor ----------------------------------------------------------------------------------------------
 def test_clean_day_changes_nothing():
     a = advise([40] * 24, "S", "D")
-    assert a["changes"] == 0 and a["parent_message"] is None
+    assert a["changes"] == 0 and a["share_message"] is None
     assert [x["key"] for x in a["actions"]] == ["all_clear"]
 
 
@@ -52,7 +52,7 @@ def test_severe_day_moves_everything_indoors_and_flags_grap():
     assert modes["assembly"] == "indoor" and modes["pe"] == "indoor" and modes["recess"] == "indoor"
     keys = [x["key"] for x in a["actions"]]
     assert keys[0] == "grap" and "staff_n95" in keys and a["grap_stage"] == "IV"
-    assert "मास्क" in a["parent_message"]["hi"]
+    assert "मास्क" in a["share_message"]["hi"]
 
 
 def test_every_action_has_both_languages():

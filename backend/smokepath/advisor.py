@@ -196,7 +196,8 @@ def advise(hourly, school_name, date_label, timetable=None, smoke=None):
     actions.sort(key=lambda a: a[1])
     parents = _parents_message(out_slots, [a[0] for a in actions], school_name, date_label, worst_pm, worst_h)         if poor_hours and changes else None
     return {
-        "parent_message": parents,
+        "profile": "school",
+        "share_message": parents,
         "headline": headline,
         "timetable": out_slots,
         "actions": [{"key": k, "priority": p, **txt} for k, p, txt in actions],

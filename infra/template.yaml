@@ -16,7 +16,15 @@ Parameters:
   BedrockModelId:
     Type: String
     Default: ""
-    Description: Optional Bedrock model/inference profile for rewording parent messages (empty = templates only).
+    Description: Optional Bedrock model/inference profile for rewording share messages (empty = templates only).
+  BedrockRoleArn:
+    Type: String
+    Default: ""
+    Description: Optional role in another account with Bedrock access (see docs/bedrock-cross-account.md).
+  BedrockRegion:
+    Type: String
+    Default: ""
+    Description: Region for Bedrock calls (empty = this stack's region).
 
 Globals:
   Function:
@@ -31,6 +39,8 @@ Globals:
         SES_SENDER: !Ref SesSender
         SITE_URL: !Ref SiteUrl
         BEDROCK_MODEL_ID: !Ref BedrockModelId
+        BEDROCK_ROLE_ARN: !Ref BedrockRoleArn
+        BEDROCK_REGION: !Ref BedrockRegion
 
 Resources:
   DataBucket:
@@ -48,6 +58,10 @@ Resources:
             Prefix: data/live/runs/
             Status: Enabled
             ExpirationInDays: 30
+          - Id: expire-raw-fires
+            Prefix: data/raw/
+            Status: Enabled
+            ExpirationInDays: 90
 
   SubsTable:
     Type: AWS::DynamoDB::Table
@@ -87,6 +101,12 @@ Resources:
               Action: [ses:SendEmail, ses:SendRawEmail]
               Resource: "*"
             - Effect: Allow
+              Action: bedrock:InvokeModel
+              Resource: "*"
+            - Effect: Allow
+              Action: sts:AssumeRole
+              Resource: arn:aws:iam::*:role/smokepath-bedrock-*
+            - Effect: Allow
               Action: s3:GetObject
               Resource: arn:aws:s3:::openaq-data-archive/*
       Events:
@@ -124,6 +144,9 @@ Resources:
             - Effect: Allow
               Action: bedrock:InvokeModel
               Resource: "*"
+            - Effect: Allow
+              Action: sts:AssumeRole
+              Resource: arn:aws:iam::*:role/smokepath-bedrock-*
       Events:
         Api:
           Type: HttpApi

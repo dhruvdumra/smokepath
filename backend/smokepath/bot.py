@@ -10,6 +10,9 @@ TXT = {
         "प्रार्थना सभा अंदर, सबसे ख़राब घंटों में खिड़कियाँ बंद।\n\nनीचे बटन से लोकेशन भेजें या स्कूल का नाम लिखें।"),
     "share": ("📍 Share location", "📍 लोकेशन भेजें"),
     "pick": ("Pick your school:", "अपना स्कूल चुनें:"),
+    "pick_or_site": ("Pick your school, or mark this spot as an outdoor work site (construction, kiln, market):",
+                     "अपना स्कूल चुनें, या इस जगह को बाहरी कार्यस्थल (निर्माण, भट्ठा, बाज़ार) चुनें:"),
+    "site_btn": ("🏗 This spot is an outdoor work site", "🏗 यह जगह बाहरी कार्यस्थल है"),
     "none": ("No school found. Try another part of the name, or share your location.",
              "कोई स्कूल नहीं मिला। नाम का कोई और हिस्सा लिखें या लोकेशन भेजें।"),
     "subscribed": ("Subscribed to {name}. You'll get an alert the evening before a bad-air school day.",
@@ -44,8 +47,9 @@ def _send_advisories(chat, sub, dataset, site_url):
 
 
 def _subscribe(chat, sub, school_id, site_url):
-    s = service.schools().get(school_id)
-    if not s:
+    try:
+        s, _ = service.place(school_id)
+    except KeyError:
         alerts.send_telegram(chat, t("none", sub["lang"]))
         return
     if school_id not in sub["schools"]:
@@ -83,7 +87,9 @@ def handle(update, site_url=None):
     if "location" in msg:
         loc = msg["location"]
         found = service.nearest_schools(loc["latitude"], loc["longitude"], 5)
-        alerts.send_telegram(chat, t("pick", lang), _school_buttons(found))
+        site = service.site_id(loc["latitude"], loc["longitude"])
+        buttons = _school_buttons(found) + [[{"text": t("site_btn", lang), "callback_data": f"sub:{site}"}]]
+        alerts.send_telegram(chat, t("pick_or_site", lang), buttons)
         return
 
     text = (msg.get("text") or "").strip()
