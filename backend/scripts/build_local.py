@@ -1,6 +1,6 @@
 """Build bundles locally into data/out (uses ../.env for keys). Usage:
     python scripts/build_local.py live
-    python scripts/build_local.py replay 2024-11-12T12:00
+    python scripts/build_local.py replay 2025-11-10T12:00
 """
 import os
 import sys
@@ -13,7 +13,7 @@ from smokepath import config, pipeline, secrets, store  # noqa: E402
 secrets.load()
 mode = sys.argv[1] if len(sys.argv) > 1 else "live"
 if mode == "replay":
-    t0 = datetime.fromisoformat(sys.argv[2] if len(sys.argv) > 2 else "2024-11-12T12:00")
+    t0 = datetime.fromisoformat(sys.argv[2] if len(sys.argv) > 2 else "2025-11-10T12:00")
 else:
     t0 = datetime.now(timezone.utc).replace(tzinfo=None, minute=0, second=0, microsecond=0)
 b = pipeline.build(t0, mode, firms_key=config.env("FIRMS_MAP_KEY"), openaq_key=config.env("OPENAQ_API_KEY"))

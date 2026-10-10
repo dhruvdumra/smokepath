@@ -4,7 +4,7 @@
 
 AWS Environmental Hacks 2026 · Air track (stubble burning, school safety on bad days)
 
-Live: https://d35jtpishdgz20.cloudfront.net · Replay of the Nov 2024 Delhi smog: https://d35jtpishdgz20.cloudfront.net/?dataset=replay
+Live: https://d35jtpishdgz20.cloudfront.net · Replay of the Nov 2025 Delhi smog: https://d35jtpishdgz20.cloudfront.net/?dataset=replay
 
 ---
 
@@ -23,8 +23,8 @@ School #42.
 ## What it does
 
 1. **Forecast.** CAMS global PM2.5 (via Open-Meteo), hourly, 48 h ahead, on a 0.4° grid over Punjab–Haryana–Delhi.
-2. **Correct.** Raw CAMS badly under-predicts Delhi smog. On 18 Nov 2024 CAMS said 50–160 µg/m³ while Delhi's AQI
-   was 494. Every run learns an observed/CAMS ratio at each CPCB monitor over the last 24 h (OpenAQ), spreads it to
+2. **Correct.** Raw CAMS badly under-predicts Delhi smog. On 11 Nov 2025 it forecast 90 µg/m³ for Delhi NCR while
+   monitors measured 281. Every run learns an observed/CAMS ratio at each CPCB monitor over the last 24 h (OpenAQ), spreads it to
    every school by inverse-distance weighting in log space, and applies it to the forecast. See
    [Validation](#validation) for whether this helps.
 3. **Explain.** NASA FIRMS VIIRS fire detections plus NOAA GFS 925 hPa winds drive kinematic trajectories:
@@ -80,14 +80,42 @@ Amazon Bedrock: optional wording path (wired; new-account token quota is 0, so t
 
 ## Validation
 
-_Filled in from `backend/scripts/validate_correction.py` (day-ahead, leave-one-station-out on Nov 2024)._
+**Question:** does the station correction make the next day's forecast better at places with no monitor, like a school?
+
+**Test.** [`backend/scripts/validate_correction.py`](backend/scripts/validate_correction.py) runs over 25 Oct – 25 Nov 2025 in
+Delhi NCR: 1,556 station-days from 59 CPCB monitors.
+- For each day, ratios are learned only from the 24 h *before* the day starts, which is the data a real evening run has.
+- Each monitor's day is then predicted **without using that monitor**. It is treated like a school location.
+
+| Daily mean PM2.5 | Raw CAMS | SmokePath (corrected) |
+|---|---|---|
+| Mean absolute error | 104.7 µg/m³ | **63.8 µg/m³** (−39%) |
+| Mean bias | −100.4 µg/m³ | **−20.8 µg/m³** |
+| Exact CPCB category | 19% | **52%** |
+| Within one category | 60% | **88%** |
+| Very Poor-or-worse days caught (1,295 of them) | 27% | **86%** |
+
+**The replay day.** On Tue 11 Nov 2025 Delhi's AQI reached 425 and CAQM invoked GRAP Stage III that day.
+- NCR monitors averaged **281 µg/m³**.
+- Raw CAMS said **90** ("Moderate").
+- SmokePath's forecast, issued the evening before, said **255**: "Severe", the GRAP Stage III range.
+
+**Where it fails.** The correction assumes yesterday's bias persists, so it is wrong when the weather flips:
+- 31 Oct 2025: measured 97, corrected 194.
+- 1 Nov 2025: measured 193, corrected 87.
+
+Full per-day output is in [`docs/validation.json`](docs/validation.json).
+
+**Data caveat.** OpenAQ has no CPCB data for Nov 2024, so the replay and the validation use Nov 2025. The live
+OpenAQ CPCB feed can lag by days (it was ~3 days behind on 10 Oct 2026). Live runs then use each station's latest
+24 h and say how stale it is.
 
 ## Run it
 
 ```bash
 # backend (local)
 uv venv .venv && uv pip install --python .venv/Scripts/python.exe boto3 pytest
-.venv/Scripts/python.exe backend/scripts/build_local.py replay 2024-11-12T12:00
+.venv/Scripts/python.exe backend/scripts/build_local.py replay 2025-11-10T12:00
 .venv/Scripts/python.exe backend/scripts/dev_server.py        # :8787
 # frontend
 cd frontend && npm install && npm run dev                              # :5173

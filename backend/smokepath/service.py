@@ -9,7 +9,6 @@ from .forecast import Forecast, label_date
 _schools = None
 _forecasts = {}
 
-REPLAY_DEFAULT = "2024-11-12"
 
 
 def schools():
@@ -71,14 +70,16 @@ def school_advisory(school_id, dataset="live", date=None, timetable=None, with_s
     if adv.get("parent_message") and config.env("BEDROCK_MODEL_ID"):
         for lang in ("en", "hi"):
             adv["parent_message"][lang], adv["parent_message"]["by"] = narrate.polish(adv["parent_message"][lang], lang)
-    confidence = "high" if near >= 2 else "medium" if near == 1 or fc.stations else "low"
     meta = fc.b["meta"]
+    stale = (meta.get("obs_age_h") or 0) > 24
+    confidence = "high" if near >= 2 and not stale else "medium" if near or fc.stations else "low"
     return {
         "school": s, "date": date, "dataset": dataset, "dates": fc.dates(),
         "issued": meta["generated"], "t0": meta["t0"], "mode": meta["mode"],
         "hourly": [{"hour": h, "pm": round(hourly[h]), "raw": round(raw[h])} for h in range(24)],
         "correction": {"ratio": round(ratio, 2), "stations_within_15km": near,
-                       "stations_used": len(fc.stations), "confidence": confidence},
+                       "stations_used": len(fc.stations), "confidence": confidence,
+                       "obs_age_h": meta.get("obs_age_h")},
         "smoke": smoke,
         **adv,
     }

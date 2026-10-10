@@ -1,5 +1,5 @@
 """Scheduled Lambda: build the live bundle, publish it, alert subscribers. Also builds replay bundles on demand:
-    {"mode": "replay", "t0": "2024-11-12T12:00", "name": "nov2024"}
+    {"mode": "replay", "t0": "2025-11-10T12:00", "name": "nov2025"}
 """
 import json
 import logging
@@ -50,7 +50,7 @@ def handler(event, context):
     mode = event.get("mode", "live")
     if mode == "replay":
         t0 = datetime.fromisoformat(event["t0"])
-        key = f"data/replay/{event.get('name', 'nov2024')}.json"
+        key = f"data/replay/{event.get('name', 'nov2025')}.json"
     else:
         now = datetime.now(timezone.utc).replace(tzinfo=None)
         t0 = now.replace(minute=0, second=0, microsecond=0)

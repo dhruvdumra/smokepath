@@ -1,7 +1,7 @@
 """NASA FIRMS VIIRS active fires.
 
 Live without a key: the public South Asia 48 h CSVs. With FIRMS_MAP_KEY: the area API, which also serves the
-standard-processing (SP) archive used for the Nov 2024 replay. SP rows carry a `type` column; we keep type 0
+standard-processing (SP) archive used for the Nov 2025 replay. SP rows carry a `type` column; we keep type 0
 (presumed vegetation fire) so refineries and power plants are not mistaken for stubble burning.
 """
 import csv

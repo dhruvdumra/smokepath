@@ -95,7 +95,10 @@ export function Method({ adv, lang }: { adv: Advisory; lang: Lang }) {
   const hi = c.stations_used === 0
     ? `इस रन में कोई ग्राउंड स्टेशन उपलब्ध नहीं था, इसलिए यह मूल CAMS पूर्वानुमान है (~45 किमी ग्रिड)। CAMS अक्सर दिल्ली के स्मॉग को कम आँकता है।`
     : `CAMS ने ${String(adv.worst.hour).padStart(2, '0')}:00 बजे ${peak.raw} µg/m³ बताया। पिछले 24 घंटों में ${c.stations_used} CPCB मॉनिटरों की तुलना से इस स्कूल का पूर्वानुमान ×${c.ratio} किया गया (15 किमी में ${c.stations_within_15km} मॉनिटर)। भरोसा: ${c.confidence}।`;
-  return <p className="method">{lang === 'en' ? en : hi}</p>;
+  const age = c.obs_age_h ?? 0;
+  const staleEn = age > 24 ? ` Station readings are ~${Math.round(age / 24)} days old (OpenAQ's CPCB feed is delayed), so confidence is capped at medium.` : '';
+  const staleHi = age > 24 ? ` स्टेशन डेटा ~${Math.round(age / 24)} दिन पुराना है (OpenAQ का CPCB फ़ीड देर से है), इसलिए भरोसा अधिकतम मध्यम।` : '';
+  return <p className="method">{lang === 'en' ? en + staleEn : hi + staleHi}</p>;
 }
 
 export function ParentMessage({ adv, lang }: { adv: Advisory; lang: Lang }) {

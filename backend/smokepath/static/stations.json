@@ -1,0 +1,1295 @@
+{
+"source": "OpenAQ v3 /locations (monitor=true, PM2.5)",
+"stations": [
+{
+"id": 17,
+"sensor": 12234787,
+"name": "R K Puram, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.563262,
+"lon": 77.186937,
+"first": "2016-02-05T14:55:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 50,
+"sensor": 12234796,
+"name": "Punjabi Bagh, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.674045,
+"lon": 77.131023,
+"first": "2016-02-05T14:55:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 235,
+"sensor": 12235610,
+"name": "Anand Vihar, New Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.646835,
+"lon": 77.316032,
+"first": "2016-02-05T14:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 301,
+"sensor": 14258988,
+"name": "Vikas Sadan, Gurugram - HSPCB",
+"provider": "CPCB",
+"lat": 28.4501238,
+"lon": 77.0263051,
+"first": "2016-03-25T08:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 860,
+"sensor": 12235662,
+"name": "Sanjay Palace, Agra - UPPCB",
+"provider": "CPCB",
+"lat": 27.19865833,
+"lon": 78.00598056,
+"first": "2016-03-22T01:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 2583,
+"sensor": 12328443,
+"name": "Sector-6, Panchkula - HSPCB",
+"provider": "CPCB",
+"lat": 30.7057778,
+"lon": 76.8531805555555,
+"first": "2016-03-21T18:30:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5404,
+"sensor": 12234702,
+"name": "Pusa, Delhi - IMD",
+"provider": "CPCB",
+"lat": 28.639645,
+"lon": 77.146263,
+"first": "2017-09-15T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5541,
+"sensor": 12234684,
+"name": "Burari Crossing, New Delhi - IMD",
+"provider": "CPCB",
+"lat": 28.7256504,
+"lon": 77.2011573,
+"first": "2018-03-09T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5542,
+"sensor": 12235151,
+"name": "Civil Line, Jalandhar - PPCB",
+"provider": "CPCB",
+"lat": 31.321907,
+"lon": 75.578914,
+"first": "2018-03-09T04:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5544,
+"sensor": 12235142,
+"name": "Model Town, Patiala - PPCB",
+"provider": "CPCB",
+"lat": 30.349388,
+"lon": 76.366642,
+"first": "2018-03-09T05:30:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5551,
+"sensor": 12235443,
+"name": "Golden Temple, Amritsar - PPCB",
+"provider": "CPCB",
+"lat": 31.62,
+"lon": 74.876512,
+"first": "2018-03-09T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5569,
+"sensor": 12235426,
+"name": "Punjab Agricultural University, Ludhiana - PPCB",
+"provider": "CPCB",
+"lat": 30.9028,
+"lon": 75.8086,
+"first": "2018-03-09T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5570,
+"sensor": 12234708,
+"name": "Aya Nagar, New Delhi - IMD",
+"provider": "CPCB",
+"lat": 28.474261,
+"lon": 77.131606,
+"first": "2018-03-09T05:30:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5576,
+"sensor": 12234823,
+"name": "Moti Doongri, Alwar - RSPCB",
+"provider": "CPCB",
+"lat": 27.554793,
+"lon": 76.611536,
+"first": "2018-03-09T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5586,
+"sensor": 12234769,
+"name": "Sirifort, Delhi - CPCB",
+"provider": "CPCB",
+"lat": 28.5504249,
+"lon": 77.2159377,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5588,
+"sensor": 12234832,
+"name": "RIICO Ind. Area III, Bhiwadi - RSPCB",
+"provider": "CPCB",
+"lat": 28.194909,
+"lon": 76.862296,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5598,
+"sensor": 12235187,
+"name": "Sector - 125, Noida, UP - UPPCB",
+"provider": "CPCB",
+"lat": 28.5447608,
+"lon": 77.3231257,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5610,
+"sensor": 12234690,
+"name": "North Campus, DU, Delhi - IMD",
+"provider": "CPCB",
+"lat": 28.6573814,
+"lon": 77.1585447,
+"first": "2018-03-09T05:30:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5613,
+"sensor": 12234753,
+"name": "ITO, New Delhi - CPCB",
+"provider": "CPCB",
+"lat": 28.628624,
+"lon": 77.24106,
+"first": "2018-03-09T05:30:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5616,
+"sensor": 12234720,
+"name": "Sector - 62, Noida, UP - IMD",
+"provider": "CPCB",
+"lat": 28.6245479,
+"lon": 77.3577104,
+"first": "2025-02-18T20:13:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5622,
+"sensor": 12234744,
+"name": "NSIT Dwarka, Delhi - CPCB",
+"provider": "CPCB",
+"lat": 28.60909,
+"lon": 77.0325413,
+"first": "2018-03-09T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5625,
+"sensor": 12235434,
+"name": "RIMT University, Mandi Gobindgarh - PPCB",
+"provider": "CPCB",
+"lat": 30.649961,
+"lon": 76.331442,
+"first": "2018-03-09T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5626,
+"sensor": 12234760,
+"name": "DTU, New Delhi - CPCB",
+"provider": "CPCB",
+"lat": 28.7500499,
+"lon": 77.1112615,
+"first": "2018-03-09T05:30:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5627,
+"sensor": 12234678,
+"name": "CRRI Mathura Road, New Delhi - IMD",
+"provider": "CPCB",
+"lat": 28.5512005,
+"lon": 77.2735737,
+"first": "2018-03-09T05:30:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5630,
+"sensor": 12234726,
+"name": "Shadipur, Delhi - CPCB",
+"provider": "CPCB",
+"lat": 28.6514781,
+"lon": 77.1473105,
+"first": "2018-03-09T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5634,
+"sensor": 12234714,
+"name": "Lodhi Road, New Delhi - IMD",
+"provider": "CPCB",
+"lat": 28.5918245,
+"lon": 77.2273074,
+"first": "2018-03-09T05:30:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5650,
+"sensor": 12234696,
+"name": "IGI Airport (T3), Delhi - IMD",
+"provider": "CPCB",
+"lat": 28.5627763,
+"lon": 77.1180053,
+"first": "2025-02-18T20:16:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 5665,
+"sensor": 12235160,
+"name": "Vasundhara, Ghaziabad - UPPCB",
+"provider": "CPCB",
+"lat": 28.6603346,
+"lon": 77.3572563,
+"first": "2018-03-09T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6356,
+"sensor": 12235321,
+"name": "Pusa, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.639645,
+"lon": 77.146262,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6358,
+"sensor": 12234778,
+"name": "Mandir Marg, New Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.636429,
+"lon": 77.201067,
+"first": "2018-08-10T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6359,
+"sensor": 12234735,
+"name": "IHBAS, Dilshad Garden,New Delhi - CPCB",
+"provider": "CPCB",
+"lat": 28.6811736,
+"lon": 77.3025234,
+"first": "2018-04-28T15:45:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6442,
+"sensor": 12291454,
+"name": "Ratanpura, Rupnagar - Ambuja Cements",
+"provider": "CPCB",
+"lat": 31.0325454,
+"lon": 76.5623046,
+"first": "2018-05-02T04:45:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6923,
+"sensor": 12235222,
+"name": "New Mandi, Muzaffarnagar - UPPCB",
+"provider": "CPCB",
+"lat": 29.4723508,
+"lon": 77.7194031,
+"first": "2018-08-10T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6924,
+"sensor": 12235779,
+"name": "Indirapuram, Ghaziabad - UPPCB",
+"provider": "CPCB",
+"lat": 28.646233,
+"lon": 77.358075,
+"first": "2019-04-27T12:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6929,
+"sensor": 12235047,
+"name": "Major Dhyan Chand National Stadium, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.611281,
+"lon": 77.237738,
+"first": "2018-08-10T07:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6930,
+"sensor": 12961441,
+"name": "Gobind Pura, Yamuna Nagar - HSPCB",
+"provider": "CPCB",
+"lat": 30.1480566,
+"lon": 77.2893471,
+"first": "2019-02-13T02:00:00Z",
+"last": "2026-10-05T15:30:00Z"
+},
+{
+"id": 6931,
+"sensor": 12235020,
+"name": "Dwarka-Sector 8, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.5710274,
+"lon": 77.0719006,
+"first": "2018-08-10T06:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6932,
+"sensor": 12235698,
+"name": "Alipur, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.815329,
+"lon": 77.15301,
+"first": "2018-12-15T15:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6934,
+"sensor": 12235011,
+"name": "Dr. Karni Singh Shooting Range, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.498571,
+"lon": 77.26484,
+"first": "2018-08-10T06:30:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6935,
+"sensor": 14414782,
+"name": "Urban Estate-II, Hisar - HSPCB",
+"provider": "CPCB",
+"lat": 29.14056,
+"lon": 75.744941,
+"first": "2019-02-13T00:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6936,
+"sensor": 14233904,
+"name": "Arya Nagar, Bahadurgarh - HSPCB",
+"provider": "CPCB",
+"lat": 28.6701,
+"lon": 76.9254,
+"first": "2019-02-13T00:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6938,
+"sensor": 12235133,
+"name": "Vivek Vihar, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.672342,
+"lon": 77.31526,
+"first": "2018-12-15T15:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6939,
+"sensor": 12235213,
+"name": "Hardev Nagar, Bathinda - PPCB",
+"provider": "CPCB",
+"lat": 30.233011,
+"lon": 74.907758,
+"first": "2018-08-10T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6940,
+"sensor": 12235178,
+"name": "Kalal Majra, Khanna - PPCB",
+"provider": "CPCB",
+"lat": 30.736056,
+"lon": 76.209694,
+"first": "2018-04-19T01:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6944,
+"sensor": 12251164,
+"name": "H.B. Colony, Bhiwani - HSPCB",
+"provider": "CPCB",
+"lat": 28.806223,
+"lon": 76.141105,
+"first": "2019-02-13T00:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6947,
+"sensor": 14216055,
+"name": "General Hospital, Mandikhera - HSPCB",
+"provider": "CPCB",
+"lat": 27.9002,
+"lon": 76.9938,
+"first": "2019-02-13T00:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6949,
+"sensor": 14291091,
+"name": "Municipal Corporation Office, Dharuhera -  HSPCB",
+"provider": "CPCB",
+"lat": 28.2068,
+"lon": 76.7997,
+"first": "2019-02-13T00:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6951,
+"sensor": 14258143,
+"name": "Murthal, Sonipat - HSPCB",
+"provider": "CPCB",
+"lat": 29.0272,
+"lon": 77.0621,
+"first": "2019-02-13T00:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6952,
+"sensor": 13604856,
+"name": "F-Block, Sirsa - HSPCB",
+"provider": "CPCB",
+"lat": 29.5364,
+"lon": 75.0158,
+"first": "2019-02-13T01:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6953,
+"sensor": 14250045,
+"name": "Sector-2 IMT, Manesar - HSPCB",
+"provider": "CPCB",
+"lat": 28.360699,
+"lon": 76.93609,
+"first": "2019-01-02T22:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6957,
+"sensor": 12235038,
+"name": "Jawaharlal Nehru Stadium, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.58028,
+"lon": 77.233829,
+"first": "2018-08-10T06:00:00Z",
+"last": "2026-10-07T14:00:00Z"
+},
+{
+"id": 6958,
+"sensor": 14248667,
+"name": "Sector-18, Panipat - HSPCB",
+"provider": "CPCB",
+"lat": 29.435587,
+"lon": 76.975531,
+"first": "2019-02-13T00:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6960,
+"sensor": 12235101,
+"name": "Patparganj, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.623748,
+"lon": 77.287205,
+"first": "2018-08-10T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6963,
+"sensor": 14259006,
+"name": "Police Lines, Jind - HSPCB",
+"provider": "CPCB",
+"lat": 29.307814,
+"lon": 76.337619,
+"first": "2019-02-13T00:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6964,
+"sensor": 14258997,
+"name": "Patti Mehar, Ambala - HSPCB",
+"provider": "CPCB",
+"lat": 30.379589,
+"lon": 76.778328,
+"first": "2019-02-13T00:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6969,
+"sensor": 14347156,
+"name": "Huda Sector, Fatehabad - HSPCB",
+"provider": "CPCB",
+"lat": 29.503664,
+"lon": 75.467934,
+"first": "2019-02-13T00:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6970,
+"sensor": 14224812,
+"name": "Shastri Nagar, Narnaul - HSPCB",
+"provider": "CPCB",
+"lat": 28.060249,
+"lon": 76.113115,
+"first": "2019-02-13T01:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6971,
+"sensor": 12353756,
+"name": "Rishi Nagar, Kaithal - HSPCB",
+"provider": "CPCB",
+"lat": 29.8006,
+"lon": 76.4155,
+"first": "2019-04-27T11:30:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6972,
+"sensor": 14283600,
+"name": "Nathu Colony, Ballabgarh - HSPCB",
+"provider": "CPCB",
+"lat": 28.3419248,
+"lon": 77.319699,
+"first": "2019-02-13T00:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6976,
+"sensor": 12235869,
+"name": "Jai Bhim Nagar, Meerut - UPPCB",
+"provider": "CPCB",
+"lat": 28.9535882,
+"lon": 77.7622941,
+"first": "2019-07-03T05:30:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6978,
+"sensor": 12235196,
+"name": "Knowledge Park - III, Greater Noida - UPPCB",
+"provider": "CPCB",
+"lat": 28.47272,
+"lon": 77.482,
+"first": "2018-08-10T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6980,
+"sensor": 12235951,
+"name": "Sector-1, Noida - UPPCB",
+"provider": "CPCB",
+"lat": 28.589247,
+"lon": 77.321962,
+"first": "2019-06-28T05:45:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6985,
+"sensor": 12235205,
+"name": "Yamunapuram, Bulandshahr - UPPCB",
+"provider": "CPCB",
+"lat": 28.406963,
+"lon": 77.849831,
+"first": "2018-08-10T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6986,
+"sensor": 12235935,
+"name": "Knowledge Park - V, Greater Noida - UPPCB",
+"provider": "CPCB",
+"lat": 28.557054,
+"lon": 77.453663,
+"first": "2019-06-28T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 6988,
+"sensor": 12235942,
+"name": "Sector-116, Noida - UPPCB",
+"provider": "CPCB",
+"lat": 28.56923,
+"lon": 77.393848,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 7005,
+"sensor": 12235787,
+"name": "Loni, Ghaziabad - UPPCB",
+"provider": "CPCB",
+"lat": 28.757294,
+"lon": 77.278792,
+"first": "2019-04-27T11:45:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 7280,
+"sensor": 14249204,
+"name": "Shyam Nagar, Palwal - HSPCB",
+"provider": "CPCB",
+"lat": 28.1485564,
+"lon": 77.3320667,
+"first": "2019-02-13T00:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 7282,
+"sensor": 14234413,
+"name": "Sector-7, Kurukshetra - HSPCB",
+"provider": "CPCB",
+"lat": 29.966942,
+"lon": 76.875879,
+"first": "2019-02-13T00:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 7283,
+"sensor": 12599853,
+"name": "MD University, Rohtak - HSPCB",
+"provider": "CPCB",
+"lat": 28.87793,
+"lon": 76.620825,
+"first": "2020-01-01T11:45:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 7720,
+"sensor": 12236075,
+"name": "Pallavpuram Phase 2, Meerut - UPPCB",
+"provider": "CPCB",
+"lat": 29.06351,
+"lon": 77.709723,
+"first": "2019-10-14T16:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 7833,
+"sensor": 12236084,
+"name": "Ganga Nagar, Meerut - UPPCB",
+"provider": "CPCB",
+"lat": 28.999264,
+"lon": 77.7590354,
+"first": "2019-10-14T16:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 8118,
+"sensor": 23534,
+"name": "New Delhi",
+"provider": "AirNow",
+"lat": 28.63576,
+"lon": 77.22445,
+"first": "2016-11-09T19:00:00Z",
+"last": "2026-10-10T09:30:00Z"
+},
+{
+"id": 8235,
+"sensor": 12235029,
+"name": "Jahangirpuri, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.73282,
+"lon": 77.170633,
+"first": "2018-08-10T07:00:00Z",
+"last": "2026-10-06T22:15:00Z"
+},
+{
+"id": 8239,
+"sensor": 12235074,
+"name": "Okhla Phase-2, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.530785,
+"lon": 77.271255,
+"first": "2018-08-22T11:45:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 8319,
+"sensor": 12235689,
+"name": "Anand Vihar, Hapur - UPPCB",
+"provider": "CPCB",
+"lat": 28.725645,
+"lon": 77.749675,
+"first": "2018-10-23T11:00:00Z",
+"last": "2026-10-07T13:15:00Z"
+},
+{
+"id": 8365,
+"sensor": 12235083,
+"name": "Nehru Nagar, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.56789,
+"lon": 77.250515,
+"first": "2018-08-10T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 8472,
+"sensor": 12235294,
+"name": "Bawana, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.7762,
+"lon": 77.051074,
+"first": "2018-08-10T06:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 8475,
+"sensor": 12235110,
+"name": "Sonia Vihar, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.710508,
+"lon": 77.249485,
+"first": "2018-08-10T08:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 8915,
+"sensor": 12235124,
+"name": "Wazirpur, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.699793,
+"lon": 77.165453,
+"first": "2018-12-15T15:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 8917,
+"sensor": 12235002,
+"name": "Ashok Vihar, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.695381,
+"lon": 77.181665,
+"first": "2018-12-15T15:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 10484,
+"sensor": 12235312,
+"name": "Sri Aurobindo Marg, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.531346,
+"lon": 77.190156,
+"first": "2018-12-15T15:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 10485,
+"sensor": 12235056,
+"name": "Narela, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.822836,
+"lon": 77.101981,
+"first": "2018-08-10T05:45:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 10486,
+"sensor": 12235303,
+"name": "Mundka, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.684678,
+"lon": 77.076574,
+"first": "2018-12-15T15:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 10488,
+"sensor": 12235065,
+"name": "Najafgarh, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.570173,
+"lon": 76.933762,
+"first": "2018-12-15T15:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 10725,
+"sensor": 12236218,
+"name": "Mini Secretariat, Charkhi Dadri - HSPCB",
+"provider": "CPCB",
+"lat": 28.593883,
+"lon": 76.270653,
+"first": "2020-04-23T08:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 10820,
+"sensor": 12236236,
+"name": "Sector 30, Faridabad - HSPCB",
+"provider": "CPCB",
+"lat": 28.4417,
+"lon": 77.3217,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 10825,
+"sensor": 12236259,
+"name": "Sector-51, Gurugram - HSPCB",
+"provider": "CPCB",
+"lat": 28.4227,
+"lon": 77.0667,
+"first": "2020-03-11T09:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 10831,
+"sensor": 12235092,
+"name": "Rohini, Delhi - DPCC",
+"provider": "CPCB",
+"lat": 28.732528,
+"lon": 77.11992,
+"first": "2018-08-10T06:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 10900,
+"sensor": 12236251,
+"name": "Teri Gram, Gurugram - HSPCB",
+"provider": "CPCB",
+"lat": 28.4275,
+"lon": 77.1465,
+"first": "2020-03-30T16:00:00Z",
+"last": "2026-10-07T11:30:00Z"
+},
+{
+"id": 10908,
+"sensor": 12236245,
+"name": "Sector 11, Faridabad - HSPCB",
+"provider": "CPCB",
+"lat": 28.376058,
+"lon": 77.315741,
+"first": "2020-03-11T08:30:00Z",
+"last": "2026-10-05T16:30:00Z"
+},
+{
+"id": 10910,
+"sensor": 14275735,
+"name": "Sector-12, Karnal - HSPCB",
+"provider": "CPCB",
+"lat": 29.6953,
+"lon": 77.0027,
+"first": "2019-02-13T00:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 10914,
+"sensor": 12235976,
+"name": "Sector-25, Chandigarh - CPCC",
+"provider": "CPCB",
+"lat": 30.751462,
+"lon": 76.762879,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 10919,
+"sensor": 12235770,
+"name": "Sanjay Nagar, Ghaziabad - UPPCB",
+"provider": "CPCB",
+"lat": 28.685382,
+"lon": 77.453839,
+"first": "2019-04-27T12:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 10920,
+"sensor": 12236227,
+"name": "New Industrial Town, Faridabad - HSPCB",
+"provider": "CPCB",
+"lat": 28.39072,
+"lon": 77.30059,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 10921,
+"sensor": 12235707,
+"name": "NISE Gwal Pahari, Gurugram - IMD",
+"provider": "CPCB",
+"lat": 28.422681,
+"lon": 77.148944,
+"first": "2018-11-16T09:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 11603,
+"sensor": 12236361,
+"name": "Chandni Chowk, Delhi - IITM",
+"provider": "CPCB",
+"lat": 28.656756,
+"lon": 77.227234,
+"first": "2020-11-13T12:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 11607,
+"sensor": 12236376,
+"name": "Lodhi Road, Delhi - IITM",
+"provider": "CPCB",
+"lat": 28.588333,
+"lon": 77.221667,
+"first": "2020-11-13T12:00:00Z",
+"last": "2025-12-27T06:00:00Z"
+},
+{
+"id": 227535,
+"sensor": 12236648,
+"name": "Manoharpur, Agra - UPPCB",
+"provider": "CPCB",
+"lat": 27.237109999999998,
+"lon": 78.01935999999999,
+"first": "2021-06-04T18:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 227931,
+"sensor": 12236657,
+"name": "Sector-3B Avas Vikas Colony, Agra - UPPCB",
+"provider": "CPCB",
+"lat": 27.19412,
+"lon": 77.96236999999999,
+"first": "2021-06-12T16:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 228352,
+"sensor": 12236639,
+"name": "Shastripuram, Agra - UPPCB",
+"provider": "CPCB",
+"lat": 27.198620000000002,
+"lon": 77.92066,
+"first": "2021-06-20T21:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 229729,
+"sensor": 12236735,
+"name": "Nagla Bhau, Firozabad - UPPCB",
+"provider": "CPCB",
+"lat": 27.168896999999998,
+"lon": 78.37696,
+"first": "2021-07-17T23:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 233414,
+"sensor": 12236761,
+"name": "Omex Eternity, Vrindavan - UPPCB",
+"provider": "CPCB",
+"lat": 27.571409000000003,
+"lon": 77.655757,
+"first": "2021-08-25T17:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 233415,
+"sensor": 12236806,
+"name": "Sector 22, Chandigarh - CPCC",
+"provider": "CPCB",
+"lat": 30.735567,
+"lon": 76.77571400000001,
+"first": "2021-08-25T16:30:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 234997,
+"sensor": 12236824,
+"name": "Dharmapuri, Agra - UPPCB",
+"provider": "CPCB",
+"lat": 27.169338,
+"lon": 78.03582,
+"first": "2021-09-07T08:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 270697,
+"sensor": 12241402,
+"name": "Employment Office, Moradabad - UPPCB",
+"provider": "CPCB",
+"lat": 28.885279999999998,
+"lon": 78.7388,
+"first": "2021-11-10T12:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 270771,
+"sensor": 12236981,
+"name": "Buddhi Vihar, Moradabad - UPPCB",
+"provider": "CPCB",
+"lat": 28.835259999999998,
+"lon": 78.7446,
+"first": "2021-12-10T12:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 270777,
+"sensor": 12236990,
+"name": "Jigar Colony, Moradabad - UPPCB",
+"provider": "CPCB",
+"lat": 28.856664000000002,
+"lon": 78.772638,
+"first": "2021-12-18T08:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 270877,
+"sensor": 12236999,
+"name": "Eco Herbal Park, Moradabad - UPPCB",
+"provider": "CPCB",
+"lat": 28.840739000000003,
+"lon": 78.69753100000001,
+"first": "2022-01-20T11:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 278159,
+"sensor": 12236752,
+"name": "Rohta, Agra - UPPCB",
+"provider": "CPCB",
+"lat": 27.106972,
+"lon": 78.000111,
+"first": "2022-01-28T05:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 278418,
+"sensor": 12237008,
+"name": "Sector-53, Chandigarh - CPCC",
+"provider": "CPCB",
+"lat": 30.719859000000003,
+"lon": 76.738637,
+"first": "2022-01-31T07:30:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 301388,
+"sensor": 12237035,
+"name": "Sardar Patel Inter College, Baghpat - UPPCB",
+"provider": "CPCB",
+"lat": 28.964949,
+"lon": 77.278761,
+"first": "2022-03-24T21:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 301389,
+"sensor": 12237044,
+"name": "HIMUDA Complex Phase-1, Baddi - HPPCB",
+"provider": "CPCB",
+"lat": 30.943887,
+"lon": 76.801991,
+"first": "2022-03-24T20:45:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 317035,
+"sensor": 12237080,
+"name": "Doon University, Dehradun - UKPCB",
+"provider": "CPCB",
+"lat": 30.269444,
+"lon": 78.044167,
+"first": "2022-04-22T13:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 330021,
+"sensor": 12237026,
+"name": "Vibhab Nagar, Firozabad - UPPCB",
+"provider": "CPCB",
+"lat": 27.1594,
+"lon": 78.3953,
+"first": "2022-05-04T07:00:00Z",
+"last": "2026-10-07T13:30:00Z"
+},
+{
+"id": 346438,
+"sensor": 12237143,
+"name": "Rajendra Nagar, Bareilly - UPPCB",
+"provider": "CPCB",
+"lat": 28.38910936,
+"lon": 79.42963708,
+"first": "2022-06-02T12:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 346439,
+"sensor": 12237152,
+"name": "Kalindi Kunj, Khurja - UPPCB",
+"provider": "CPCB",
+"lat": 28.234892699999996,
+"lon": 77.8683002,
+"first": "2022-06-02T12:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 352777,
+"sensor": 12237271,
+"name": "Kashiram Nagar, Moradabad - UPPCB",
+"provider": "CPCB",
+"lat": 28.849399,
+"lon": 78.742362,
+"first": "2022-06-20T09:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 353715,
+"sensor": 12237220,
+"name": "Transport Nagar, Moradabad - UPPCB",
+"provider": "CPCB",
+"lat": 28.802625,
+"lon": 78.75372800000001,
+"first": "2022-07-04T07:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 358467,
+"sensor": 12237325,
+"name": "Civil Lines, Bareilly - UPPCB",
+"provider": "CPCB",
+"lat": 28.359581,
+"lon": 79.414455,
+"first": "2022-09-13T13:00:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 3409402,
+"sensor": 12237721,
+"name": "Krishna Nagar, Bharatpur - RSPCB",
+"provider": "CPCB",
+"lat": 27.215415000000004,
+"lon": 77.50873,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 3409404,
+"sensor": 12237739,
+"name": "Subash Chowk, Churu - RSPCB",
+"provider": "CPCB",
+"lat": 28.296139,
+"lon": 74.96169599999999,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 3409408,
+"sensor": 12237775,
+"name": "Shivaji Nagar, Rishikesh - UKPCB",
+"provider": "CPCB",
+"lat": 30.075910999999998,
+"lon": 78.2859547,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 3409420,
+"sensor": 12237861,
+"name": "Housing Board, Hanumangarh - RSPCB",
+"provider": "CPCB",
+"lat": 29.61075,
+"lon": 74.283608,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 3409422,
+"sensor": 12237879,
+"name": "Indra Nagar, Jhunjhunu - RSPCB",
+"provider": "CPCB",
+"lat": 28.108988,
+"lon": 75.386577,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 3409424,
+"sensor": 12237897,
+"name": "Old City, Sri Ganganagar - RSPCB",
+"provider": "CPCB",
+"lat": 29.931624,
+"lon": 73.864511,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 3409427,
+"sensor": 12237924,
+"name": "Radhakishan Pura, Sikar - RSPCB",
+"provider": "CPCB",
+"lat": 27.608912,
+"lon": 75.153302,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 3409450,
+"sensor": 12238104,
+"name": "Karni Colony, Nagaur - RSPCB",
+"provider": "CPCB",
+"lat": 27.213494,
+"lon": 73.734444,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 3409519,
+"sensor": 12238640,
+"name": "Vasundhara Nagar_UIT, Bhiwadi - RSPCB",
+"provider": "CPCB",
+"lat": 28.207266,
+"lon": 76.829265,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+},
+{
+"id": 3410004,
+"sensor": 12238725,
+"name": "Amity University, Panchgaon - IITM",
+"provider": "N/A",
+"lat": 28.3153,
+"lon": 76.9143,
+"first": "2025-02-18T20:15:00Z",
+"last": "2026-10-07T14:30:00Z"
+}
+]
+}

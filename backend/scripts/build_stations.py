@@ -11,8 +11,8 @@ OUT = os.path.join(os.path.dirname(__file__), "..", "smokepath", "static", "stat
 
 secrets.load()
 found = openaq.discover(os.environ["OPENAQ_API_KEY"])
-# Keep monitors that reported during or after the Nov 2024 replay window.
-keep = [s for s in found if (s.get("last") or "") >= "2024-11-01"]
+# Keep monitors that reported during or after the Nov 2025 replay window.
+keep = [s for s in found if (s.get("last") or "") >= "2025-11-01"]
 with open(OUT, "w", encoding="utf-8") as f:
     json.dump({"source": "OpenAQ v3 /locations (monitor=true, PM2.5)", "stations": keep}, f, ensure_ascii=False, indent=0)
 providers = {}

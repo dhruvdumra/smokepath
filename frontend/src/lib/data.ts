@@ -3,7 +3,7 @@ import type { Advisory, Bundle, Dataset, School } from './types';
 
 const BUNDLE_URL: Record<Dataset, string> = {
   live: '/data/live/latest.json',
-  replay: '/data/replay/nov2024.json',
+  replay: '/data/replay/nov2025.json',
 };
 
 type Async<T> = { data: T | null; error: string | null; loading: boolean };

@@ -4,7 +4,7 @@ const S = {
   tagline: ["Tomorrow's smoke forecast, turned into tomorrow's timetable for your school.",
     'कल के धुएँ का पूर्वानुमान, आपके स्कूल की कल की समय-सारणी में।'],
   live: ['Live forecast', 'लाइव पूर्वानुमान'],
-  replay: ['Replay · Nov 2024 smog', 'रीप्ले · नवंबर 2024 स्मॉग'],
+  replay: ['Replay · Nov 2025 smog', 'रीप्ले · नवंबर 2025 स्मॉग'],
   findTitle: ['Find your school', 'अपना स्कूल खोजें'],
   findHint: ['Type a school name in Delhi NCR', 'दिल्ली NCR के स्कूल का नाम लिखें'],
   useLocation: ['Use my location', 'मेरी लोकेशन'],

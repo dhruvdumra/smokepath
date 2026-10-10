@@ -126,8 +126,8 @@ export default function App() {
             </div>
             {calm && (
               <button className="calm" onClick={() => setDataset('replay')}>
-                {lang === 'en' ? 'Air is calm today: early in the burning season. See a real smog day (13 Nov 2024) →'
-                  : 'आज हवा शांत है। असली स्मॉग वाला दिन (13 नवंबर 2024) देखें →'}
+                {lang === 'en' ? 'Air is calm today: early in the burning season. See a real smog day (11 Nov 2025) →'
+                  : 'आज हवा शांत है। असली स्मॉग वाला दिन (11 नवंबर 2025) देखें →'}
               </button>
             )}
             <Legend layers={layers} lang={lang} hasStations={b.stations.length > 0} onChange={setLayers} />

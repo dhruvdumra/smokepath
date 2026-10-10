@@ -65,16 +65,22 @@ def build(t0, mode="live", *, firms_key=None, openaq_key=None, log=print):
     # Ground stations and bias correction.
     clock = time.time()
     stations = load_static("stations.json")["stations"] if os.path.exists(os.path.join(STATIC, "stations.json")) else []
-    obs_from, obs_to = t0 - timedelta(hours=26), t0
+    # Live OpenAQ can lag by days, so live runs look back 4 days and use each station's latest 24 h.
+    lookback = 26 if historical else 96
+    obs_from, obs_to = t0 - timedelta(hours=lookback), t0
     obs, obs_src = {}, "none"
+    cams_hist, hist_th = pm, frame_th
     try:
         if stations and historical:
             obs, obs_src = openaq.archive_hours(stations, obs_from, obs_to), "OpenAQ archive (AWS Open Data)"
         elif stations and openaq_key:
             obs, obs_src = openaq.live_hours(openaq_key, stations, obs_from, obs_to), "OpenAQ v3 (CPCB)"
+            htimes, cams_hist = openmeteo.cams_pm25(grid, obs_from, obs_to)
+            hist_th = [epoch_h(t) for t in htimes]
     except Exception as e:  # correction is an improvement, never a single point of failure
         log(f"stations unavailable: {e!r}")
-    ratios = correct.station_ratios(stations, obs, pm, grid, frame_th, t0h)
+    ratios = correct.station_ratios(stations, obs, cams_hist, grid, hist_th, t0h, max_age_h=0 if historical else 72)
+    obs_age = sorted(r["age_h"] for r in ratios)[len(ratios) // 2] if ratios else None
     rgrid = correct.ratio_grid(grid, ratios)
     timings["openaq"] = round(time.time() - clock, 1)
 
@@ -90,6 +96,7 @@ def build(t0, mode="live", *, firms_key=None, openaq_key=None, log=print):
             "wind_level_hpa": config.WIND_LEVEL_HPA,
             "sources": {"pm25": "CAMS global via Open-Meteo", "wind": "NOAA GFS via Open-Meteo",
                         "fires": fire_src, "stations": obs_src},
+            "obs_age_h": obs_age,
             "counts": {"fires_24h": len(window(fires, t0h, 24)), "stations_used": len(ratios),
                        "particles": len(particles)},
         },

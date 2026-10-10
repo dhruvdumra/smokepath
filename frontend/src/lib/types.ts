@@ -46,7 +46,7 @@ export interface SmokeSource { district: string; state: string; count: number; f
 export interface Advisory {
   school: School; date: string; dataset: Dataset; dates: string[]; issued: string; t0: string; mode: Dataset;
   hourly: { hour: number; pm: number; raw: number }[];
-  correction: { ratio: number; stations_within_15km: number; stations_used: number; confidence: 'high' | 'medium' | 'low' };
+  correction: { ratio: number; stations_within_15km: number; stations_used: number; confidence: 'high' | 'medium' | 'low'; obs_age_h: number | null };
   smoke: null | { level: 'high' | 'some' | 'none'; fires: number; frp: number; sources: SmokeSource[]; path: [number, number][]; hour: string };
   headline: Bilingual;
   parent_message: Bilingual | null;

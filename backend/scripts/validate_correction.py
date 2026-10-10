@@ -4,7 +4,7 @@ For each IST day D: learn obs/CAMS ratios from the 24 h before D starts (only da
 then predict every station's hourly PM2.5 on D *without using that station* (so it behaves like a school
 location with no monitor), and compare with what the station measured.
 
-    python scripts/validate_correction.py 2024-11-05 2024-11-20
+    python scripts/validate_correction.py 2025-10-25 2025-11-25
 """
 import json
 import os
@@ -95,6 +95,6 @@ def main(d0, d1):
 
 
 if __name__ == "__main__":
-    a = date.fromisoformat(sys.argv[1] if len(sys.argv) > 1 else "2024-11-05")
-    b = date.fromisoformat(sys.argv[2] if len(sys.argv) > 2 else "2024-11-20")
+    a = date.fromisoformat(sys.argv[1] if len(sys.argv) > 1 else "2025-10-25")
+    b = date.fromisoformat(sys.argv[2] if len(sys.argv) > 2 else "2025-11-25")
     main(a, b)

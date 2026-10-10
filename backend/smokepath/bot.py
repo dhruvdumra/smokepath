@@ -16,8 +16,8 @@ TXT = {
                    "{name} के लिए सदस्यता हो गई। ख़राब हवा वाले स्कूल दिन से पहले शाम को अलर्ट मिलेगा।"),
     "nosub": ("You're not subscribed yet. Share your location or type your school's name.",
               "आपकी सदस्यता नहीं है। लोकेशन भेजें या स्कूल का नाम लिखें।"),
-    "demo_hint": ("Air is calm right now. Send /demo to see what SmokePath sent on a real smoke day (13 Nov 2024).",
-                  "अभी हवा ठीक है। असली धुएँ वाले दिन (13 नवंबर 2024) का संदेश देखने के लिए /demo भेजें।"),
+    "demo_hint": ("Air is calm right now. Send /demo to see what SmokePath sent on a real smoke day (11 Nov 2025).",
+                  "अभी हवा ठीक है। असली धुएँ वाले दिन (11 नवंबर 2025) का संदेश देखने के लिए /demo भेजें।"),
     "stopped": ("Unsubscribed. Send /start any time.", "सदस्यता समाप्त। कभी भी /start भेजें।"),
     "lang": ("Language: English. Send /lang to switch to Hindi.", "भाषा: हिंदी। अंग्रेज़ी के लिए /lang भेजें।"),
 }
@@ -119,7 +119,7 @@ def handle(update, site_url=None):
 COMMANDS = [
     {"command": "start", "description": "Find your school"},
     {"command": "tomorrow", "description": "Advisory for your school"},
-    {"command": "demo", "description": "Replay a real smoke day (13 Nov 2024)"},
+    {"command": "demo", "description": "Replay a real smoke day (11 Nov 2025)"},
     {"command": "lang", "description": "English / हिंदी"},
     {"command": "stop", "description": "Unsubscribe"},
 ]

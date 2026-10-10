@@ -6,6 +6,8 @@ OpenAQ archive on the AWS Open Data Registry (s3://openaq-data-archive, public, 
 import csv
 import gzip
 import io
+import threading
+import time
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
@@ -35,7 +37,8 @@ def discover(key, bbox=config.STATION_BBOX):
             if not sensors or loc.get("isMobile"):
                 continue
             last = (loc.get("datetimeLast") or {}).get("utc")
-            out.append({"id": loc["id"], "sensor": sensors[0]["id"], "name": loc.get("name"),
+            # Locations keep retired sensor ids; the newest id is the one still reporting.
+            out.append({"id": loc["id"], "sensor": max(s["id"] for s in sensors), "name": loc.get("name"),
                         "provider": (loc.get("provider") or {}).get("name"),
                         "lat": loc["coordinates"]["latitude"], "lon": loc["coordinates"]["longitude"],
                         "first": (loc.get("datetimeFirst") or {}).get("utc"), "last": last})
@@ -56,9 +59,29 @@ def _clean(series):
     return out
 
 
+class _Throttle:
+    """Space request starts so we stay under OpenAQ's free-tier limit (60/min)."""
+
+    def __init__(self, per_minute=55):
+        self.gap = 60.0 / per_minute
+        self.lock = threading.Lock()
+        self.next = 0.0
+
+    def wait(self):
+        with self.lock:
+            now = time.monotonic()
+            delay = max(0.0, self.next - now)
+            self.next = max(now, self.next) + self.gap
+        if delay:
+            time.sleep(delay)
+
+
 def live_hours(key, stations, start, end, workers=4):
     """{station_id: {epoch_h: pm25}} from the v3 hourly endpoint for [start, end] (naive UTC)."""
+    throttle = _Throttle()
+
     def one(st):
+        throttle.wait()
         try:
             data = get_json(f"{config.OPENAQ_API}/sensors/{st['sensor']}/hours", {
                 "datetime_from": start.strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -68,11 +91,12 @@ def live_hours(key, stations, start, end, workers=4):
         series = {}
         for r in data.get("results", []):
             v = r.get("value")
-            # OpenAQ labels hourly periods by their end; CAMS values are instantaneous on the hour.
+            # CPCB hours run :30-:30 UTC (whole IST hours) and are labelled by their end; the mean is centred
+            # on the whole UTC hour in between, which is where CAMS's instantaneous values sit.
             to = ((r.get("period") or {}).get("datetimeTo") or {}).get("utc")
             if v is None or not to:
                 continue
-            series[epoch_h(to[:16])] = float(v)
+            series[float(round(epoch_h(to[:16]) - 0.5))] = float(v)
         return st["id"], _clean(series)
 
     with ThreadPoolExecutor(workers) as ex:
@@ -113,9 +137,9 @@ def archive_hours(stations, start, end, workers=8):
                     v = float(r["value"])
                 except (KeyError, ValueError):
                     continue
-                # Round up to the hour: the archive stamps sub-hourly CPCB values at period end.
-                h = epoch_h(when.replace(tzinfo=None).strftime("%Y-%m-%dT%H:%M"))
-                buckets[float(int(h) if h == int(h) else int(h) + 1)].append(v)
+                # 15-minute values stamped at period end; bucket them on the nearest whole UTC hour.
+                h = epoch_h(when.replace(tzinfo=None).strftime("%Y-%m-%dT%H:%M")) - 0.125
+                buckets[float(round(h))].append(v)
         series = {h: sum(v) / len(v) for h, v in buckets.items() if lo <= h <= hi}
         return st["id"], _clean(series)
 
