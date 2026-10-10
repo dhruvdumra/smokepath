@@ -93,6 +93,6 @@ run takes about 15 s of compute plus the time spent waiting on rate-limited APIs
 
 - Live: https://d35jtpishdgz20.cloudfront.net
 - Replay of 11 Nov 2025: https://d35jtpishdgz20.cloudfront.net/?dataset=replay
-- Code: *(GitHub link)*
+- Code: https://github.com/dhruvdumra/smokepath
 
 *Data: CAMS (Copernicus) via Open-Meteo; NOAA GFS; NASA FIRMS; CPCB via OpenAQ; © OpenStreetMap contributors.*

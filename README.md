@@ -4,7 +4,7 @@
 
 AWS Environmental Hacks 2026 · Air track (stubble burning, school safety on bad days)
 
-Live: https://d35jtpishdgz20.cloudfront.net · Replay of the Nov 2025 Delhi smog: https://d35jtpishdgz20.cloudfront.net/?dataset=replay
+Live: https://d35jtpishdgz20.cloudfront.net · Code: https://github.com/dhruvdumra/smokepath · Replay of the Nov 2025 Delhi smog: https://d35jtpishdgz20.cloudfront.net/?dataset=replay
 
 ---
 
