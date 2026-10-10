@@ -149,7 +149,7 @@ h1, h2, h3 { margin: 0; line-height: 1.25; }
 .sw-fire { background: #ff6e1e; border-radius: 50%; width: 9px; height: 9px; margin: 0 2.5px; }
 .sw-school { background: #e03131; border-radius: 50%; width: 8px; height: 8px; margin: 0 3px; }
 .sw-station { border: 1.5px solid #e8ecf2; border-radius: 50%; width: 10px; height: 10px; margin: 0 2px; }
-.timeline { position: absolute; left: 12px; right: 56px; bottom: 14px; display: flex; gap: 12px; align-items: center; background: rgba(20, 25, 32, 0.94); border: 1px solid var(--line); border-radius: var(--r-md); padding: 10px 14px 22px 10px; }
+.timeline { position: absolute; left: 12px; right: 56px; bottom: 30px; display: flex; gap: 12px; align-items: center; background: rgba(20, 25, 32, 0.94); border: 1px solid var(--line); border-radius: var(--r-md); padding: 10px 14px 22px 10px; }
 .play { width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--accent); color: var(--accent-ink); cursor: pointer; display: grid; place-items: center; flex: none; }
 .play svg { width: 16px; height: 16px; fill: currentColor; }
 .timeline-body { flex: 1; min-width: 0; }
@@ -168,6 +168,12 @@ h1, h2, h3 { margin: 0; line-height: 1.25; }
 .track input[type='range']::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 3px solid var(--accent); }
 .maplibregl-ctrl-attrib { font-size: 11px; }
 
+/* Narrow stage: legend drops to the bottom-right, above the timeline, so it never covers the stats. */
+@media (max-width: 1320px) and (min-width: 861px) {
+  .legend { top: auto; bottom: 118px; }
+  .stats > div { min-width: 0; padding: 8px 12px; }
+}
+
 /* ---------- small screens: map on top, panel below ---------- */
 @media (max-width: 860px) {
   .app { grid-template-columns: 1fr; grid-template-rows: auto 58vh auto; height: auto; min-height: 100dvh; }
@@ -182,5 +188,5 @@ h1, h2, h3 { margin: 0; line-height: 1.25; }
   .stats strong { font-size: 17px; }
   .stats span { font-size: 11px; }
   .calm { left: 8px; right: 8px; top: 74px; font-size: 13px; }
-  .timeline { left: 8px; right: 8px; bottom: 8px; }
+  .timeline { left: 8px; right: 8px; bottom: 28px; }
 }
