@@ -7,6 +7,7 @@ interface Props { layers: LayerToggles; lang: Lang; hasStations: boolean; onChan
 
 const ROWS: { key: keyof LayerToggles; label: UiKey; swatch: string }[] = [
   { key: 'smoke', label: 'smoke', swatch: 'sw-smoke' },
+  { key: 'wind', label: 'wind', swatch: 'sw-wind' },
   { key: 'fires', label: 'fires', swatch: 'sw-fire' },
   { key: 'schools', label: 'schools', swatch: 'sw-school' },
   { key: 'stations', label: 'stations', swatch: 'sw-station' },

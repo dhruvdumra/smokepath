@@ -1,5 +1,5 @@
 import { HourlyChart } from './HourlyChart';
-import { CatPill, Checklist, Method, ParentMessage, SmokeWhy, TimetableList } from './AdvisoryParts';
+import { CatPill, Checklist, Method, ShareMessage, SmokeWhy, TimetableList } from './AdvisoryParts';
 import { Subscribe } from './Subscribe';
 import { dateLabel } from '../lib/time';
 import { tr } from '../lib/ui';
@@ -21,9 +21,10 @@ interface Props {
 
 export function SchoolPanel({ school, adv, loading, error, dates, date, lang, showPath, onDate, onBack, onTogglePath }: Props) {
   const current = adv?.date ?? date;
+  const work = adv?.profile === 'work';
   return (
     <section className="school" aria-busy={loading}>
-      <button className="link-back" onClick={onBack}>← {tr('back', lang)}</button>
+      <button className="link-back" onClick={onBack}>← {tr(school.id.startsWith('site:') ? 'backSite' : 'back', lang)}</button>
       <h2>{lang === 'hi' && school.name_hi ? school.name_hi : school.name}</h2>
       {school.addr && <p className="muted small">{school.addr}</p>}
 
@@ -45,16 +46,16 @@ export function SchoolPanel({ school, adv, loading, error, dates, date, lang, sh
           <p className="headline"><CatPill k={adv.worst.cat} lang={lang} />{adv.headline[lang]}</p>
           <HourlyChart adv={adv} lang={lang} />
 
-          <h3>{tr('timetable', lang)}</h3>
+          <h3>{tr(work ? 'plan' : 'timetable', lang)}</h3>
           <TimetableList adv={adv} lang={lang} />
 
-          <h3>{tr('actions', lang)}</h3>
+          <h3>{tr(work ? 'actionsWork' : 'actions', lang)}</h3>
           <Checklist adv={adv} lang={lang} />
 
-          {adv.parent_message && (
+          {adv.share_message && (
             <>
-              <h3>{tr('parents', lang)}</h3>
-              <ParentMessage adv={adv} lang={lang} />
+              <h3>{tr(work ? 'workers' : 'parents', lang)}</h3>
+              <ShareMessage adv={adv} lang={lang} />
             </>
           )}
 

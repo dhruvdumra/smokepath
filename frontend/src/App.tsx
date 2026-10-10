@@ -5,50 +5,52 @@ import { Legend } from './components/Legend';
 import { SchoolPanel } from './components/SchoolPanel';
 import { Intro } from './components/Intro';
 import { useAdvisory, useBundle, useSchools } from './lib/data';
-import { sampleAt } from './lib/grid';
+import { sampleAt, schoolValues } from './lib/grid';
 import { catOf } from './lib/colors';
 import { utc } from './lib/time';
 import { tr } from './lib/ui';
-import type { Bundle, Dataset, Lang, School } from './lib/types';
+import type { Dataset, Lang, School } from './lib/types';
 
 const params = new URLSearchParams(window.location.search);
 const DELHI = { lat: 28.61, lon: 77.21 };
+const SITE_RE = /^site:(-?\d+\.\d+),(-?\d+\.\d+)$/;
 
-/** Same rule as the backend: today (IST) until 14:00, then tomorrow. */
-function defaultDateIndex(b: Bundle) {
-  const t0 = new Date(utc(b.meta.t0).getTime() + 5.5 * 3600000);
-  const d = new Date(t0);
-  if (t0.getUTCHours() >= 14) d.setUTCDate(d.getUTCDate() + 1);
-  const want = d.toISOString().slice(0, 10);
-  const i = b.schools.dates.findIndex((x) => x >= want);
-  return i < 0 ? b.schools.dates.length - 1 : i;
+/** Outdoor work sites are places too: 'site:<lat>,<lon>' (same id format as the API and the Telegram bot). */
+function siteFromId(id: string | null): School | null {
+  const m = id?.match(SITE_RE);
+  if (!m) return null;
+  const lat = parseFloat(m[1]), lon = parseFloat(m[2]);
+  return { id: id!, name: `Work site ${lat.toFixed(3)}°N ${lon.toFixed(3)}°E`, lat, lon, level: '', operator: '', addr: '' };
 }
 
 export default function App() {
   const [dataset, setDataset] = useState<Dataset>(params.get('dataset') === 'replay' ? 'replay' : 'live');
   const [lang, setLang] = useState<Lang>(params.get('lang') === 'hi' ? 'hi' : 'en');
-  const [schoolId, setSchoolId] = useState<string | null>(params.get('school'));
+  const [placeId, setPlaceId] = useState<string | null>(params.get('school'));
+  const [siteMode, setSiteMode] = useState(false);
   const [date, setDate] = useState<string | null>(null);
   const [frame, setFrame] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [showPath, setShowPath] = useState(false);
   const [focus, setFocus] = useState<{ lat: number; lon: number; zoom: number; key: number } | null>(null);
-  const [layers, setLayers] = useState<LayerToggles>({ heat: true, corrected: true, smoke: true, fires: true, stations: true, schools: true });
+  const [layers, setLayers] = useState<LayerToggles>({
+    heat: true, corrected: true, smoke: true, wind: false, fires: true, stations: true, schools: true,
+  });
 
   const bundle = useBundle(dataset);
   const schools = useSchools();
   const b = bundle.data;
-  const school = schools.data?.find((s) => s.id === schoolId) ?? null;
-  const adv = useAdvisory(schoolId, dataset, date, b?.meta.generated);
+  const place = schools.data?.find((s) => s.id === placeId) ?? siteFromId(placeId);
+  const adv = useAdvisory(placeId, dataset, date, b?.meta.generated);
 
   useEffect(() => {
     document.documentElement.lang = lang;
     const q = new URLSearchParams();
-    if (schoolId) q.set('school', schoolId);
+    if (placeId) q.set('school', placeId);
     if (dataset !== 'live') q.set('dataset', dataset);
     if (lang !== 'en') q.set('lang', lang);
     window.history.replaceState(null, '', q.toString() ? `?${q}` : window.location.pathname);
-  }, [schoolId, dataset, lang]);
+  }, [placeId, dataset, lang]);
 
   useEffect(() => {
     if (!b) return;
@@ -57,7 +59,7 @@ export default function App() {
     setLayers((l) => ({ ...l, corrected: b.stations.length > 0 }));
   }, [b]);
 
-  // When an advisory arrives, move the map clock to that school's worst hour.
+  // When an advisory arrives, move the map clock to that place's worst hour.
   useEffect(() => {
     if (!adv.data || !b) return;
     const start = utc(b.meta.times[0]).getTime();
@@ -73,18 +75,21 @@ export default function App() {
     return () => window.clearInterval(id);
   }, [playing, b]);
 
-  const dateIndex = useMemo(() => {
-    if (!b) return 0;
-    const d = adv.data?.date ?? date;
-    const i = d ? b.schools.dates.indexOf(d) : -1;
-    return i >= 0 ? i : defaultDateIndex(b);
-  }, [b, adv.data, date]);
+  // Every school's PM2.5 at the hour under the slider: drives dot colours, trigger rings and the live counter.
+  const q = Math.round(frame * 4) / 4;
+  const schoolPm = useMemo(
+    () => (b && schools.data ? schoolValues(b, schools.data, q, layers.corrected) : []),
+    [b, schools.data, q, layers.corrected],
+  );
+  const triggeredNow = schoolPm.filter((v) => v > 120).length;
 
-  const selectSchool = (s: School, fly = false) => {
-    setSchoolId(s.id);
+  const selectPlace = (s: School, fly = false) => {
+    setPlaceId(s.id);
     setShowPath(false);
+    setSiteMode(false);
     if (fly) setFocus({ lat: s.lat, lon: s.lon - 0.6, zoom: 7.6, key: Date.now() });
   };
+  const pickSite = (lat: number, lon: number) => selectPlace(siteFromId(`site:${lat.toFixed(4)},${lon.toFixed(4)}`)!);
 
   const delhi = b ? sampleAt(b, DELHI.lat, DELHI.lon, frame, layers.corrected) : 0;
   const calm = b && dataset === 'live' && Math.max(...b.schools.at_risk) === 0;
@@ -111,9 +116,9 @@ export default function App() {
 
       <main className="stage">
         {b && schools.data && (
-          <MapView bundle={b} schools={schools.data} frame={frame} dateIndex={dateIndex} layers={layers}
-                   selected={school} airPath={showPath && adv.data?.smoke ? adv.data.smoke.path : null}
-                   focus={focus} onSelect={(s) => selectSchool(s)} />
+          <MapView bundle={b} schools={schools.data} schoolPm={schoolPm} frame={frame} layers={layers}
+                   selected={place} airPath={showPath && adv.data?.smoke ? adv.data.smoke.path : null}
+                   focus={focus} siteMode={siteMode} onSelect={(s) => selectPlace(s)} onPickSite={pickSite} />
         )}
         {bundle.loading && <div className="stage-msg" role="status">{tr('loading', lang)}</div>}
         {bundle.error && <div className="stage-msg error" role="alert">Forecast unavailable: {bundle.error}</div>}
@@ -121,10 +126,16 @@ export default function App() {
           <>
             <div className="stats" aria-live="polite">
               <div><strong>{b.meta.counts.fires_24h.toLocaleString('en-IN')}</strong><span>{tr('fires24', lang)}</span></div>
-              <div><strong>{b.schools.at_risk[dateIndex] ?? 0}<small>/{schools.data?.length ?? '–'}</small></strong><span>{tr('atRisk', lang)}</span></div>
+              <div>
+                <strong style={{ color: triggeredNow ? catOf(250).color : undefined }}>
+                  {triggeredNow}<small>/{schools.data?.length ?? '–'}</small>
+                </strong>
+                <span>{tr('atRiskNow', lang)}</span>
+              </div>
               <div><strong style={{ color: catOf(delhi).color }}>{Math.round(delhi)}</strong><span>{tr('delhiNow', lang)} · µg/m³</span></div>
             </div>
-            {calm && (
+            {siteMode && <div className="site-hint" role="status">{tr('siteHint', lang)}</div>}
+            {calm && !siteMode && (
               <button className="calm" onClick={() => setDataset('replay')}>
                 {lang === 'en' ? 'Air is calm today: early in the burning season. See a real smog day (11 Nov 2025) →'
                   : 'आज हवा शांत है। असली स्मॉग वाला दिन (11 नवंबर 2025) देखें →'}
@@ -137,13 +148,14 @@ export default function App() {
       </main>
 
       <aside className="panel">
-        {school ? (
-          <SchoolPanel school={school} adv={adv.data} loading={adv.loading} error={adv.error} lang={lang}
+        {place ? (
+          <SchoolPanel school={place} adv={adv.data} loading={adv.loading} error={adv.error} lang={lang}
                        dates={b?.schools.dates ?? []} date={date} showPath={showPath}
-                       onDate={setDate} onBack={() => { setSchoolId(null); setShowPath(false); }}
+                       onDate={setDate} onBack={() => { setPlaceId(null); setShowPath(false); }}
                        onTogglePath={() => setShowPath(!showPath)} />
         ) : (
-          <Intro schools={schools.data ?? []} bundle={b} lang={lang} onSelect={selectSchool} />
+          <Intro schools={schools.data ?? []} bundle={b} lang={lang} siteMode={siteMode}
+                 onSiteMode={setSiteMode} onSelect={selectPlace} />
         )}
       </aside>
     </div>

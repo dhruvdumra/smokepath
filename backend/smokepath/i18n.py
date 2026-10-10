@@ -112,6 +112,9 @@ T = {
     "work_headline_bad": (
         "{date}: {cat} air at {site} from {from_} to {to} (peak {peak} µg/m³ at {peak_at}). Do heavy work {window}.",
         "{date}: {site} पर {from_} से {to} तक हवा {cat} (सबसे ज़्यादा {peak} µg/m³, {peak_at} बजे)। भारी काम {window} में करें।"),
+    "work_all_clear": (
+        "No changes needed: air stays {cat} or better through the working day.",
+        "कोई बदलाव ज़रूरी नहीं: काम के पूरे समय हवा {cat} या बेहतर रहेगी।"),
     "work_headline_ok": (
         "{date}: air at {site} stays {cat} or better during working hours. No changes needed.",
         "{date}: {site} पर काम के समय हवा {cat} या बेहतर रहेगी। कोई बदलाव ज़रूरी नहीं।"),

@@ -83,7 +83,7 @@ def advise_work(hourly, site_name, date_label):
                       from_=f"{bad_hours[0]:02d}:00", to=f"{bad_hours[-1] + 1:02d}:00", window=win_txt)
     else:
         headline = _both("work_headline_ok", date=date_label, site=site_name, cat=_cat2(worst_c))
-        actions.append(("all_clear", 5, _both("all_clear", cat=_cat2(worst_c))))
+        actions.append(("all_clear", 5, _both("work_all_clear", cat=_cat2(worst_c))))
         share = None
 
     actions.sort(key=lambda a: a[1])

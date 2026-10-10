@@ -1,30 +1,36 @@
 import { useEffect, useMemo, useRef } from 'react';
 import Map, { NavigationControl, useControl, type MapRef } from 'react-map-gl/maplibre';
 import { MapboxOverlay, type MapboxOverlayProps } from '@deck.gl/mapbox';
-import { BitmapLayer, PathLayer, ScatterplotLayer } from '@deck.gl/layers';
+import { BitmapLayer, LineLayer, PathLayer, ScatterplotLayer } from '@deck.gl/layers';
 import { TripsLayer } from '@deck.gl/geo-layers';
 import type { PickingInfo } from '@deck.gl/core';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { heatBounds, heatImage } from '../lib/grid';
+import { heatBounds, heatImage, windArrows } from '../lib/grid';
 import { rgb } from '../lib/colors';
 import { utc } from '../lib/time';
 import type { Bundle, School, Station } from '../lib/types';
 
-export interface LayerToggles { heat: boolean; corrected: boolean; smoke: boolean; fires: boolean; stations: boolean; schools: boolean }
+export interface LayerToggles {
+  heat: boolean; corrected: boolean; smoke: boolean; wind: boolean; fires: boolean; stations: boolean; schools: boolean;
+}
 
 interface Props {
   bundle: Bundle;
   schools: School[];
+  /** Corrected PM2.5 at each school at the current frame (same order as `schools`). */
+  schoolPm: number[];
   frame: number;
-  dateIndex: number;
   layers: LayerToggles;
   selected: School | null;
   airPath: [number, number][] | null;
   focus: { lat: number; lon: number; zoom: number; key: number } | null;
+  siteMode: boolean;
   onSelect: (s: School) => void;
+  onPickSite: (lat: number, lon: number) => void;
 }
 
 const BASEMAP = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
+const TRIGGER = 120; // above Poor: the school's advisory changes the timetable
 
 function DeckOverlay(props: MapboxOverlayProps) {
   const overlay = useControl(() => new MapboxOverlay(props));
@@ -35,7 +41,7 @@ function DeckOverlay(props: MapboxOverlayProps) {
 function tooltip({ object, layer }: PickingInfo) {
   if (!object || !layer) return null;
   const style = { background: '#0f1318', color: '#e8ecf2', fontSize: '12px', borderRadius: '6px', padding: '8px 10px', maxWidth: '260px' };
-  if (layer.id === 'schools') return { text: `${(object as School).name}\nclick for tomorrow's timetable`, style };
+  if (layer.id === 'schools') return { text: `${(object as School).name}\nclick for the timetable`, style };
   if (layer.id === 'stations') {
     const s = object as Station;
     return { text: `${s.name}\nObserved avg ${s.obs_mean} µg/m³ vs CAMS ${s.cams_mean}\nCorrection ×${s.ratio}`, style };
@@ -47,14 +53,15 @@ function tooltip({ object, layer }: PickingInfo) {
   return null;
 }
 
-export function MapView({ bundle, schools, frame, dateIndex, layers, selected, airPath, focus, onSelect }: Props) {
+export function MapView({ bundle, schools, schoolPm, frame, layers, selected, airPath, focus, siteMode, onSelect, onPickSite }: Props) {
   const mapRef = useRef<MapRef>(null);
   const t0 = useMemo(() => utc(bundle.meta.t0).getTime(), [bundle]);
   const fires = useMemo(() => bundle.fires.map((f) => ({ ...f, rel: (utc(f.t).getTime() - t0) / 3600000 })), [bundle, t0]);
   const rel = frame - bundle.meta.t0_index; // hours relative to issue time
   const q = Math.round(frame * 4) / 4;
   const image = useMemo(() => heatImage(bundle, q, layers.corrected), [bundle, q, layers.corrected]);
-  const worst = bundle.schools.worst[dateIndex] ?? [];
+  const wind = useMemo(() => (layers.wind ? windArrows(bundle, Math.round(frame)) : []), [bundle, frame, layers.wind]);
+  const triggered = useMemo(() => schools.filter((_, i) => schoolPm[i] > TRIGGER), [schools, schoolPm]);
 
   useEffect(() => {
     if (focus) mapRef.current?.flyTo({ center: [focus.lon, focus.lat], zoom: focus.zoom, duration: 1200 });
@@ -64,6 +71,10 @@ export function MapView({ bundle, schools, frame, dateIndex, layers, selected, a
     layers.heat && new BitmapLayer({
       id: 'heat', image, bounds: heatBounds(bundle),
       textureParameters: { minFilter: 'linear', magFilter: 'linear' },
+    }),
+    layers.wind && new LineLayer({
+      id: 'wind', data: wind, getSourcePosition: (d) => d.s, getTargetPosition: (d) => d.t,
+      getColor: [150, 200, 255, 150], widthUnits: 'pixels', getWidth: 1.2,
     }),
     layers.smoke && new TripsLayer({
       id: 'smoke', data: bundle.particles, currentTime: rel, trailLength: 10, fadeTrail: true,
@@ -87,12 +98,20 @@ export function MapView({ bundle, schools, frame, dateIndex, layers, selected, a
       getPosition: (d) => [d.lon, d.lat], radiusUnits: 'pixels', getRadius: 3.5,
       getFillColor: [15, 19, 24, 160], getLineColor: [230, 236, 242, 130], lineWidthUnits: 'pixels', getLineWidth: 1,
     }),
+    // Schools whose advisory is triggered at this hour get a ring: the plume "switching on" timetables.
+    layers.schools && new ScatterplotLayer({
+      id: 'triggered', data: triggered, getPosition: (d) => [d.lon, d.lat], radiusUnits: 'pixels', getRadius: 6.5,
+      stroked: true, filled: false, getLineColor: [255, 255, 255, 120], lineWidthUnits: 'pixels', getLineWidth: 1,
+    }),
     layers.schools && new ScatterplotLayer({
       id: 'schools', data: schools, pickable: true, autoHighlight: true, highlightColor: [255, 255, 255, 200],
       getPosition: (d) => [d.lon, d.lat], radiusUnits: 'pixels', getRadius: 3.2,
-      getFillColor: (_d, { index }) => [...rgb(worst[index] ?? 0), 235] as [number, number, number, number],
-      updateTriggers: { getFillColor: [dateIndex, bundle.meta.generated] },
-      onClick: ({ object }) => object && onSelect(object as School),
+      getFillColor: (_d, { index }) => [...rgb(schoolPm[index] ?? 0), 235] as [number, number, number, number],
+      updateTriggers: { getFillColor: [schoolPm] },
+      onClick: ({ object }) => {
+        if (object && !siteMode) onSelect(object as School);
+        return !siteMode;
+      },
     }),
     selected && new ScatterplotLayer({
       id: 'selected', data: [selected], getPosition: (d) => [d.lon, d.lat], radiusUnits: 'pixels', getRadius: 9,
@@ -107,6 +126,8 @@ export function MapView({ bundle, schools, frame, dateIndex, layers, selected, a
       mapStyle={BASEMAP}
       attributionControl={{ compact: true, customAttribution: 'CAMS · NOAA GFS · NASA FIRMS · OpenAQ/CPCB · © OpenStreetMap' }}
       style={{ position: 'absolute', inset: 0 }}
+      cursor={siteMode ? 'crosshair' : undefined}
+      onClick={(e) => siteMode && onPickSite(e.lngLat.lat, e.lngLat.lng)}
     >
       <DeckOverlay layers={deckLayers} getTooltip={tooltip} />
       <NavigationControl position="bottom-right" showCompass={false} />

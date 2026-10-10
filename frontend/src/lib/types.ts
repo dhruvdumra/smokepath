@@ -21,6 +21,8 @@ export interface Bundle {
   };
   pm25: (number | null)[][];
   ratio: number[];
+  wind_u: (number | null)[][];
+  wind_v: (number | null)[][];
   stations: Station[];
   fires: Fire[];
   clusters: Cluster[];
@@ -49,7 +51,8 @@ export interface Advisory {
   correction: { ratio: number; stations_within_15km: number; stations_used: number; confidence: 'high' | 'medium' | 'low'; obs_age_h: number | null };
   smoke: null | { level: 'high' | 'some' | 'none'; fires: number; frp: number; sources: SmokeSource[]; path: [number, number][]; hour: string };
   headline: Bilingual;
-  parent_message: Bilingual | null;
+  profile: 'school' | 'work';
+  share_message: (Bilingual & { by?: string }) | null;
   timetable: Slot[];
   actions: ({ key: string; priority: number } & Bilingual)[];
   worst: { hour: number; pm: number; cat: CatKey };

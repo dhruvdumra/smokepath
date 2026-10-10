@@ -1,15 +1,50 @@
+import { useState } from 'react';
 import { SchoolSearch } from './SchoolSearch';
 import { tr } from '../lib/ui';
 import { istClock, istDay, utc } from '../lib/time';
 import type { Bundle, Lang, School } from '../lib/types';
 
-interface Props { schools: School[]; bundle: Bundle | null; lang: Lang; onSelect: (s: School, fly: boolean) => void }
+interface Props {
+  schools: School[]; bundle: Bundle | null; lang: Lang; siteMode: boolean;
+  onSiteMode: (on: boolean) => void; onSelect: (s: School, fly: boolean) => void;
+}
 
-export function Intro({ schools, bundle, lang, onSelect }: Props) {
+export function Intro({ schools, bundle, lang, siteMode, onSiteMode, onSelect }: Props) {
   const issued = bundle ? utc(bundle.meta.t0) : null;
+  const [geoError, setGeoError] = useState<string | null>(null);
+  const siteHere = () => {
+    setGeoError(null);
+    navigator.geolocation.getCurrentPosition(
+      (p) => {
+        const id = `site:${p.coords.latitude.toFixed(4)},${p.coords.longitude.toFixed(4)}`;
+        onSelect({ id, name: `Work site ${p.coords.latitude.toFixed(3)}°N ${p.coords.longitude.toFixed(3)}°E`,
+          lat: p.coords.latitude, lon: p.coords.longitude, level: '', operator: '', addr: '' }, true);
+      },
+      () => setGeoError('Location permission denied; click the map instead.'),
+      { timeout: 10000 },
+    );
+  };
   return (
     <section className="intro">
-      <SchoolSearch schools={schools} lang={lang} onSelect={onSelect} />
+      <div className="mode" role="radiogroup" aria-label={tr('checkWhat', lang)}>
+        {([false, true] as const).map((on) => (
+          <button key={String(on)} role="radio" aria-checked={siteMode === on}
+                  className={siteMode === on ? 'mode-btn on' : 'mode-btn'} onClick={() => onSiteMode(on)}>
+            {tr(on ? 'checkSite' : 'checkSchool', lang)}
+          </button>
+        ))}
+      </div>
+
+      {siteMode ? (
+        <div className="site-mode">
+          <p>{tr('siteIntro', lang)}</p>
+          <p className="muted small">{tr('siteHint', lang)}</p>
+          <button className="btn" onClick={siteHere}>{tr('siteHere', lang)}</button>
+          {geoError && <p className="muted small" role="status">{geoError}</p>}
+        </div>
+      ) : (
+        <SchoolSearch schools={schools} lang={lang} onSelect={onSelect} />
+      )}
 
       <h2>{tr('howTitle', lang)}</h2>
       <ol className="how">

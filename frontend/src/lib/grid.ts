@@ -54,3 +54,37 @@ export function sampleAt(b: Bundle, lat: number, lon: number, f: number, correct
   }
   return acc;
 }
+
+export interface Segment { s: [number, number]; t: [number, number]; speed: number }
+
+/** Wind arrows (shaft + two head strokes) at every grid node for fractional frame f; 0.04° per m/s. */
+export function windArrows(b: Bundle, f: number): Segment[] {
+  const { lat_min, lon_min, step, ny, nx } = b.meta.grid;
+  const i = Math.max(0, Math.min(Math.floor(f), b.wind_u.length - 2));
+  const t = Math.min(Math.max(f - i, 0), 1);
+  const out: Segment[] = [];
+  for (let iy = 0; iy < ny; iy++) {
+    for (let ix = 0; ix < nx; ix++) {
+      const k = iy * nx + ix;
+      const u = lerp(b.wind_u[i][k], b.wind_u[i + 1][k], t);
+      const v = lerp(b.wind_v[i][k], b.wind_v[i + 1][k], t);
+      const speed = Math.hypot(u, v);
+      if (speed < 0.3) continue;
+      const lat = lat_min + iy * step, lon = lon_min + ix * step;
+      const k2 = 0.04 / Math.cos((lat * Math.PI) / 180);
+      const tip: [number, number] = [lon + u * k2, lat + v * 0.04];
+      out.push({ s: [lon, lat], t: tip, speed });
+      const ang = Math.atan2(v, u);
+      const head = Math.min(speed * 0.012, 0.08);
+      for (const d of [2.6, -2.6]) {
+        out.push({ s: tip, t: [tip[0] + Math.cos(ang + d) * head * (k2 / 0.04), tip[1] + Math.sin(ang + d) * head], speed });
+      }
+    }
+  }
+  return out;
+}
+
+/** Corrected PM2.5 at every school for fractional frame f. */
+export function schoolValues(b: Bundle, pts: { lat: number; lon: number }[], f: number, corrected: boolean) {
+  return pts.map((p) => sampleAt(b, p.lat, p.lon, f, corrected));
+}

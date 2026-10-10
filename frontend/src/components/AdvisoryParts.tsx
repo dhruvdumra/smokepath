@@ -12,6 +12,12 @@ export function CatPill({ k, lang, pm }: { k: CatKey; lang: Lang; pm?: number })
   );
 }
 
+const WORK_MODE_TEXT: Partial<Record<Slot['mode'], [string, string]>> = {
+  protect: ['N95 + hourly sheltered breaks', 'N95 + हर घंटे शेड में आराम'],
+  light: ['Light work only', 'केवल हल्का काम'],
+  indoor: ['Rest indoors', 'अंदर आराम'],
+};
+
 const MODE_TEXT: Record<Slot['mode'], [string, string]> = {
   outdoor: ['No change', 'कोई बदलाव नहीं'],
   indoor: ['Move indoors', 'अंदर करें'],
@@ -33,7 +39,7 @@ export function TimetableList({ adv, lang }: { adv: Advisory; lang: Lang }) {
             <span className="slot-name">{lang === 'en' ? s.label_en : s.label_hi}</span>
             <CatPill k={s.cat} lang={lang} pm={s.pm} />
             <span className={`slot-mode mode-${s.mode}`}>
-              {MODE_TEXT[s.mode][lang === 'en' ? 0 : 1]}
+              {((adv.profile === 'work' && WORK_MODE_TEXT[s.mode]) || MODE_TEXT[s.mode])[lang === 'en' ? 0 : 1]}
               {moved && <> → <b>{s.new_start}</b> <CatPill k={s.cat_new!} lang={lang} pm={s.pm_new} /></>}
             </span>
           </li>
@@ -91,20 +97,20 @@ export function Method({ adv, lang }: { adv: Advisory; lang: Lang }) {
   const peak = adv.hourly[adv.worst.hour];
   const en = c.stations_used === 0
     ? `No ground stations were available for this run, so this is the raw CAMS model forecast (~45 km grid). CAMS often under-predicts Delhi smog, so treat it as a minimum.`
-    : `CAMS predicted ${peak.raw} µg/m³ at ${String(adv.worst.hour).padStart(2, '0')}:00. ${c.stations_used} CPCB monitors read higher or lower than CAMS over the last 24 h, so we scale this school's forecast ×${c.ratio} (${c.stations_within_15km} monitors within 15 km). Confidence: ${c.confidence}. CAMS is a ~45 km grid: this is a school-level advisory, not a street-level measurement.`;
+    : `CAMS predicted ${peak.raw} µg/m³ at ${String(adv.worst.hour).padStart(2, '0')}:00. ${c.stations_used} CPCB monitors read higher or lower than CAMS over the last 24 h, so we scale the forecast here ×${c.ratio} (${c.stations_within_15km} monitors within 15 km). Confidence: ${c.confidence}. CAMS is a ~45 km grid: this is a ${adv.profile === 'work' ? 'site' : 'school'}-level advisory, not a street-level measurement.`;
   const hi = c.stations_used === 0
     ? `इस रन में कोई ग्राउंड स्टेशन उपलब्ध नहीं था, इसलिए यह मूल CAMS पूर्वानुमान है (~45 किमी ग्रिड)। CAMS अक्सर दिल्ली के स्मॉग को कम आँकता है।`
-    : `CAMS ने ${String(adv.worst.hour).padStart(2, '0')}:00 बजे ${peak.raw} µg/m³ बताया। पिछले 24 घंटों में ${c.stations_used} CPCB मॉनिटरों की तुलना से इस स्कूल का पूर्वानुमान ×${c.ratio} किया गया (15 किमी में ${c.stations_within_15km} मॉनिटर)। भरोसा: ${c.confidence}।`;
+    : `CAMS ने ${String(adv.worst.hour).padStart(2, '0')}:00 बजे ${peak.raw} µg/m³ बताया। पिछले 24 घंटों में ${c.stations_used} CPCB मॉनिटरों की तुलना से यहाँ का पूर्वानुमान ×${c.ratio} किया गया (15 किमी में ${c.stations_within_15km} मॉनिटर)। भरोसा: ${c.confidence}।`;
   const age = c.obs_age_h ?? 0;
   const staleEn = age > 24 ? ` Station readings are ~${Math.round(age / 24)} days old (OpenAQ's CPCB feed is delayed), so confidence is capped at medium.` : '';
   const staleHi = age > 24 ? ` स्टेशन डेटा ~${Math.round(age / 24)} दिन पुराना है (OpenAQ का CPCB फ़ीड देर से है), इसलिए भरोसा अधिकतम मध्यम।` : '';
   return <p className="method">{lang === 'en' ? en + staleEn : hi + staleHi}</p>;
 }
 
-export function ParentMessage({ adv, lang }: { adv: Advisory; lang: Lang }) {
+export function ShareMessage({ adv, lang }: { adv: Advisory; lang: Lang }) {
   const [copied, setCopied] = useState(false);
-  if (!adv.parent_message) return null;
-  const text = adv.parent_message[lang];
+  if (!adv.share_message) return null;
+  const text = adv.share_message[lang];
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(text);
