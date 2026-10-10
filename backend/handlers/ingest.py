@@ -5,7 +5,7 @@ import json
 import logging
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
@@ -28,6 +28,9 @@ def run_alerts(dataset="live"):
                 log.warning("skip %s: %s", sid, e)
                 continue
             lvl = alerts.level(adv)
+            if date.fromisoformat(adv["date"]).weekday() == 6:  # Sunday: schools are closed
+                skipped += 1
+                continue
             if lvl < ALERT_MIN_LEVEL or subs.already_sent(sub["channel"], sub["to"], sid, adv["date"], lvl):
                 skipped += 1
                 continue

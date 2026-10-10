@@ -84,8 +84,8 @@ export function MapView({ bundle, schools, frame, dateIndex, layers, selected, a
     }),
     layers.stations && new ScatterplotLayer({
       id: 'stations', data: bundle.stations, pickable: true, stroked: true, filled: true,
-      getPosition: (d) => [d.lon, d.lat], radiusUnits: 'pixels', getRadius: 4.5,
-      getFillColor: [15, 19, 24, 200], getLineColor: [230, 236, 242, 230], lineWidthUnits: 'pixels', getLineWidth: 1.5,
+      getPosition: (d) => [d.lon, d.lat], radiusUnits: 'pixels', getRadius: 3.5,
+      getFillColor: [15, 19, 24, 160], getLineColor: [230, 236, 242, 130], lineWidthUnits: 'pixels', getLineWidth: 1,
     }),
     layers.schools && new ScatterplotLayer({
       id: 'schools', data: schools, pickable: true, autoHighlight: true, highlightColor: [255, 255, 255, 200],
