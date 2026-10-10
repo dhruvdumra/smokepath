@@ -65,7 +65,9 @@ def school_advisory(school_id, dataset="live", date=None, timetable=None, with_s
         worst_h = max(sh, key=lambda h: hourly[h])
         smoke = fc.smoke(s["lat"], s["lon"], date, worst_h)
     adv = advisor.advise(hourly, s["name"], label_date(date), timetable, smoke=smoke)
-    adv["headline"]["hi"] = adv["headline"]["hi"].replace(label_date(date), label_date(date, "hi"))
+    for k in ("headline", "parent_message"):
+        if adv.get(k):
+            adv[k]["hi"] = adv[k]["hi"].replace(label_date(date), label_date(date, "hi"))
     confidence = "high" if near >= 2 else "medium" if near == 1 or fc.stations else "low"
     meta = fc.b["meta"]
     return {

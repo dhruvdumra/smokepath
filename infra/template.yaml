@@ -1,0 +1,198 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  SmokePath - stubble-smoke PM2.5 forecasts turned into school timetable advisories.
+  Scheduled ingest Lambda -> S3 bundle -> CloudFront site; HTTP API for advisories, subscriptions and the
+  Telegram webhook; DynamoDB subscriptions; SES email alerts.
+
+Parameters:
+  SesSender:
+    Type: String
+    Description: Verified SES identity used as the From address.
+  SiteUrl:
+    Type: String
+    Default: ""
+    Description: Public CloudFront URL (set after the first deploy; used in alert links).
+
+Globals:
+  Function:
+    Runtime: python3.13
+    Architectures: [arm64]
+    CodeUri: ../backend/
+    Environment:
+      Variables:
+        DATA_BUCKET: !Ref DataBucket
+        SUBS_TABLE: !Ref SubsTable
+        SSM_PREFIX: /smokepath
+        SES_SENDER: !Ref SesSender
+        SITE_URL: !Ref SiteUrl
+
+Resources:
+  DataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub smokepath-${AWS::AccountId}-${AWS::Region}
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: expire-run-history
+            Prefix: data/live/runs/
+            Status: Enabled
+            ExpirationInDays: 30
+
+  SubsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: smokepath-subscriptions
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+      TimeToLiveSpecification:
+        AttributeName: ttl
+        Enabled: true
+
+  IngestFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: smokepath-ingest
+      Handler: handlers/ingest.handler
+      Timeout: 900
+      MemorySize: 1769
+      Policies:
+        - S3CrudPolicy: { BucketName: !Ref DataBucket }
+        - DynamoDBCrudPolicy: { TableName: !Ref SubsTable }
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameters
+              Resource: !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/smokepath/*
+            - Effect: Allow
+              Action: kms:Decrypt
+              Resource: "*"
+              Condition:
+                StringEquals: { "kms:ViaService": !Sub "ssm.${AWS::Region}.amazonaws.com" }
+            - Effect: Allow
+              Action: [ses:SendEmail, ses:SendRawEmail]
+              Resource: "*"
+            - Effect: Allow
+              Action: s3:GetObject
+              Resource: arn:aws:s3:::openaq-data-archive/*
+      Events:
+        Every3Hours:
+          Type: ScheduleV2
+          Properties:
+            ScheduleExpression: cron(15 0/3 * * ? *)
+            ScheduleExpressionTimezone: Asia/Kolkata
+            Input: '{"mode": "live"}'
+            RetryPolicy:
+              MaximumRetryAttempts: 1
+
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: smokepath-api
+      Handler: handlers/api.handler
+      Timeout: 29
+      MemorySize: 1024
+      Policies:
+        - S3ReadPolicy: { BucketName: !Ref DataBucket }
+        - DynamoDBCrudPolicy: { TableName: !Ref SubsTable }
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameters
+              Resource: !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/smokepath/*
+            - Effect: Allow
+              Action: kms:Decrypt
+              Resource: "*"
+              Condition:
+                StringEquals: { "kms:ViaService": !Sub "ssm.${AWS::Region}.amazonaws.com" }
+            - Effect: Allow
+              Action: [ses:GetEmailIdentity, ses:CreateEmailIdentity, ses:SendEmail]
+              Resource: "*"
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /api/{proxy+}
+            Method: ANY
+
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 50
+        ThrottlingRateLimit: 20
+
+  OriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub smokepath-oac-${AWS::StackName}
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  Distribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: SmokePath
+        DefaultRootObject: index.html
+        HttpVersion: http2and3
+        PriceClass: PriceClass_200
+        Origins:
+          - Id: site
+            DomainName: !GetAtt DataBucket.RegionalDomainName
+            OriginAccessControlId: !Ref OriginAccessControl
+            S3OriginConfig:
+              OriginAccessIdentity: ""
+          - Id: api
+            DomainName: !Sub ${HttpApi}.execute-api.${AWS::Region}.amazonaws.com
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+              OriginSSLProtocols: [TLSv1.2]
+        DefaultCacheBehavior:
+          TargetOriginId: site
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # Managed-CachingOptimized (honours origin max-age)
+        CacheBehaviors:
+          - PathPattern: /api/*
+            TargetOriginId: api
+            ViewerProtocolPolicy: https-only
+            AllowedMethods: [GET, HEAD, OPTIONS, PUT, PATCH, POST, DELETE]
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad # Managed-CachingDisabled
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac # Managed-AllViewerExceptHostHeader
+
+  DataBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref DataBucket
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal: { Service: cloudfront.amazonaws.com }
+            Action: s3:GetObject
+            Resource: !Sub ${DataBucket.Arn}/*
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}
+
+Outputs:
+  SiteUrl:
+    Value: !Sub https://${Distribution.DomainName}
+  DistributionId:
+    Value: !Ref Distribution
+  BucketName:
+    Value: !Ref DataBucket
+  ApiEndpoint:
+    Value: !Sub https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com

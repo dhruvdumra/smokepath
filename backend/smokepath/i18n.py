@@ -60,6 +60,9 @@ T = {
     "sensitive": (
         "Students with asthma or heart conditions: indoor activities all day; check they carry inhalers.",
         "अस्थमा या हृदय रोग वाले छात्र: पूरे दिन अंदर की गतिविधियाँ; देखें कि इनहेलर साथ हो।"),
+    "sensitive_light": (
+        "Students with asthma or heart conditions: skip strenuous outdoor activity; check they carry inhalers.",
+        "अस्थमा या हृदय रोग वाले छात्र: बाहर ज़ोरदार गतिविधि न करें; देखें कि इनहेलर साथ हो।"),
     "sensitive_notify": (
         "Message parents of sensitive students tonight.",
         "संवेदनशील छात्रों के अभिभावकों को आज रात संदेश भेजें।"),
@@ -77,6 +80,15 @@ T = {
     "smoke": (
         "Smoke signal: air arriving around {hour} passed over {n} fire detections near {places} about {ago} h earlier.",
         "धुएँ का संकेत: लगभग {hour} बजे पहुँचने वाली हवा करीब {ago} घंटे पहले {places} के पास {n} आग वाली जगहों के ऊपर से गुज़री।"),
+    "parents": (
+        "Dear parents, {cat} air is forecast near {school} on {date} (peak {peak} µg/m³ around {peak_at}). {changes}{asks}Thank you.",
+        "प्रिय अभिभावक, {date} को {school} के आसपास हवा {cat} रहने का अनुमान है (सबसे ज़्यादा {peak} µg/m³, लगभग {peak_at} बजे)। {changes}{asks}धन्यवाद।"),
+    "parents_indoor": ("{names} will be held indoors. ", "{names} अंदर होंगे। "),
+    "parents_moved": ("PE moves to {time}. ", "PE का समय {time} होगा। "),
+    "parents_asks": ("Please {asks}. ", "कृपया {asks}। "),
+    "ask_mask": ("send your child with a mask for the commute", "बच्चे को आने-जाने के लिए मास्क दें"),
+    "ask_inhaler": ("make sure children with asthma carry their inhaler", "अस्थमा वाले बच्चों का इनहेलर साथ भेजें"),
+    "and": (" and ", " और "),
     "headline_bad": (
         "{date}: {cat} air at {school} from {from_} to {to} (peak {peak} µg/m³ at {peak_at}). {n} timetable changes.",
         "{date}: {school} में {from_} से {to} तक हवा {cat} (सबसे ज़्यादा {peak} µg/m³, {peak_at} बजे)। समय-सारणी में {n} बदलाव।"),

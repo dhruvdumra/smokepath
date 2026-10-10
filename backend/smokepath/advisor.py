@@ -162,8 +162,10 @@ def advise(hourly, school_name, date_label, timetable=None, smoke=None):
         actions.append(("windows_closed", 3, _both("windows_closed", ranges=(rng_en, rng_hi))))
         if category(best_pm) < VERY_POOR:
             actions.append(("ventilate", 4, _both("ventilate", hour=f"{best_h:02d}:00", pm=round(best_pm))))
-    if worst_c >= MODERATE:
+    if worst_c >= POOR:
         actions.append(("sensitive", 3, _both("sensitive")))
+    elif worst_c == MODERATE:
+        actions.append(("sensitive_light", 4, _both("sensitive_light")))
     if worst_c >= VERY_POOR:
         actions.append(("sensitive_notify", 3, _both("sensitive_notify")))
         actions.append(("staff_n95", 4, _both("staff_n95")))
@@ -192,7 +194,9 @@ def advise(hourly, school_name, date_label, timetable=None, smoke=None):
         actions.append(("all_clear", 5, _both("all_clear", cat=_cat2(worst_c))))
 
     actions.sort(key=lambda a: a[1])
+    parents = _parents_message(out_slots, [a[0] for a in actions], school_name, date_label, worst_pm, worst_h)         if poor_hours and changes else None
     return {
+        "parent_message": parents,
         "headline": headline,
         "timetable": out_slots,
         "actions": [{"key": k, "priority": p, **txt} for k, p, txt in actions],
@@ -200,3 +204,33 @@ def advise(hourly, school_name, date_label, timetable=None, smoke=None):
         "cleanest": {"hour": best_h, "pm": round(best_pm), "cat": i18n.CATEGORIES[category(best_pm)][1]},
         "pm24": round(pm24), "aqi24": aqi24, "grap_stage": stage, "changes": changes,
     }
+
+
+def _join(items, lang):
+    if len(items) <= 1:
+        return "".join(items)
+    return ", ".join(items[:-1]) + render("and", lang) + items[-1]
+
+
+def _parents_message(slots, action_keys, school, date_label, peak, peak_h):
+    """Short note a principal can forward to parents (WhatsApp/SMS), built only from the rules' decisions."""
+    out = {}
+    for lang in ("en", "hi"):
+        indoor = []
+        for r in slots:
+            name = _label(r["kind"], lang)
+            if r["mode"] == "indoor" and name not in indoor:
+                indoor.append(name if not indoor or lang != "en" or name.startswith("PE") else name.lower())
+        changes = render("parents_indoor", lang, names=_join(indoor, lang)) if indoor else ""
+        moved = [r["new_start"] for r in slots if r["mode"] in ("moved", "moved_light")]
+        if moved:
+            changes += render("parents_moved", lang, time=moved[0])
+        asks = []
+        if "commute" in action_keys:
+            asks.append(render("ask_mask", lang))
+        if "sensitive" in action_keys or "sensitive_light" in action_keys:
+            asks.append(render("ask_inhaler", lang))
+        ask_text = render("parents_asks", lang, asks=_join(asks, lang)) if asks else ""
+        out[lang] = render("parents", lang, cat=cat_name(category(peak), lang), school=school, date=date_label,
+                           peak=round(peak), peak_at=f"{peak_h:02d}:00", changes=changes, asks=ask_text)
+    return out
