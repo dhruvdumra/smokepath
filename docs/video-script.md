@@ -33,6 +33,10 @@ Spoken lines are in quotes. **Bold** is what's on screen.
 > These trails are trajectories from today's fire clusters. They explain where the smoke is going; the forecast
 > itself comes from CAMS."
 
+**Drag the timeline from Mon 13:30 to Tue 07:30. Point at the "schools in Very Poor+ air" counter going 1 → 1,034.**
+
+> "Watch the counter: as the smoke and the night-time inversion arrive, every school's advisory switches on."
+
 **Type "Sardar Patel" in the search box and select it.**
 
 > "Pick a school. Tuesday: Severe from 7 to 2, peak at 8 am, six timetable changes. Assembly indoors, PE
@@ -45,6 +49,11 @@ Spoken lines are in quotes. **Bold** is what's on screen.
 **Scroll to "Where the smoke comes from". Click "Show the air path on the map".**
 
 > "Why? The air arriving at 8 am passed over 80 fire detections near Sangrur, Moga and Malerkotla about 15 hours earlier."
+
+**Back → "An outdoor work site" → click near Okhla on the map.**
+
+> "It isn't only schools. Click any construction site: heavy work moves to 2 to 5 pm, N95s for everyone, a
+> sheltered break every hour, and a Hindi message for the workers."
 
 **Click the हिंदी button.**
 

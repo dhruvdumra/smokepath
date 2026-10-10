@@ -39,8 +39,22 @@ School #42.
    - **GRAP heads-up:** flagged when the daily mean reaches Stage III/IV range.
 
    Output is in English and Hindi, plus a ready-to-forward WhatsApp message for parents.
-5. **Alert.**
-   - **Telegram bot:** share your location, pick your school, get the advisory. Evening alerts follow before bad days.
+5. **Outdoor workers too.** Any point on the map (or a shared Telegram location) can be checked as an outdoor work
+   site: construction, brick kiln, market, loading yard. The plan for the site supervisor covers:
+   - heavy tasks moved into the cleanest 3-hour window;
+   - N95s for everyone working outside;
+   - dust control in bad hours;
+   - a sheltered break every hour;
+   - a warning when the forecast reaches the GRAP Stage III range, where non-essential construction is banned.
+
+   There is also a Hindi message for the workers.
+6. **Watch it trigger.** Scrub the timeline and every school's dot is re-coloured for that hour. Schools whose
+   advisory switches on get a ring, and the counter "schools in Very Poor+ air at this hour" rises as the plume and
+   the night-time inversion arrive. On the Nov 2025 replay it goes from 1 to 1,034. A wind-arrow layer (GFS 925 hPa)
+   can be switched on.
+7. **Alert.**
+   - **Telegram bot:** share your location, pick your school (or "this spot is a work site"), get the advisory.
+     Evening alerts follow before bad days (no alerts for Sundays).
    - **SES email:** the same alert for school admins.
    - **SMS (production path):** Amazon SNS, which in India needs DLT sender registration, so it's out of scope for the demo.
 
@@ -65,14 +79,15 @@ Lambda smokepath-ingest ──► Open-Meteo (CAMS PM2.5, GFS winds)
         │                ──► OpenAQ v3 / OpenAQ archive on AWS Open Data Registry (CPCB monitors)
         │  bias-correct → trajectories → per-school summary
         ▼
-S3 bundle (data/live/latest.json) ──► CloudFront ──► React + MapLibre + deck.gl site
+S3 bundle (data/live/latest.json) + raw VIIRS GeoJSON (data/raw/firms/) ──► CloudFront ──► React + MapLibre + deck.gl site
         │                                  │
         │                                  └─ /api/* ─► API Gateway HTTP API ─► Lambda smokepath-api
         │                                                   (advisory, subscribe, Telegram webhook)
         ▼
 alerts: Telegram Bot API · Amazon SES  (Amazon SNS SMS = production path, needs DLT)
 DynamoDB: subscriptions + alert de-duplication · SSM Parameter Store: API keys
-Amazon Bedrock: optional wording path (wired; new-account token quota is 0, so templates are used)
+Amazon Bedrock: optional wording path (wired; new-account quota is 0, so templates are used;
+                can assume a role in another account, see docs/bedrock-cross-account.md)
 ```
 
 - Infrastructure is one AWS SAM template: [`infra/template.yaml`](infra/template.yaml). SAM CLI is an AWS open-source tool.

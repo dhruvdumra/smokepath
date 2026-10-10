@@ -14,10 +14,15 @@ find backend -name __pycache__ -type d -prune -exec rm -rf {} +
 envval() { [ -f .env ] && tr -d '\r' < .env | sed -n "s/^$1=//p" | tail -1 || true; }
 out() { aws cloudformation describe-stacks --stack-name $STACK --region $REGION --query "Stacks[0].Outputs[?OutputKey=='$1'].OutputValue" --output text 2>/dev/null || true; }
 SITE=$(out SiteUrl)
+PARAMS=(SesSender=dhruvdumra@gmail.com)
+[ -n "$SITE" ] && PARAMS+=(SiteUrl="$SITE")
+# Optional cross-account Bedrock (docs/bedrock-cross-account.md); SAM rejects empty values, so pass only set ones.
+for kv in BedrockModelId:BEDROCK_MODEL_ID BedrockRoleArn:BEDROCK_ROLE_ARN BedrockRegion:BEDROCK_REGION; do
+  v="$(envval "${kv#*:}")"
+  if [ -n "$v" ]; then PARAMS+=("${kv%%:*}=$v"); fi
+done
 "$SAM" deploy -t infra/template.yaml --stack-name $STACK --region $REGION --resolve-s3 --capabilities CAPABILITY_IAM \
-  --parameter-overrides SesSender=dhruvdumra@gmail.com SiteUrl="${SITE}" \
-    BedrockModelId="$(envval BEDROCK_MODEL_ID)" BedrockRoleArn="$(envval BEDROCK_ROLE_ARN)" BedrockRegion="$(envval BEDROCK_REGION)" \
-  --no-confirm-changeset --no-fail-on-empty-changeset
+  --parameter-overrides "${PARAMS[@]}" --no-confirm-changeset --no-fail-on-empty-changeset
 SITE=$(out SiteUrl); BUCKET=$(out BucketName); DIST=$(out DistributionId)
 
 BOT=""
