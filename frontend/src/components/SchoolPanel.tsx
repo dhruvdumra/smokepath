@@ -1,7 +1,6 @@
 import { HourlyChart } from './HourlyChart';
-import { Checklist, Method, ParentMessage, SmokeWhy, TimetableList } from './AdvisoryParts';
+import { CatPill, Checklist, Method, ParentMessage, SmokeWhy, TimetableList } from './AdvisoryParts';
 import { Subscribe } from './Subscribe';
-import { catByKey } from '../lib/colors';
 import { dateLabel } from '../lib/time';
 import { tr } from '../lib/ui';
 import type { Advisory, Lang, School } from '../lib/types';
@@ -22,7 +21,6 @@ interface Props {
 
 export function SchoolPanel({ school, adv, loading, error, dates, date, lang, showPath, onDate, onBack, onTogglePath }: Props) {
   const current = adv?.date ?? date;
-  const worst = adv ? catByKey(adv.worst.cat) : null;
   return (
     <section className="school" aria-busy={loading}>
       <button className="link-back" onClick={onBack}>← {tr('back', lang)}</button>
@@ -44,7 +42,7 @@ export function SchoolPanel({ school, adv, loading, error, dates, date, lang, sh
 
       {adv && (
         <div className={loading ? 'adv stale' : 'adv'}>
-          <p className="headline" style={{ borderColor: worst!.color }}>{adv.headline[lang]}</p>
+          <p className="headline"><CatPill k={adv.worst.cat} lang={lang} />{adv.headline[lang]}</p>
           <HourlyChart adv={adv} lang={lang} />
 
           <h3>{tr('timetable', lang)}</h3>
