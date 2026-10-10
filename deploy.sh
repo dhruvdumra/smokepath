@@ -6,8 +6,9 @@ REGION=ap-south-1
 STACK=smokepath
 SAM="${SAM:-$HOME/.local/bin/sam}"
 export SAM_CLI_TELEMETRY=0
+PY="${PY:-.venv/Scripts/python.exe}"
 
-[ -f .env ] && python backend/scripts/push_secrets.py
+[ -f .env ] && "$PY" backend/scripts/push_secrets.py
 find backend -name __pycache__ -type d -prune -exec rm -rf {} +
 
 out() { aws cloudformation describe-stacks --stack-name $STACK --region $REGION --query "Stacks[0].Outputs[?OutputKey=='$1'].OutputValue" --output text 2>/dev/null || true; }
@@ -18,7 +19,7 @@ SITE=$(out SiteUrl); BUCKET=$(out BucketName); DIST=$(out DistributionId)
 
 BOT=""
 if grep -q '^TELEGRAM_BOT_TOKEN=.\+' .env 2>/dev/null; then
-  BOT=$(python backend/scripts/telegram_setup.py "$SITE" | sed -n 's/^bot username: //p')
+  BOT=$("$PY" backend/scripts/telegram_setup.py "$SITE" | sed -n 's/^bot username: //p')
 fi
 (cd frontend && VITE_TELEGRAM_BOT="$BOT" npm run build)
 aws s3 sync frontend/dist "s3://$BUCKET/" --exclude "data/*" --delete --region $REGION
@@ -26,5 +27,5 @@ aws s3 cp backend/smokepath/static/schools.json "s3://$BUCKET/data/static/school
   --content-type application/json --cache-control "public, max-age=3600"
 aws s3 cp "s3://$BUCKET/index.html" "s3://$BUCKET/index.html" --metadata-directive REPLACE \
   --content-type text/html --cache-control "no-cache" --region $REGION >/dev/null
-aws cloudfront create-invalidation --distribution-id "$DIST" --paths "/index.html" "/data/static/*" >/dev/null
+MSYS_NO_PATHCONV=1 aws cloudfront create-invalidation --distribution-id "$DIST" --paths "/index.html" "/data/static/*" >/dev/null
 echo "Deployed: $SITE"

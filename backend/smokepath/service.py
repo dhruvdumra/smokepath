@@ -3,7 +3,7 @@ import json
 import os
 from datetime import datetime, timedelta, timezone
 
-from . import advisor, config, store
+from . import advisor, config, narrate, store
 from .forecast import Forecast, label_date
 
 _schools = None
@@ -68,6 +68,9 @@ def school_advisory(school_id, dataset="live", date=None, timetable=None, with_s
     for k in ("headline", "parent_message"):
         if adv.get(k):
             adv[k]["hi"] = adv[k]["hi"].replace(label_date(date), label_date(date, "hi"))
+    if adv.get("parent_message") and config.env("BEDROCK_MODEL_ID"):
+        for lang in ("en", "hi"):
+            adv["parent_message"][lang], adv["parent_message"]["by"] = narrate.polish(adv["parent_message"][lang], lang)
     confidence = "high" if near >= 2 else "medium" if near == 1 or fc.stations else "low"
     meta = fc.b["meta"]
     return {

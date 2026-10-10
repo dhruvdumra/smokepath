@@ -13,6 +13,10 @@ Parameters:
     Type: String
     Default: ""
     Description: Public CloudFront URL (set after the first deploy; used in alert links).
+  BedrockModelId:
+    Type: String
+    Default: ""
+    Description: Optional Bedrock model/inference profile for rewording parent messages (empty = templates only).
 
 Globals:
   Function:
@@ -26,6 +30,7 @@ Globals:
         SSM_PREFIX: /smokepath
         SES_SENDER: !Ref SesSender
         SITE_URL: !Ref SiteUrl
+        BEDROCK_MODEL_ID: !Ref BedrockModelId
 
 Resources:
   DataBucket:
@@ -115,6 +120,9 @@ Resources:
                 StringEquals: { "kms:ViaService": !Sub "ssm.${AWS::Region}.amazonaws.com" }
             - Effect: Allow
               Action: [ses:GetEmailIdentity, ses:CreateEmailIdentity, ses:SendEmail]
+              Resource: "*"
+            - Effect: Allow
+              Action: bedrock:InvokeModel
               Resource: "*"
       Events:
         Api:

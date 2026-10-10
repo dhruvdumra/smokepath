@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" font-family="IBM Plex Sans, Segoe UI, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a94a6"/>
+    </marker>
+    <style>
+      .box{fill:#141920;stroke:#2c3542;stroke-width:1.5}
+      .aws{fill:#1b1610;stroke:#f08c2a;stroke-width:1.5}
+      .ext{fill:#11161c;stroke:#3a4554;stroke-width:1.2;stroke-dasharray:5 4}
+      .t{fill:#e8ecf2;font-size:15px;font-weight:600}
+      .s{fill:#9aa5b4;font-size:12.5px}
+      .h{fill:#f08c2a;font-size:12px;font-weight:600;letter-spacing:.08em}
+      .l{stroke:#8a94a6;stroke-width:1.6;fill:none;marker-end:url(#a)}
+      .ld{stroke:#8a94a6;stroke-width:1.4;fill:none;stroke-dasharray:4 4;marker-end:url(#a)}
+    </style>
+  </defs>
+  <rect width="1200" height="640" fill="#0d1015"/>
+  <text x="32" y="44" fill="#e8ecf2" font-size="22" font-weight="700">SmokePath on AWS</text>
+  <text x="32" y="68" class="s">ap-south-1 (Mumbai) · serverless · one AWS SAM template</text>
+
+  <!-- external data -->
+  <text x="32" y="112" class="h">OPEN DATA</text>
+  <rect x="32" y="124" width="250" height="58" rx="8" class="ext"/>
+  <text x="48" y="149" class="t">CAMS PM2.5 forecast</text><text x="48" y="168" class="s">Copernicus via Open-Meteo, hourly</text>
+  <rect x="32" y="194" width="250" height="58" rx="8" class="ext"/>
+  <text x="48" y="219" class="t">NOAA GFS winds 925 hPa</text><text x="48" y="238" class="s">via Open-Meteo</text>
+  <rect x="32" y="264" width="250" height="58" rx="8" class="ext"/>
+  <text x="48" y="289" class="t">NASA FIRMS VIIRS fires</text><text x="48" y="308" class="s">active fire detections, 375 m</text>
+  <rect x="32" y="334" width="250" height="58" rx="8" class="aws"/>
+  <text x="48" y="359" class="t">OpenAQ · CPCB monitors</text><text x="48" y="378" class="s">API + AWS Open Data Registry (S3)</text>
+
+  <!-- ingest -->
+  <rect x="352" y="104" width="200" height="56" rx="8" class="aws"/>
+  <text x="368" y="128" class="t">EventBridge Scheduler</text><text x="368" y="147" class="s">every 3 h, Asia/Kolkata</text>
+  <rect x="352" y="196" width="200" height="150" rx="8" class="aws"/>
+  <text x="368" y="222" class="t">Lambda · ingest</text>
+  <text x="368" y="246" class="s">1 fetch + station bias</text><text x="368" y="264" class="s">   correction of CAMS</text>
+  <text x="368" y="286" class="s">2 fire clusters + wind</text><text x="368" y="304" class="s">   trajectories</text>
+  <text x="368" y="326" class="s">3 school summaries, alerts</text>
+  <path d="M452 160 V194" class="l"/>
+  <path d="M282 153 C320 153 320 240 350 240" class="l"/>
+  <path d="M282 223 C315 223 320 262 350 262" class="l"/>
+  <path d="M282 293 C315 293 320 284 350 284" class="l"/>
+  <path d="M282 363 C320 363 320 306 350 306" class="l"/>
+
+  <!-- storage -->
+  <rect x="622" y="196" width="200" height="66" rx="8" class="aws"/>
+  <text x="638" y="222" class="t">S3 bundle</text><text x="638" y="242" class="s">data/live/latest.json</text>
+  <rect x="622" y="290" width="200" height="66" rx="8" class="aws"/>
+  <text x="638" y="316" class="t">DynamoDB</text><text x="638" y="336" class="s">subscriptions, alert de-dupe</text>
+  <rect x="352" y="380" width="200" height="56" rx="8" class="aws"/>
+  <text x="368" y="404" class="t">SSM Parameter Store</text><text x="368" y="423" class="s">API keys (SecureString)</text>
+  <path d="M552 238 H620" class="l"/>
+  <path d="M552 316 H620" class="l"/>
+  <path d="M452 378 V348" class="ld"/>
+
+  <!-- delivery -->
+  <rect x="892" y="104" width="270" height="66" rx="8" class="aws"/>
+  <text x="908" y="130" class="t">CloudFront</text><text x="908" y="150" class="s">site + /data bundles + /api/*</text>
+  <rect x="892" y="196" width="270" height="66" rx="8" class="box"/>
+  <text x="908" y="222" class="t">React · MapLibre · deck.gl</text><text x="908" y="242" class="s">animated plume, school timetable</text>
+  <rect x="892" y="290" width="270" height="76" rx="8" class="aws"/>
+  <text x="908" y="316" class="t">API Gateway → Lambda · api</text><text x="908" y="336" class="s">advisory, subscribe,</text><text x="908" y="353" class="s">Telegram webhook</text>
+  <path d="M822 222 C860 222 860 140 890 140" class="l"/>
+  <path d="M1027 170 V194" class="l"/>
+  <path d="M1027 262 V288" class="ld"/>
+  <path d="M890 330 C860 330 860 240 824 240" class="ld"/>
+  <path d="M890 340 H824" class="ld"/>
+
+  <!-- alerts -->
+  <text x="32" y="470" class="h">ALERTS TO SCHOOLS</text>
+  <rect x="32" y="484" width="250" height="58" rx="8" class="box"/>
+  <text x="48" y="509" class="t">Telegram bot</text><text x="48" y="528" class="s">share location → pick school</text>
+  <rect x="300" y="484" width="250" height="58" rx="8" class="aws"/>
+  <text x="316" y="509" class="t">Amazon SES email</text><text x="316" y="528" class="s">principal / admin</text>
+  <rect x="568" y="484" width="270" height="58" rx="8" class="ext"/>
+  <text x="584" y="509" class="t">Amazon SNS SMS</text><text x="584" y="528" class="s">production path (needs DLT in India)</text>
+  <rect x="856" y="484" width="306" height="58" rx="8" class="ext"/>
+  <text x="872" y="509" class="t">Amazon Bedrock (optional)</text><text x="872" y="528" class="s">rewords parent note; rules decide actions</text>
+  <path d="M420 346 C420 420 160 420 160 482" class="l"/>
+  <path d="M440 346 C440 420 425 420 425 482" class="l"/>
+  <path d="M470 346 C470 420 700 420 700 482" class="ld"/>
+  <path d="M1027 366 V482" class="ld"/>
+
+  <text x="32" y="600" class="s">Solid orange = deployed AWS service · dashed = external data or production-only path</text>
+</svg>
