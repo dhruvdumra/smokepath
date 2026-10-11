@@ -1,110 +1,66 @@
 # SmokePath: 3-minute demo video script
 
-Team: The Bay Harbor Hackers (Akhil Dadipally, Rizwan Pinjari, Dhruv Dumra, Pulkit Singh). Presenter: Pulkit Singh. Target: 2:50, hard limit 3:00 (about 420 spoken words at a calm pace).
+Team: The Bay Harbor Hackers (Pulkit Singh, team leader; Akhil Dadipally; Rizwan Pinjari; Dhruv Dumra). Presenter: Pulkit Singh.
 
-Spoken lines are in quotes. **Bold** is what's on screen.
+Two parts: Pulkit explains everything straight to camera (about 1:30), then the screen takes over with light
+background commentary (about 1:25). Target 2:55, hard limit 3:00.
 
-Open these tabs first, in this order:
-1. Home: https://d35jtpishdgz20.cloudfront.net
-2. Map (replay): https://d35jtpishdgz20.cloudfront.net/app?dataset=replay, loaded and paused
-3. Telegram Web (https://web.telegram.org) with @coolgrid_bot open, or your phone mirrored
-4. `docs/architecture.svg`
+Open these tabs first: the home page, `/app?dataset=replay` (loaded and paused), Telegram Web with @coolgrid_bot,
+and `docs/architecture.svg`.
 
 ---
 
-## 0:00–0:15 · Hello
+## Part 1 · The explanation (0:00–1:30)
 
-**Home page, top. Let the globe turn; the smoke line runs from Punjab into Delhi.**
+Pulkit on camera. If you'd rather do voice-over, show the home page while talking, the architecture diagram during
+the AWS paragraph, and the 90 / 281 / 255 section during the last paragraph.
 
-> "Hi, I'm Pulkit Singh from The Bay Harbor Hackers, with Akhil Dadipally, Rizwan Pinjari and Dhruv Dumra.
-> This is SmokePath. The evening before, it tells a Delhi school when crop-fire smoke will reach it tomorrow, and what to change in tomorrow's timetable."
+> "Hi, I'm Pulkit Singh, team leader of The Bay Harbor Hackers, with Akhil Dadipally, Rizwan Pinjari and Dhruv
+> Dumra. This is SmokePath.
+>
+> Every winter, smoke from crop fires in Punjab drifts into Delhi. On the 11th of November 2025, Delhi's AQI hit
+> 425, Severe. That morning, kids were already standing in outdoor assemblies and running PE, because the global
+> forecast had called the air Moderate.
+>
+> AQI apps describe the past, for a whole city. SmokePath tells one school, the evening before, when tomorrow's
+> smoke will arrive and what to change: assembly, PE, recess, gate timing. It covers 1,034 schools across Delhi
+> NCR, in English and Hindi, on the web and on Telegram.
+>
+> Under the hood, it's serverless on AWS. Every three hours, EventBridge Scheduler runs a Lambda that pulls the
+> CAMS smoke forecast, NASA fire detections and NOAA winds, and corrects the forecast against about 120 government
+> air monitors. The results go to S3 behind CloudFront. API Gateway and a second Lambda serve the advisories and
+> our Telegram bot, DynamoDB stores subscriptions, and SES sends email alerts. Amazon Bedrock with Claude is built
+> in to write the parent message. Our account is new and its Bedrock quota is still zero, so today you'll see the
+> template version.
+>
+> Does it work? We tested it on a month of real monitor data from the OpenAQ archive on the AWS Open Data
+> Registry. Our error was 39 percent lower than the raw model, and we caught 86 percent of Very Poor days instead
+> of 27. Let me show you."
 
-## 0:15–0:35 · The problem
+---
 
-**Scroll slowly down to the arrivals board.**
+## Part 2 · The showcase (1:30–2:55)
 
-> "On the 11th of November 2025, Delhi's AQI hit 425, Severe. Primary classes went hybrid that afternoon, but
-> that morning kids were already standing in outdoor assemblies and running PE. The global forecast model most
-> apps rely on called the air Moderate."
+Screen only. Keep the commentary light; let the product do the talking.
 
-## 0:35–0:50 · Who it's for
-
-**Still on the board. Hover one row.**
-
-> "AQI apps give you a city average about the past. IITM's Decision Support System forecasts stubble smoke for
-> policymakers. SmokePath is for the principal: the one person who decides what happens at school tomorrow."
-
-## 0:50–1:45 · The demo
-
-**Switch to the map tab. Press Play; let the smoke trails stream for about 5 seconds, then pause.**
-
-> "Every three hours SmokePath pulls the CAMS PM2.5 forecast, NASA's fire detections and NOAA winds, and corrects
-> the forecast against about 120 ground monitors. These trails come from today's fire clusters in Punjab."
-
-**Drag the timeline from Mon 13:30 to Tue 07:30. Point at the "schools in Very Poor+ air" counter.**
-
-> "As the smoke and the night-time inversion arrive, the counter climbs to all 1,034 schools."
-
-**Type "Sardar Patel" in "Which school?" and pick it. Pause while the route draws.**
-
-> "Pick a school and you get a ticket. Smoke from crop fires near Sangrur, Moga and Malerkotla reaches Sardar
-> Patel Vidyalaya at 8 am: Severe, six changes. Assembly indoors, PE indoors, recess indoors, gates open early."
-
-**Point at the dated stops on the route.**
-
-> "Every stop is a real fire cluster this air passed over, with the time it was there."
-
-**Scroll the ticket to the parents' stub. Click Copy, hover WhatsApp.**
-
-> "And a message for parents, ready for the class WhatsApp group."
-
-**Click हिंदी.**
-
-> "Everything works in Hindi too."
-
-*If you're over time, cut this beat.* **Back → "Outdoor work site" → click near Okhla.**
-
-> "It also works for construction sites: heavy work moves to the afternoon, and N95s for the whole crew."
-
-## 1:45–2:05 · Telegram
-
-**Telegram: /start → share location → tap the school → the ticket arrives. Then /demo.**
-
-> "Principals don't have to open a website. They scan the QR on our home page or the staff-room poster, share
-> their location, tap their school, and the ticket arrives the evening before every bad-air day. Email works
-> too, through Amazon SES."
-
-## 2:05–2:30 · Built on AWS
-
-**Show `docs/architecture.svg`.**
-
-> "It's fully serverless in Mumbai, from one AWS SAM template. EventBridge Scheduler runs an ingest Lambda every
-> three hours, and the monitor history comes from the OpenAQ archive on the AWS Open Data Registry. The forecast
-> goes to S3 behind CloudFront. An API Gateway Lambda serves advisories and the Telegram bot, DynamoDB holds
-> subscriptions, and SES sends email. Amazon Bedrock with Claude is wired in to rewrite the parent message. Our
-> AWS account is new and its Bedrock quota is still zero, so today you're seeing the template version. It
-> switches on with one setting."
-
-## 2:30–2:50 · Does it work?
-
-**Home page, the proof section (90 / 281 / 255).**
-
-> "We tested it on a month of real data, predicting each monitor without using it. Error fell by 39 percent,
-> and Very Poor days caught rose from 27 to 86 percent. On the 11th, the global model said 90. SmokePath, the
-> evening before, said 255. The monitors measured 281."
-
-## 2:50–3:00 · Close
-
-**Back to the map with the ticket open.**
-
-> "It's a school-level advisory, not a street sensor, and it never closes a school. It tells you what to change
-> tomorrow. SmokePath is live at the link below. Thank you."
+| Time | On screen | Commentary |
+|---|---|---|
+| 1:30 | Map tab. Press Play; let the trails stream for about 5 s. | "This is the replay of the 11th of November. The trails show smoke moving from the Punjab fires toward Delhi." |
+| 1:40 | Drag the timeline from Mon 13:30 to Tue 07:30; point at the counter. | "Overnight, school after school slips into Very Poor air." |
+| 1:50 | Type "Sardar Patel" in "Which school?" and pick it. Let the route draw. | "Here's one school's ticket. Smoke from fires near Sangrur, Moga and Malerkotla arrives at 8 am. Severe, six changes to the day." |
+| 2:05 | Point at the dated stops on the route, then scroll the ticket's period list. | "Each stop is a real fire cluster this air passed over. Assembly, PE and recess move indoors; gates open early." |
+| 2:15 | Scroll to the parents' stub. Click Copy, hover WhatsApp. | "One tap copies a message for the parents' WhatsApp group." |
+| 2:20 | Click हिंदी. | "All of it in Hindi." |
+| 2:25 | *Optional, cut if over time:* Back → "Outdoor work site" → click near Okhla. | "It works for construction sites too." |
+| 2:30 | Telegram: /start → share location → tap the school → the ticket arrives. | "Principals don't even need the website. Scan the QR, share your location, pick your school, and the ticket arrives on Telegram the evening before." |
+| 2:45 | Home page, top, with the globe turning. | "SmokePath. It never closes a school; it tells you what to change tomorrow. It's live at the link below. Thank you." |
 
 ---
 
 ### Recording checklist
 
-- [ ] Replay loaded and paused before you start talking. The first load is about 900 KB.
-- [ ] Telegram: subscribed to a school once beforehand, so /demo answers instantly.
+- [ ] Replay loaded and paused before you start. The first load is about 900 KB.
+- [ ] Telegram: subscribed to a school once beforehand, so the bot answers instantly.
 - [ ] Browser full screen at 100% zoom; bookmarks bar hidden; Windows notifications off (Focus).
-- [ ] Record one section per take, then join the takes. Keep the final cut under 3:00.
+- [ ] Record Part 1 and Part 2 as separate takes (Part 2 can be several short takes), then join them in Clipchamp.
+- [ ] Final cut under 3:00. Export at 1080p, upload to YouTube as Unlisted.
