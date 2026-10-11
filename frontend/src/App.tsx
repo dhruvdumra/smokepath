@@ -17,6 +17,8 @@ import type { Advisory, Dataset, Lang, School } from './lib/types';
 const params = new URLSearchParams(window.location.search);
 const SITE_RE = /^site:(-?\d+\.\d+),(-?\d+\.\d+)$/;
 const PEEK = 0.44; // phone: the sheet peeks at the route block
+// With no place chosen, frame the smoke corridor from the Punjab fields to Delhi.
+const CORRIDOR: [number, number][] = [[73.8, 28.3], [77.6, 31.6]];
 
 /** Outdoor work sites are places too: 'site:<lat>,<lon>' (same id format as the API and the Telegram bot). */
 function siteFromId(id: string | null): School | null {
@@ -103,15 +105,15 @@ export default function App() {
 
   const route = useMemo(() => (showRoute ? routeOf(adv.data, lang) : null), [adv.data, lang, showRoute]);
   const fit = useMemo(() => {
-    if (!place) return null;
-    const pts: [number, number][] = route ? [...route.path, [place.lon, place.lat]] : [[place.lon - 0.18, place.lat - 0.12], [place.lon + 0.18, place.lat + 0.12]];
+    const pts: [number, number][] = !place ? CORRIDOR
+      : route ? [...route.path, [place.lon, place.lat]] : [[place.lon - 0.18, place.lat - 0.12], [place.lon + 0.18, place.lat + 0.12]];
     const lons = pts.map((p) => p[0]), lats = pts.map((p) => p[1]);
     // Leave room for the top bar, the ticket and the timeline card (plus the school's ring) around the route.
     const padding = phone
       ? { top: 76, right: 28, bottom: Math.round(window.innerHeight * PEEK) + 170, left: 28 }
-      : { top: 110, right: 408 + 64, bottom: 170, left: 80 };
+      : { top: 110, right: 408 + 64, bottom: 220, left: 80 };
     return { bounds: [[Math.min(...lons), Math.min(...lats)], [Math.max(...lons), Math.max(...lats)]] as [[number, number], [number, number]],
-      padding, key: `${place.id}-${route?.key ?? 'none'}` };
+      padding, key: place ? `${place.id}-${route?.key ?? 'none'}` : 'corridor' };
   }, [place, route, phone]);
 
   const selectPlace = (s: School) => {

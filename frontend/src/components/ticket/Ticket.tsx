@@ -75,9 +75,8 @@ export function Ticket(p: Props) {
                 <HourStrip adv={p.adv} lang={p.lang} />
                 <StatusList adv={p.adv} lang={p.lang} />
                 <Remarks adv={p.adv} lang={p.lang} />
-                <div className="perf" aria-hidden />
-                <Stub adv={p.adv} lang={p.lang} />
                 <Fineprint adv={p.adv} lang={p.lang} />
+                <Stub adv={p.adv} lang={p.lang} />
               </div>
             )}
           </motion.div>

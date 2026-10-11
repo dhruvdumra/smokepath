@@ -102,7 +102,7 @@ export function MapView({ bundle, schools, schoolPm, frame, layers, selected, ro
 
   const deckLayers = [
     layers.heat && new BitmapLayer({
-      id: 'heat', image, bounds: heatBounds(bundle), opacity: dim ? 0.8 : 1,
+      id: 'heat', image, bounds: heatBounds(bundle), opacity: dim ? 0.35 : 1,
       textureParameters: { minFilter: 'linear', magFilter: 'linear' },
     }),
     layers.wind && new LineLayer({
@@ -112,15 +112,19 @@ export function MapView({ bundle, schools, schoolPm, frame, layers, selected, ro
     layers.smoke && new TripsLayer({
       id: 'smoke', data: bundle.particles, currentTime: rel, trailLength: 10, fadeTrail: true,
       getPath: (d) => d.path, getTimestamps: (d) => d.ts,
-      getColor: [255, 214, 170], opacity: dim ? 0.16 : 0.5, widthUnits: 'pixels',
+      getColor: [255, 214, 170], opacity: dim ? 0.06 : 0.5, widthUnits: 'pixels',
       getWidth: (d) => 1.2 + Math.min(d.frp / 300, 3), capRounded: true, jointRounded: true,
     }),
     layers.fires && new ScatterplotLayer({
       id: 'fires', data: fires.filter((f) => f.rel <= rel && f.rel > rel - 24), pickable: true,
       getPosition: (d) => [d.lon, d.lat], radiusUnits: 'pixels',
       getRadius: (d) => 1.6 + Math.min(Math.sqrt(d.frp) / 3, 4),
-      getFillColor: (d) => [255, 110, 30, (dim ? 120 : 255) * Math.max(0.25, 1 - (rel - d.rel) / 24)],
+      getFillColor: (d) => [255, 110, 30, (dim ? 60 : 255) * Math.max(0.25, 1 - (rel - d.rel) / 24)],
       updateTriggers: { getFillColor: [rel, dim] },
+    }),
+    route && new PathLayer({
+      id: 'route-casing', data: [{ path: route.path }], getPath: (d) => d.path, getColor: [13, 17, 23, 230],
+      widthUnits: 'pixels', getWidth: 7.5, jointRounded: true, capRounded: true,
     }),
     route && new PathLayer({
       id: 'route-base', data: [{ path: route.path }], getPath: (d) => d.path, getColor: [...SKY, 70],
@@ -130,6 +134,11 @@ export function MapView({ bundle, schools, schoolPm, frame, layers, selected, ro
       id: 'route-draw', data: trip, currentTime: draw, trailLength: route.path.length, fadeTrail: false,
       getPath: (d) => d.path, getTimestamps: (d) => d.ts, getColor: [...SKY, 255],
       widthUnits: 'pixels', getWidth: 3.5, capRounded: true, jointRounded: true,
+    }),
+    route && new ScatterplotLayer({
+      // The FROM terminus, matching the ticket's red FROM pin.
+      id: 'route-from', data: [route.path[0]], getPosition: (d) => d, radiusUnits: 'pixels', getRadius: 8,
+      getFillColor: [224, 49, 49, 255], stroked: true, getLineColor: [224, 49, 49, 70], lineWidthUnits: 'pixels', getLineWidth: 6,
     }),
     route && new ScatterplotLayer({
       id: 'route-stops', data: route.stops, getPosition: (d) => d.pos, radiusUnits: 'pixels', getRadius: 5,
@@ -142,7 +151,7 @@ export function MapView({ bundle, schools, schoolPm, frame, layers, selected, ro
       characterSet: 'auto',
     }),
     layers.stations && new ScatterplotLayer({
-      id: 'stations', data: bundle.stations, pickable: true, stroked: true, filled: true, opacity: dim ? 0.4 : 1,
+      id: 'stations', data: bundle.stations, pickable: true, stroked: true, filled: true, opacity: dim ? 0.25 : 1,
       getPosition: (d) => [d.lon, d.lat], radiusUnits: 'pixels', getRadius: 3.5,
       getFillColor: [15, 19, 24, 160], getLineColor: [230, 236, 242, 130], lineWidthUnits: 'pixels', getLineWidth: 1,
     }),
@@ -155,7 +164,7 @@ export function MapView({ bundle, schools, schoolPm, frame, layers, selected, ro
     layers.schools && new ScatterplotLayer({
       id: 'schools', data: schools, pickable: true, autoHighlight: true, highlightColor: [255, 255, 255, 200],
       getPosition: (d) => [d.lon, d.lat], radiusUnits: 'pixels', getRadius: 3.2,
-      getFillColor: (_d, { index }) => [...rgb(schoolPm[index] ?? 0), dim ? 110 : 235] as [number, number, number, number],
+      getFillColor: (_d, { index }) => [...rgb(schoolPm[index] ?? 0), dim ? 45 : 235] as [number, number, number, number],
       updateTriggers: { getFillColor: [schoolPm, dim] },
       onClick: ({ object }) => {
         if (object && !siteMode) onSelect(object as School);

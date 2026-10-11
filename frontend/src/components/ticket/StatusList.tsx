@@ -36,11 +36,7 @@ function Flip({ value, k }: { value: string; k: string }) {
 export function StatusList({ adv, lang }: { adv: Advisory; lang: Lang }) {
   const [seen, setSeen] = useState<Record<string, boolean>>({});
   const k = `${adv.school.id}-${adv.date}`;
-  useEffect(() => {
-    setSeen({});
-    const id = window.setTimeout(() => setSeen(Object.fromEntries(adv.timetable.map((s) => [s.id, true]))), 6000);
-    return () => window.clearTimeout(id);
-  }, [k, adv.timetable]);
+  useEffect(() => setSeen({}), [k]);
 
   const work = adv.profile === 'work';
   return (
@@ -55,7 +51,8 @@ export function StatusList({ adv, lang }: { adv: Advisory; lang: Lang }) {
           return (
             <motion.li key={s.id} layout className={`${changed ? 'changed' : ''} ${changed && !seen[s.id] ? 'lit' : ''}`}
                        onMouseEnter={() => setSeen((x) => ({ ...x, [s.id]: true }))}
-                       onFocus={() => setSeen((x) => ({ ...x, [s.id]: true }))} tabIndex={changed ? 0 : -1}>
+                       onFocus={() => setSeen((x) => ({ ...x, [s.id]: true }))}
+                       onClick={() => setSeen((x) => ({ ...x, [s.id]: true }))} tabIndex={changed ? 0 : -1}>
               <span className="t">{moved ? <s>{s.start}</s> : <Flip value={s.start} k={k} />}</span>
               <span className="name">{lang === 'en' ? s.label_en : s.label_hi}</span>
               <span className="air" title={`${s.pm} µg/m³`}>

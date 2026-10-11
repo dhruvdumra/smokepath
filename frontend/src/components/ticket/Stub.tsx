@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Check, Copy, Send, MessageCircle } from 'lucide-react';
+import { Check, ChevronDown, Copy, Mail, MessageCircle, Send } from 'lucide-react';
 import { subscribeEmail } from '../../lib/data';
 import { tr } from '../../lib/ui';
 import type { Advisory, Lang } from '../../lib/types';
@@ -13,9 +13,11 @@ const EMAIL_MSG: Record<string, [string, string]> = {
   local: ['Saved (local dev mode).', 'सहेजा गया (लोकल)।'],
 };
 
-/** The ticket stub: the message to forward, and the one green action on the screen. */
+/** The ticket stub, torn off below the perforation: the message to forward and the one green action.
+ *  On desktop it stays pinned to the bottom of the ticket so the action is always in view. */
 export function Stub({ adv, lang }: { adv: Advisory; lang: Lang }) {
   const [copied, setCopied] = useState(false);
+  const [read, setRead] = useState(false);
   const [email, setEmail] = useState('');
   const [showEmail, setShowEmail] = useState(false);
   const [state, setState] = useState<{ busy: boolean; msg: string | null; error: boolean }>({ busy: false, msg: null, error: false });
@@ -29,7 +31,7 @@ export function Stub({ adv, lang }: { adv: Advisory; lang: Lang }) {
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1800);
     } catch {
-      /* clipboard blocked; the text is selectable */
+      setRead(true); // clipboard blocked: show the text so it can be selected
     }
   };
 
@@ -46,26 +48,32 @@ export function Stub({ adv, lang }: { adv: Advisory; lang: Lang }) {
 
   return (
     <section className="stub" aria-label={tr(work ? 'workers' : 'parents', lang)}>
+      <div className="perf" aria-hidden />
       {text && (
-        <>
-          <h3 className="section-title" style={{ margin: 0 }}>{tr(work ? 'workers' : 'parents', lang)}</h3>
-          <p className="message">{text}</p>
-          <div className="row">
-            <button className="btn" onClick={copy}>{copied ? <Check aria-hidden /> : <Copy aria-hidden />}{copied ? tr('copied', lang) : tr('copy', lang)}</button>
-            <a className="btn" href={`https://wa.me/?text=${encodeURIComponent(text)}`} target="_blank" rel="noreferrer">
-              <MessageCircle aria-hidden />{tr('whatsapp', lang)}
-            </a>
-          </div>
-        </>
+        <button className="more" aria-expanded={read} onClick={() => setRead(!read)} style={{ justifySelf: 'start' }}>
+          {tr(work ? 'workers' : 'parents', lang)}<ChevronDown aria-hidden />
+        </button>
       )}
+      {text && read && <p className="message">{text}</p>}
       {BOT && (
         <a className="btn btn-primary" href={`https://t.me/${BOT}?start=${encodeURIComponent(adv.school.id)}`} target="_blank" rel="noreferrer">
           <Send aria-hidden />{tr('alerts', lang)}
         </a>
       )}
-      {!showEmail ? (
-        <button className="more" style={{ justifySelf: 'start' }} onClick={() => setShowEmail(true)}>{tr('orEmail', lang)}</button>
-      ) : (
+      <div className="stub-actions">
+        {text ? (
+          <>
+            <button className="btn" onClick={copy}>{copied ? <Check aria-hidden /> : <Copy aria-hidden />}{copied ? tr('copied', lang) : tr('copy', lang)}</button>
+            <a className="btn" href={`https://wa.me/?text=${encodeURIComponent(text)}`} target="_blank" rel="noreferrer">
+              <MessageCircle aria-hidden />{tr('whatsapp', lang)}
+            </a>
+          </>
+        ) : <span />}
+        <button className="btn" aria-expanded={showEmail} onClick={() => setShowEmail(!showEmail)} aria-label={tr('orEmail', lang)} title={tr('orEmail', lang)}>
+          <Mail aria-hidden />
+        </button>
+      </div>
+      {showEmail && (
         <form onSubmit={submit} className="email-form">
           <label htmlFor="sub-email" className="sr-only">Email</label>
           <input id="sub-email" className="input" type="email" required autoFocus placeholder={tr('emailPh', lang)} value={email}

@@ -11,7 +11,7 @@
   --green-hi: #0b9c33;
   --violet: #8c93fb;
   --sky: #8dd6ff;
-  --sky-wash: rgba(141, 214, 255, 0.09);
+  --sky-wash: rgba(141, 214, 255, 0.14);
 
   /* Glass over a live map: the DESIGN.md white film on a darkened base so text stays legible over imagery. */
   --glass: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.035)), rgba(13, 17, 23, 0.8);
@@ -43,6 +43,10 @@ body {
   overflow: hidden;
 }
 html[lang='hi'] body { line-height: 1.6; }
+/* Devanagari has no case and breaks apart under tracking: labels keep the text face, no uppercase, no spacing. */
+html[lang='hi'] .field-label, html[lang='hi'] .mono, html[lang='hi'] .status .code, html[lang='hi'] .tl-now .lead {
+  letter-spacing: 0; text-transform: none; font-family: var(--font);
+}
 button, input { font: inherit; color: inherit; }
 button { cursor: pointer; }
 h1, h2, h3, p { margin: 0; }
@@ -166,8 +170,9 @@ input { caret-color: var(--sky); }
 
 /* period status list */
 .status { list-style: none; margin: 0; padding: 0; }
-.status li { display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: 4px 12px; padding: 10px 10px; margin: 0 -10px; border-radius: 10px; border-top: 1px solid var(--line); transition: background-color 1.2s var(--ease); }
+.status li { display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: 4px 12px; padding: 10px 24px; margin: 0 -24px; border-top: 1px solid var(--line); transition: background-color 1.2s var(--ease); }
 .status li:first-child { border-top-color: transparent; }
+.status li:focus-visible { outline-offset: -2px; border-radius: 0; }
 .status li.lit { background: var(--sky-wash); }
 .status .t { font-family: var(--mono); font-size: 13px; color: var(--pearl); font-variant-numeric: tabular-nums; }
 .status .t s { color: var(--mercury); }
@@ -191,6 +196,14 @@ input { caret-color: var(--sky); }
 
 /* stub: share + alerts */
 .stub { display: grid; gap: 12px; }
+.stub-actions { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; }
+.stub .btn-primary { width: 100%; }
+@media (min-width: 861px) {
+  /* The ticket stub stays in view: the one green action is always in the first viewport. */
+  .stub { position: sticky; bottom: 0; z-index: 2; margin: 0 -24px -24px; padding: 0 24px 20px;
+    background: linear-gradient(180deg, rgba(15, 20, 27, 0.9), #0f141b 18px); border-radius: 0 0 var(--r-card) var(--r-card); }
+  .stub .perf { margin: 0 -24px 6px; }
+}
 .message { font-size: 15px; line-height: 1.5; color: #dfe5ea; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; text-wrap: pretty; }
 .row { display: flex; gap: 8px; flex-wrap: wrap; }
 .email-form { display: flex; gap: 8px; }
@@ -322,6 +335,7 @@ input { caret-color: var(--sky); }
   .layers-pop { top: 56px; right: 8px; }
   .ticket-inner { padding: 4px 18px 28px; gap: 18px; }
   .perf { margin: 4px -18px; }
+  .status li { padding: 10px 18px; margin: 0 -18px; }
   .arrival-time { font-size: 40px; }
   .intro-title { font-size: 24px; }
 }
