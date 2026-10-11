@@ -1,0 +1,142 @@
+{
+  "title": "SmokePath: choose the structure (re-roll 1)",
+  "question": "Fresh hand; nothing from round one returns. Your DESIGN.md stays the material (dark glass, Mona Sans, one green action, CPCB colours). The roll assigned The Smoke Ticket.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "The Smoke Ticket",
+      "kicker": "THE ROLL",
+      "lineage": "the IRCTC e-ticket and PNR status every Indian checks: from, to, arrival, coach, status",
+      "thesis": "Tomorrow's smoke is a journey with a departure, a route and an arrival time at your school, and your timetable is the ticket's status list.",
+      "palette": ["#0d1117", "#151a22", "#ffffff", "#a4aea6", "#08872b", "#8dd6ff"],
+      "materials": ["glass ticket with a perforated stub, hairline segments, tabular times", "the smoke's back-trajectory drawn as a route with stops on the live map", "mono status codes: KEPT · MOVED · INDOORS"],
+      "viewport": "Desktop: live map with the smoke route lit from the Punjab fire clusters to Delhi; on the right a glass ticket: FROM Sangrur fires → TO your school, ARRIVES Tue 08:00, then one status line per period, and a stub with the parent message and the one green 'Get alerts'. Phone: route map on top, ticket as a bottom sheet.",
+      "risk": "If the ticket costume outgrows the content it reads as a gimmick; status words must stay plain.",
+      "raised": [
+        {"from": "Streaming title wall", "raise": "When a school is picked, the map dims everything except its smoke route and its ring."},
+        {"from": "Design-annual plate", "raise": "Ticket segments are divided by 1px hairlines with tabular figures; no boxes inside boxes."},
+        {"from": "Crouwel grid", "raise": "The hourly strip sits on a visible hour grid that the whole ticket snaps to."},
+        {"from": "Boarding pass + gate board", "raise": "A changed period moves to its new slot and stays lit until it has been seen."},
+        {"from": "Split-flap board", "raise": "Switching Today/Tomorrow flips changed times in place instead of re-rendering the page."}
+      ],
+      "wireframe": {"cols": 12, "rows": 10, "regions": [
+        {"label": "map: smoke route fires → school", "x": 0, "y": 0, "w": 8, "h": 9},
+        {"label": "ticket: from/to, arrival, period status", "x": 8, "y": 0, "w": 4, "h": 7, "accent": true},
+        {"label": "stub: parent msg + alerts", "x": 8, "y": 7, "w": 4, "h": 3},
+        {"label": "timeline", "x": 0, "y": 9, "w": 8, "h": 1}
+      ]}
+    },
+    {
+      "id": "model-pick",
+      "label": "Counting-Day Map",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "election-results night on Indian TV: districts colour in as results arrive, a seat tally climbs",
+      "thesis": "Smoke night as results night: schools colour in hour by hour and the tally of affected schools climbs.",
+      "palette": ["#0d1117", "#151a22", "#ffffff", "#a4aea6", "#08872b", "#8c93fb"],
+      "materials": ["full map with a tally bar across the top", "category counts as seat-style tallies", "search 'find your school' like finding your constituency"],
+      "viewport": "Full-bleed map; across the top a tally bar (Severe · Very Poor · Poor schools) that ticks as the timeline plays; a search box finds your school and opens its plan on the side.",
+      "risk": "Familiar TV-results grammar, and election connotations may distract.",
+      "wireframe": {"cols": 12, "rows": 10, "regions": [
+        {"label": "tally bar", "x": 0, "y": 0, "w": 12, "h": 1, "accent": true},
+        {"label": "map", "x": 0, "y": 1, "w": 8, "h": 8},
+        {"label": "school plan", "x": 8, "y": 1, "w": 4, "h": 9},
+        {"label": "timeline", "x": 0, "y": 9, "w": 8, "h": 1}
+      ]}
+    },
+    {
+      "id": "challenger-metro",
+      "label": "Smoke Metro Map",
+      "verdict": "competitive",
+      "lineage": "the Delhi Metro network diagram",
+      "thesis": "Smoke routes as metro lines: fire clusters are terminus stations, Delhi's districts are interchanges, your school is a stop.",
+      "palette": ["#0d1117", "#ffffff", "#e03131", "#f08c2a", "#8dd6ff", "#08872b"],
+      "materials": ["lines bent only at 45°/90°", "interchange circles", "fixed-size station labels"],
+      "viewport": "A diagram of the smoke corridors from Punjab into Delhi over the map; tap your school's 'station' to see its plan.",
+      "case": "Delhi principals know the metro map by heart; the diagram simplifies the real winds, which costs clarity.",
+      "risk": "A schematic can look more certain than a forecast is.",
+      "hero": "https://impeccable.style/worlds/cards/wayfinding-cartography-signage-midnight-transit-diagram-hero.webp"
+    },
+    {
+      "id": "challenger-wall",
+      "label": "Streaming Title Wall",
+      "verdict": "declined",
+      "lineage": "streaming catalog rows",
+      "thesis": "Rows of tiles; the focused one grows, the rest dim.",
+      "palette": ["#141414", "#ffffff", "#e50914"],
+      "materials": ["poster tiles", "row rails"],
+      "viewport": "Schools as rows of tiles.",
+      "case": "Fuses poorly: schools are not titles to browse.",
+      "kept": "Focus grows, everything else dims.",
+      "risk": "Entertainment feel.",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-streaming-title-card-wall-hero.webp"
+    },
+    {
+      "id": "challenger-annual",
+      "label": "Design-Annual Plate",
+      "verdict": "declined",
+      "lineage": "design annual plate sections",
+      "thesis": "Registration marks and hairlines on near-white stock.",
+      "palette": ["#f5f4f6", "#16181a", "#dcddf3"],
+      "materials": ["hairline rules", "crosshairs"],
+      "viewport": "One continuous printed sheet.",
+      "case": "Fuses poorly: a light print world fights your dark DESIGN.md.",
+      "kept": "Hairline-divided segments, tabular figures, no boxes in boxes.",
+      "risk": "Precious.",
+      "hero": "https://impeccable.style/worlds/cards/design-annual-s-plate-section-hero.webp"
+    },
+    {
+      "id": "challenger-crouwel",
+      "label": "Crouwel Grid Specimen",
+      "verdict": "declined",
+      "lineage": "grid-built type specimens",
+      "thesis": "The construction grid as visible armature.",
+      "palette": ["#ffffff", "#1d4ed8", "#111111"],
+      "materials": ["graph-paper grid", "cell-built letters"],
+      "viewport": "Monumental grid letters.",
+      "case": "Fuses poorly: monumental type helps no principal decide.",
+      "kept": "A visible hour grid everything snaps to.",
+      "risk": "Formalist.",
+      "hero": "https://impeccable.style/worlds/cards/crouwel-grid-specimen-hero.webp"
+    },
+    {
+      "id": "challenger-gate",
+      "label": "Boarding Pass + Gate Board",
+      "verdict": "declined",
+      "lineage": "airport passes and gate boards",
+      "thesis": "A pass with segments; changed gates move in place and stay lit.",
+      "palette": ["#111111", "#ffffff", "#ffb000"],
+      "materials": ["segmented pass", "ranked board"],
+      "viewport": "Pass on the left, ranked board on the right.",
+      "case": "Close to the roll but less familiar to Indian schools than a train ticket.",
+      "kept": "A changed row moves and stays lit until seen.",
+      "risk": "Airport chill.",
+      "hero": "https://impeccable.style/worlds/cards/vernacular-ephemera-boarding-pass-and-gate-board-hero.webp"
+    },
+    {
+      "id": "challenger-flap",
+      "label": "Split-Flap Concourse",
+      "verdict": "declined",
+      "lineage": "station split-flap boards",
+      "thesis": "Changes cascade flap by flap.",
+      "palette": ["#111111", "#ffffff", "#f5a623"],
+      "materials": ["black flaps", "amber lamps"],
+      "viewport": "A board of rows.",
+      "case": "Fuses poorly: a board of rows hides the map story.",
+      "kept": "Changed times flip in place.",
+      "risk": "Nostalgia.",
+      "hero": "https://impeccable.style/worlds/cards/signals-instruments-split-flap-concourse-hero.webp"
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code", "toggle": false},
+  "canon": true,
+  "canonCard": {
+    "label": "Air-quality dashboard",
+    "thesis": "What this category ships: map, sidebar list, big AQI number cards.",
+    "palette": ["#0d1117", "#151a22", "#ffffff", "#08872b"],
+    "materials": ["sidebar list", "metric cards", "full map"],
+    "viewport": "Left sidebar with search and school list, map right, AQI number cards on top.",
+    "risk": "Looks like every AQI app, which you said would feel wrong."
+  },
+  "steer": true
+}

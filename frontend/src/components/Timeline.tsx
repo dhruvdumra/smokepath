@@ -1,4 +1,6 @@
 import { useMemo } from 'react';
+import { Pause, Play } from 'lucide-react';
+import { catOf } from '../lib/colors';
 import { istClock, istDay, utc } from '../lib/time';
 import { tr } from '../lib/ui';
 import type { Bundle, Lang } from '../lib/types';
@@ -8,21 +10,22 @@ interface Props {
   frame: number;
   playing: boolean;
   lang: Lang;
+  tally: number;
+  total: number;
   onFrame: (f: number) => void;
   onTogglePlay: () => void;
 }
 
-export function Timeline({ bundle, frame, playing, lang, onFrame, onTogglePlay }: Props) {
+export function Timeline({ bundle, frame, playing, lang, tally, total, onFrame, onTogglePlay }: Props) {
   const { times, t0_index } = bundle.meta;
   const n = times.length - 1;
   const start = utc(times[0]);
   const now = new Date(start.getTime() + frame * 3600000);
   const lead = Math.round(frame - t0_index);
 
-  // IST midnights inside the window, as tick positions.
+  // IST midnights: frames sit on UTC :00, so IST midnight (UTC 18:30) falls between two frames.
   const ticks = useMemo(() => {
     const out: { pct: number; label: string }[] = [];
-    // Frames are on UTC :00, so IST midnight (UTC 18:30) falls half-way between two frames.
     for (let h = 0; h < n; h++) {
       const d = new Date(start.getTime() + (h + 0.5) * 3600000);
       if (istClock(d) === '00:00') out.push({ pct: ((h + 0.5) / n) * 100, label: istDay(d, lang) });
@@ -34,31 +37,28 @@ export function Timeline({ bundle, frame, playing, lang, onFrame, onTogglePlay }
   return (
     <div className="timeline" role="group" aria-label="Forecast timeline">
       <button className="play" onClick={onTogglePlay} aria-label={playing ? tr('pause', lang) : tr('play', lang)}>
-        {playing ? (
-          <svg viewBox="0 0 16 16" aria-hidden><rect x="3" y="2" width="3.5" height="12" rx="1" /><rect x="9.5" y="2" width="3.5" height="12" rx="1" /></svg>
-        ) : (
-          <svg viewBox="0 0 16 16" aria-hidden><path d="M4 2.5v11l9.5-5.5z" /></svg>
-        )}
+        {playing ? <Pause aria-hidden /> : <Play aria-hidden style={{ marginLeft: 2 }} />}
       </button>
-      <div className="timeline-body">
-        <div className="timeline-now">
-          <strong>{istDay(now, lang)} · {istClock(now)} IST</strong>
-          <span className={lead >= 0 ? 'lead lead-fc' : 'lead'}>
-            {lead >= 0 ? `${tr('forecast', lang)} +${lead} h` : `${tr('past', lang)} ${lead} h`}
-          </span>
+      <div className="tl-body">
+        <div className="tl-now">
+          <strong>{istDay(now, lang)} · {istClock(now)}<span className="hide-sm"> IST</span></strong>
+          <span className={lead >= 0 ? 'lead fc' : 'lead'}>{lead >= 0 ? tr('forecast', lang, { h: lead }) : tr('past', lang, { h: -lead })}</span>
         </div>
         <div className="track">
           <div className="track-past" style={{ width: `${t0pct}%` }} />
-          <div className="track-t0" style={{ left: `${t0pct}%` }} title={tr('issued', lang)} />
-          {ticks.map((t) => (
-            <div key={t.pct} className="tick" style={{ left: `${t.pct}%` }}><span>{t.label}</span></div>
-          ))}
-          <input
-            type="range" min={0} max={n} step={0.25} value={frame}
-            onChange={(e) => onFrame(parseFloat(e.target.value))}
-            aria-label="Time" aria-valuetext={`${istDay(now)} ${istClock(now)} IST`}
-          />
+          <div className="track-t0" style={{ left: `${t0pct}%` }} />
+          {ticks.map((t) => <div key={t.pct} className="tick" style={{ left: `${t.pct}%` }}><span>{t.label}</span></div>)}
+          <input type="range" min={0} max={n} step={0.25} value={frame} onChange={(e) => onFrame(parseFloat(e.target.value))}
+                 aria-label="Time" aria-valuetext={`${istDay(now)} ${istClock(now)} IST`} />
         </div>
+      </div>
+      <div className="tally" aria-live="polite">
+        <strong>
+          {tally > 0 && <i className="cat-dot" style={{ background: catOf(260).color, marginRight: 8, verticalAlign: 4 }} aria-hidden />}
+          {tally.toLocaleString('en-IN')}<small>/{total.toLocaleString('en-IN')}</small>
+        </strong>
+        <span className="long">{tr('tallyNow', lang)}</span>
+        <span className="short">{tr('tallyShort', lang)}</span>
       </div>
     </div>
   );

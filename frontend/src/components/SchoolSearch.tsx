@@ -1,18 +1,19 @@
 import { useId, useMemo, useState } from 'react';
+import { LocateFixed, Search } from 'lucide-react';
 import { tr } from '../lib/ui';
 import type { Lang, School } from '../lib/types';
 
 interface Props { schools: School[]; lang: Lang; onSelect: (s: School, fly: boolean) => void }
 
-export const QUICK_PICKS = ['w341481077', 'w998316508', 'n11696928200'];
+export const QUICK_PICKS = ['w341481077', 'w998316508', 'w43316275'];
 
 function km(a: { lat: number; lon: number }, b: { lat: number; lon: number }) {
   const r = Math.PI / 180;
   const x = (b.lon - a.lon) * r * Math.cos(((a.lat + b.lat) / 2) * r);
-  const y = (b.lat - a.lat) * r;
-  return 6371 * Math.hypot(x, y);
+  return 6371 * Math.hypot(x, (b.lat - a.lat) * r);
 }
 
+/** The ticket's TO field: a combobox over 1,034 schools, plus "use my location". */
 export function SchoolSearch({ schools, lang, onSelect }: Props) {
   const id = useId();
   const [q, setQ] = useState('');
@@ -42,12 +43,13 @@ export function SchoolSearch({ schools, lang, onSelect }: Props) {
         setLocating(false);
         const me = { lat: p.coords.latitude, lon: p.coords.longitude };
         const best = schools.reduce((a, b) => (km(me, a) <= km(me, b) ? a : b));
-        if (km(me, best) > 40) setGeoError('You seem to be outside Delhi NCR; search by name instead.');
+        const d = km(me, best);
+        if (d > 60) setGeoError(`You're about ${Math.round(d).toLocaleString('en-IN')} km from the nearest school we cover (Delhi NCR). Search by name instead.`);
         else pick(best);
       },
       () => {
         setLocating(false);
-        setGeoError('Location permission denied; search by name instead.');
+        setGeoError('Location is blocked. Search by name instead.');
       },
       { timeout: 10000 },
     );
@@ -57,11 +59,12 @@ export function SchoolSearch({ schools, lang, onSelect }: Props) {
 
   return (
     <div className="search">
-      <label htmlFor={id} className="search-label">{tr('findTitle', lang)}</label>
-      <div className="search-row">
+      <label htmlFor={id} className="sr-only">{tr('whichSchool', lang)}</label>
+      <div className="search-field">
+        <Search aria-hidden />
         <input
-          id={id} type="search" autoComplete="off" placeholder={tr('findHint', lang)} value={q}
-          role="combobox" aria-expanded={results.length > 0} aria-controls={`${id}-list`}
+          id={id} type="search" autoComplete="off" placeholder={tr('whichSchool', lang)} value={q}
+          role="combobox" aria-expanded={results.length > 0} aria-controls={`${id}-list`} aria-autocomplete="list"
           aria-activedescendant={results.length ? `${id}-opt-${active}` : undefined}
           onChange={(e) => { setQ(e.target.value); setActive(0); }}
           onKeyDown={(e) => {
@@ -71,8 +74,8 @@ export function SchoolSearch({ schools, lang, onSelect }: Props) {
             if (e.key === 'Escape') setQ('');
           }}
         />
-        <button className="btn btn-quiet" onClick={locate} disabled={locating}>
-          {locating ? tr('locating', lang) : tr('useLocation', lang)}
+        <button className="btn btn-ghost icon-btn" onClick={locate} disabled={locating} aria-label={tr('useLocation', lang)} title={tr('useLocation', lang)}>
+          <LocateFixed aria-hidden />
         </button>
       </div>
       {results.length > 0 && (
@@ -86,13 +89,14 @@ export function SchoolSearch({ schools, lang, onSelect }: Props) {
           ))}
         </ul>
       )}
-      {q.trim().length >= 2 && results.length === 0 && <p className="muted small">No school matches “{q}”.</p>}
-      {geoError && <p className="muted small" role="status">{geoError}</p>}
+      {q.trim().length >= 2 && results.length === 0 && <p className="hint" style={{ marginTop: 8 }}>{tr('noMatch', lang)} “{q}”.</p>}
+      {locating && <p className="hint" style={{ marginTop: 8 }} role="status">{tr('locating', lang)}</p>}
+      {geoError && <p className="hint" style={{ marginTop: 8 }} role="status">{geoError}</p>}
       {picks.length > 0 && !q && (
-        <p className="picks">
-          <span className="muted small">{tr('tryThese', lang)}:</span>
+        <div className="chips" style={{ marginTop: 10 }}>
+          <span className="hint">{tr('tryThese', lang)}</span>
           {picks.map((s) => <button key={s.id} className="chip" onClick={() => pick(s)}>{s.name}</button>)}
-        </p>
+        </div>
       )}
     </div>
   );

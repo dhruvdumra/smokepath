@@ -1,19 +1,22 @@
 import { useEffect, useMemo, useState } from 'react';
-import { MapView, type LayerToggles } from './components/MapView';
+import { AnimatePresence } from 'motion/react';
+import { ArrowRight } from 'lucide-react';
+import { MapView, type LayerToggles, type Route } from './components/MapView';
 import { Timeline } from './components/Timeline';
-import { Legend } from './components/Legend';
-import { SchoolPanel } from './components/SchoolPanel';
-import { Intro } from './components/Intro';
+import { TopBar } from './components/TopBar';
+import { LayersMenu } from './components/LayersMenu';
+import { Sheet } from './components/Sheet';
+import { Ticket } from './components/ticket/Ticket';
 import { useAdvisory, useBundle, useSchools } from './lib/data';
-import { sampleAt, schoolValues } from './lib/grid';
-import { catOf } from './lib/colors';
-import { utc } from './lib/time';
+import { schoolValues } from './lib/grid';
+import { istClock, istDay } from './lib/time';
 import { tr } from './lib/ui';
-import type { Dataset, Lang, School } from './lib/types';
+import { useMedia } from './lib/useMedia';
+import type { Advisory, Dataset, Lang, School } from './lib/types';
 
 const params = new URLSearchParams(window.location.search);
-const DELHI = { lat: 28.61, lon: 77.21 };
 const SITE_RE = /^site:(-?\d+\.\d+),(-?\d+\.\d+)$/;
+const PEEK = 0.44; // phone: the sheet peeks at the route block
 
 /** Outdoor work sites are places too: 'site:<lat>,<lon>' (same id format as the API and the Telegram bot). */
 function siteFromId(id: string | null): School | null {
@@ -23,7 +26,21 @@ function siteFromId(id: string | null): School | null {
   return { id: id!, name: `Work site ${lat.toFixed(3)}°N ${lon.toFixed(3)}°E`, lat, lon, level: '', operator: '', addr: '' };
 }
 
+/** The advisory's back-trajectory as a forward route with dated stops at the fire districts it crossed. */
+function routeOf(adv: Advisory | null, lang: Lang): Route | null {
+  const smoke = adv?.smoke;
+  if (!adv || !smoke || smoke.level === 'none' || smoke.path.length < 2) return null;
+  const back = smoke.path; // hourly points from the arrival backwards
+  const arrival = new Date(`${adv.date}T${smoke.hour}:00+05:30`).getTime();
+  const stops = smoke.sources.slice(0, 3).map((s) => {
+    const left = new Date(arrival - s.hours_before * 3600000);
+    return { pos: back[Math.min(s.hours_before, back.length - 1)], label: `${s.district} · ${istDay(left, lang)} ${istClock(left)}` };
+  });
+  return { key: `${adv.school.id}-${adv.date}-${adv.dataset}`, path: [...back].reverse(), stops };
+}
+
 export default function App() {
+  const phone = useMedia('(max-width: 860px)');
   const [dataset, setDataset] = useState<Dataset>(params.get('dataset') === 'replay' ? 'replay' : 'live');
   const [lang, setLang] = useState<Lang>(params.get('lang') === 'hi' ? 'hi' : 'en');
   const [placeId, setPlaceId] = useState<string | null>(params.get('school'));
@@ -31,8 +48,9 @@ export default function App() {
   const [date, setDate] = useState<string | null>(null);
   const [frame, setFrame] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const [showPath, setShowPath] = useState(false);
-  const [focus, setFocus] = useState<{ lat: number; lon: number; zoom: number; key: number } | null>(null);
+  const [showRoute, setShowRoute] = useState(true);
+  const [layersOpen, setLayersOpen] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const [layers, setLayers] = useState<LayerToggles>({
     heat: true, corrected: true, smoke: true, wind: false, fires: true, stations: true, schools: true,
   });
@@ -59,10 +77,10 @@ export default function App() {
     setLayers((l) => ({ ...l, corrected: b.stations.length > 0 }));
   }, [b]);
 
-  // When an advisory arrives, move the map clock to that place's worst hour.
+  // When a ticket is issued, move the map clock to its worst hour.
   useEffect(() => {
     if (!adv.data || !b) return;
-    const start = utc(b.meta.times[0]).getTime();
+    const start = new Date(`${b.meta.times[0]}:00Z`).getTime();
     const target = new Date(`${adv.data.date}T00:00:00+05:30`).getTime() + adv.data.worst.hour * 3600000;
     const f = (target - start) / 3600000;
     if (f >= 0 && f <= b.meta.times.length - 1) setFrame(f);
@@ -75,89 +93,80 @@ export default function App() {
     return () => window.clearInterval(id);
   }, [playing, b]);
 
-  // Every school's PM2.5 at the hour under the slider: drives dot colours, trigger rings and the live counter.
+  // Every school's PM2.5 at the hour under the slider: dot colours, trigger rings and the live tally.
   const q = Math.round(frame * 4) / 4;
   const schoolPm = useMemo(
     () => (b && schools.data ? schoolValues(b, schools.data, q, layers.corrected) : []),
     [b, schools.data, q, layers.corrected],
   );
-  const triggeredNow = schoolPm.filter((v) => v > 120).length;
+  const tally = schoolPm.filter((v) => v > 120).length;
 
-  const selectPlace = (s: School, fly = false) => {
+  const route = useMemo(() => (showRoute ? routeOf(adv.data, lang) : null), [adv.data, lang, showRoute]);
+  const fit = useMemo(() => {
+    if (!place) return null;
+    const pts: [number, number][] = route ? [...route.path, [place.lon, place.lat]] : [[place.lon - 0.18, place.lat - 0.12], [place.lon + 0.18, place.lat + 0.12]];
+    const lons = pts.map((p) => p[0]), lats = pts.map((p) => p[1]);
+    const padding = phone
+      ? { top: 70, right: 24, bottom: Math.round(window.innerHeight * PEEK) + 80, left: 24 }
+      : { top: 96, right: 408 + 56, bottom: 120, left: 72 };
+    return { bounds: [[Math.min(...lons), Math.min(...lats)], [Math.max(...lons), Math.max(...lats)]] as [[number, number], [number, number]],
+      padding, key: `${place.id}-${route?.key ?? 'none'}` };
+  }, [place, route, phone]);
+
+  const selectPlace = (s: School) => {
     setPlaceId(s.id);
-    setShowPath(false);
     setSiteMode(false);
-    if (fly) setFocus({ lat: s.lat, lon: s.lon - 0.6, zoom: 7.6, key: Date.now() });
+    setShowRoute(true);
+    setSheetOpen(false);
   };
   const pickSite = (lat: number, lon: number) => selectPlace(siteFromId(`site:${lat.toFixed(4)},${lon.toFixed(4)}`)!);
+  const calm = b && dataset === 'live' && Math.max(...b.schools.at_risk) === 0 && !place;
 
-  const delhi = b ? sampleAt(b, DELHI.lat, DELHI.lon, frame, layers.corrected) : 0;
-  const calm = b && dataset === 'live' && Math.max(...b.schools.at_risk) === 0;
+  const ticket = (
+    <Ticket place={place} adv={adv.data} loading={adv.loading} error={adv.error} schools={schools.data ?? []} bundle={b}
+            dates={b?.schools.dates ?? []} date={date} lang={lang} siteMode={siteMode} showRoute={showRoute}
+            onSiteMode={setSiteMode} onSelect={selectPlace} onDate={setDate}
+            onBack={() => { setPlaceId(null); setShowRoute(true); }} onToggleRoute={() => setShowRoute(!showRoute)} />
+  );
 
   return (
-    <div className="app">
-      <header className="topbar">
-        <div className="brand">
-          <h1>SmokePath</h1>
-          <p>{tr('tagline', lang)}</p>
-        </div>
-        <div className="seg-group" role="radiogroup" aria-label="Dataset">
-          {(['live', 'replay'] as Dataset[]).map((d) => (
-            <button key={d} role="radio" aria-checked={dataset === d} className={dataset === d ? 'seg-btn on' : 'seg-btn'}
-                    onClick={() => { setDataset(d); setPlaying(false); }}>
-              {d === 'live' && <i className="live-dot" aria-hidden />}{tr(d, lang)}
-            </button>
-          ))}
-        </div>
-        <button className="btn btn-quiet lang" onClick={() => setLang(lang === 'en' ? 'hi' : 'en')} aria-label="Switch language">
-          {lang === 'en' ? 'हिंदी' : 'English'}
-        </button>
-      </header>
-
-      <main className="stage">
+    <div className="app" style={{ ['--peek' as string]: `${PEEK * 100}dvh` }}>
+      <div className="map-layer">
         {b && schools.data && (
-          <MapView bundle={b} schools={schools.data} schoolPm={schoolPm} frame={frame} layers={layers}
-                   selected={place} airPath={showPath && adv.data?.smoke ? adv.data.smoke.path : null}
-                   focus={focus} siteMode={siteMode} onSelect={(s) => selectPlace(s)} onPickSite={pickSite} />
+          <MapView bundle={b} schools={schools.data} schoolPm={schoolPm} frame={frame} layers={layers} selected={place}
+                   route={route} fit={fit} siteMode={siteMode} onSelect={selectPlace} onPickSite={pickSite} />
         )}
         {bundle.loading && <div className="stage-msg" role="status">{tr('loading', lang)}</div>}
-        {bundle.error && <div className="stage-msg error" role="alert">Forecast unavailable: {bundle.error}</div>}
-        {b && (
-          <>
-            <div className="stats" aria-live="polite">
-              <div><strong>{b.meta.counts.fires_24h.toLocaleString('en-IN')}</strong><span>{tr('fires24', lang)}</span></div>
-              <div>
-                <strong style={{ color: triggeredNow ? catOf(250).color : undefined }}>
-                  {triggeredNow}<small>/{schools.data?.length ?? '–'}</small>
-                </strong>
-                <span>{tr('atRiskNow', lang)}</span>
-              </div>
-              <div><strong style={{ color: catOf(delhi).color }}>{Math.round(delhi)}</strong><span>{tr('delhiNow', lang)} · µg/m³</span></div>
-            </div>
-            {siteMode && <div className="site-hint" role="status">{tr('siteHint', lang)}</div>}
-            {calm && !siteMode && (
-              <button className="calm" onClick={() => setDataset('replay')}>
-                {lang === 'en' ? 'Air is calm today: early in the burning season. See a real smog day (11 Nov 2025) →'
-                  : 'आज हवा शांत है। असली स्मॉग वाला दिन (11 नवंबर 2025) देखें →'}
-              </button>
-            )}
-            <Legend layers={layers} lang={lang} hasStations={b.stations.length > 0} onChange={setLayers} />
-            <Timeline bundle={b} frame={frame} playing={playing} lang={lang} onFrame={setFrame} onTogglePlay={() => setPlaying(!playing)} />
-          </>
-        )}
-      </main>
+        {bundle.error && <div className="stage-msg" role="alert">Forecast unavailable: {bundle.error}</div>}
+      </div>
 
-      <aside className="panel">
-        {place ? (
-          <SchoolPanel school={place} adv={adv.data} loading={adv.loading} error={adv.error} lang={lang}
-                       dates={b?.schools.dates ?? []} date={date} showPath={showPath}
-                       onDate={setDate} onBack={() => { setPlaceId(null); setShowPath(false); }}
-                       onTogglePath={() => setShowPath(!showPath)} />
-        ) : (
-          <Intro schools={schools.data ?? []} bundle={b} lang={lang} siteMode={siteMode}
-                 onSiteMode={setSiteMode} onSelect={selectPlace} />
+      <TopBar dataset={dataset} lang={lang} layersOpen={layersOpen} onLayers={() => setLayersOpen(!layersOpen)}
+              onDataset={(d) => { setDataset(d); setPlaying(false); }} onLang={setLang} />
+      <AnimatePresence>
+        {layersOpen && b && (
+          <LayersMenu layers={layers} lang={lang} hasStations={b.stations.length > 0} onChange={setLayers} onClose={() => setLayersOpen(false)} />
         )}
-      </aside>
+      </AnimatePresence>
+
+      {calm && !siteMode && (
+        <button className="calm" onClick={() => setDataset('replay')}>
+          {tr('calm', lang)}<span className="go">{tr('calmGo', lang)}<ArrowRight aria-hidden /></span>
+        </button>
+      )}
+      {siteMode && <div className="site-hint" role="status">{tr('siteHint', lang)}</div>}
+
+      {b && (
+        <Timeline bundle={b} frame={frame} playing={playing} lang={lang} tally={tally} total={schools.data?.length ?? 0}
+                  onFrame={setFrame} onTogglePlay={() => setPlaying(!playing)} />
+      )}
+
+      {phone ? (
+        <Sheet open={sheetOpen} onOpen={setSheetOpen} peek={PEEK}>{ticket}</Sheet>
+      ) : (
+        <aside className="ticket-dock" aria-label="Smoke ticket">
+          <div className="ticket">{ticket}</div>
+        </aside>
+      )}
     </div>
   );
 }

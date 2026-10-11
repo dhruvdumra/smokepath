@@ -10,3 +10,6 @@ frontend/dist/
 data/cache/
 data/out/
 samconfig.local.toml
+.impeccable/review/
+.impeccable/questions/
+.impeccable/hook.cache.json

@@ -1,0 +1,135 @@
+{
+  "title": "SmokePath: choose the structure (your GitHub DESIGN.md stays the material)",
+  "question": "Every card uses your DESIGN.md look: dark glass, Mona Sans, one green action, CPCB air colours. They differ in how the screen is organised. The roll assigned The School Diary. Keep it, take an alternate, or re-roll.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "The School Diary",
+      "kicker": "THE ROLL",
+      "lineage": "the printed school diary every Indian school issues: date header, ruled periods, remarks, parent's signature",
+      "thesis": "Tomorrow arrives as the diary page a principal already reads and signs every evening.",
+      "palette": ["#0d1117", "#151a22", "#ffffff", "#a4aea6", "#08872b", "#8dd6ff"],
+      "materials": ["frosted-glass diary page over the live smoke map", "hour-ruled lines; changed periods struck through and rewritten", "Mona Sans + Devanagari, mono date stamp"],
+      "viewport": "Desktop: smoke streams across a full-bleed map; a tall glass diary page for 'Tomorrow · Tue 11 Nov' sits right, its first ruled line is 'Which school?'. Phone: map on top, the page is a bottom sheet with a thumb bar.",
+      "risk": "Turns kitsch if paper textures creep in; the diary must be structure, never costume.",
+      "raised": [
+        {"from": "Emission-line rail", "raise": "Period state is drawn as line form, not only colour: kept = solid, moved = struck + rewritten, indoors = dashed."},
+        {"from": "Zoo guide map", "raise": "One dominant region per phone screen: the map or the diary page, never both cramped."},
+        {"from": "Event catalog", "raise": "Search results and map dots are one space: hovering a school lights its dot, picking flies the map."},
+        {"from": "Cassette j-card", "raise": "Today and Tomorrow are two hard pages with a real page-turn between them."},
+        {"from": "Labanotation score", "raise": "Periods are drawn to the scale of time, so a moved PE visibly slides down the page to its new slot."}
+      ],
+      "wireframe": {"cols": 12, "rows": 10, "regions": [
+        {"label": "live smoke map", "x": 0, "y": 0, "w": 8, "h": 9},
+        {"label": "diary page: date, periods, remarks, sign", "x": 8, "y": 0, "w": 4, "h": 10, "accent": true},
+        {"label": "timeline", "x": 0, "y": 9, "w": 8, "h": 1}
+      ]}
+    },
+    {
+      "id": "model-pick",
+      "label": "The Staff-Room Timetable",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "the period-grid timetable pinned in every staff room",
+      "thesis": "The school day as the period grid principals already plan with, re-planned by the smoke.",
+      "palette": ["#0d1117", "#151a22", "#ffffff", "#a4aea6", "#08872b", "#8c93fb"],
+      "materials": ["glass period grid across the top", "smoke map as the band beneath", "mono period codes"],
+      "viewport": "A wide period grid (Arrival, Assembly, P1–P8, Recess, Dispersal) across the top, each cell in its CPCB colour with changes marked; the smoke map fills the band below; search sits in the grid's corner.",
+      "risk": "Most runs in this category land on a table; it can read like a spreadsheet."
+    },
+    {
+      "id": "challenger-pocket",
+      "label": "Pocket Planner App",
+      "verdict": "competitive",
+      "lineage": "consumer phone apps: one idea per card, thumb bar",
+      "thesis": "A calm phone app: one card per decision, one green button where something can be done.",
+      "palette": ["#0d1117", "#151a22", "#ffffff", "#08872b", "#8dd6ff"],
+      "materials": ["stacked glass cards, 24px corners", "persistent thumb bar", "spring press feedback"],
+      "viewport": "Phone-first single column: verdict card, timetable card, parent-message card, smoke card; the map is one tab on the thumb bar.",
+      "case": "Fuses cleanly and is very clear on a phone; the map loses its stage for judges.",
+      "risk": "Generic app feel; the smoke story hides behind a tab.",
+      "hero": "https://impeccable.style/worlds/cards/digital-design-canon-warm-consumer-app-surface-hero.webp"
+    },
+    {
+      "id": "challenger-rail",
+      "label": "Emission-line Rail",
+      "verdict": "declined",
+      "lineage": "spectrogram plates",
+      "thesis": "State as hairline form on a charcoal continuum.",
+      "palette": ["#1a1b1e", "#e9e4da", "#f5d02a"],
+      "materials": ["hairline emission lines", "single-size grotesque"],
+      "viewport": "One off-centre rail carrying every element as ticks.",
+      "case": "Fuses poorly: drops the CPCB colours principals and judges recognise.",
+      "kept": "State carried by line form, so category never relies on colour alone.",
+      "risk": "Cryptic for non-technical users.",
+      "hero": "https://impeccable.style/worlds/cards/operate-c-emission-line-rail-hero.webp"
+    },
+    {
+      "id": "challenger-zoo",
+      "label": "Zoo Guide Map",
+      "verdict": "declined",
+      "lineage": "park guide maps",
+      "thesis": "Areas as swelling lobes of flat colour.",
+      "palette": ["#8ed462", "#f5f1e4", "#2c2e2a"],
+      "materials": ["flat colour lobes", "capsule controls"],
+      "viewport": "One lobe dominates each screen.",
+      "case": "Fuses poorly: playful lobes undercut a health decision.",
+      "kept": "One dominant region per screen on phones.",
+      "risk": "Childish for a safety tool.",
+      "hero": "https://impeccable.style/worlds/cards/aww2-zoo-gardens-guide-map-hero.webp"
+    },
+    {
+      "id": "challenger-catalog",
+      "label": "Event Catalog Grid",
+      "verdict": "declined",
+      "lineage": "convention circle catalogs",
+      "thesis": "Thousands of cells linked to a hall map.",
+      "palette": ["#f2efe6", "#111111", "#d23c3c"],
+      "materials": ["dense thumbnail grid", "numbered codes"],
+      "viewport": "1,034 schools as a packed grid beside the map.",
+      "case": "Fuses poorly for one principal looking for one school.",
+      "kept": "The list and the map are the same space.",
+      "risk": "Overwhelming density.",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-doujin-event-catalog-hero.webp"
+    },
+    {
+      "id": "challenger-jcard",
+      "label": "Cassette J-card",
+      "verdict": "declined",
+      "lineage": "mixtape inlays",
+      "thesis": "Side A / side B halves with a physical flip.",
+      "palette": ["#ffffff", "#1d3fa8", "#c8102e"],
+      "materials": ["ballpoint on inlay stock"],
+      "viewport": "Today and tomorrow as two sides of one card.",
+      "case": "Fuses poorly: nostalgia, not school.",
+      "kept": "Today and Tomorrow as hard halves with a real flip.",
+      "risk": "Novelty.",
+      "hero": "https://impeccable.style/worlds/cards/vernacular-ephemera-cassette-j-card-hero.webp"
+    },
+    {
+      "id": "challenger-score",
+      "label": "Labanotation Score",
+      "verdict": "declined",
+      "lineage": "dance notation",
+      "thesis": "Time as a vertical staff; length is duration.",
+      "palette": ["#ffffff", "#111111", "#d9d9d9"],
+      "materials": ["shaded symbol blocks", "centre staff"],
+      "viewport": "The school day as a staff read upward.",
+      "case": "Fuses poorly: upward time confuses a principal.",
+      "kept": "Periods drawn to the scale of time.",
+      "risk": "Unreadable without training.",
+      "hero": "https://impeccable.style/worlds/cards/notation-diagram-systems-labanotation-hero.webp"
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code", "toggle": false},
+  "canon": true,
+  "canonCard": {
+    "label": "Air-quality dashboard",
+    "thesis": "What this category ships: map, sidebar list, big AQI number cards.",
+    "palette": ["#0d1117", "#151a22", "#ffffff", "#08872b"],
+    "materials": ["sidebar list", "metric cards", "full map"],
+    "viewport": "Left sidebar with search and school list, map right, AQI number cards on top.",
+    "risk": "Looks like every AQI app, which you said would feel wrong."
+  },
+  "steer": true
+}
