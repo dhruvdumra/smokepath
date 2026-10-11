@@ -83,20 +83,22 @@ export function MapView({ bundle, schools, schoolPm, frame, layers, selected, ro
     return () => c.stop();
   }, [route, reduce]);
 
+  // react-map-gl creates the map asynchronously; a fit requested before 'load' must wait for it.
+  const [ready, setReady] = useState(false);
   useEffect(() => {
     const m = mapRef.current?.getMap();
-    if (!fit || !m) return;
+    if (!fit || !m || !ready) return;
     m.resize();
     // Padding reserves room for the ticket and timeline; never let it exceed the canvas it is applied to.
     const { clientWidth: w, clientHeight: h } = m.getContainer();
     const sx = Math.min(1, (w * 0.6) / (fit.padding.left + fit.padding.right));
-    const sy = Math.min(1, (h * 0.6) / (fit.padding.top + fit.padding.bottom));
+    const sy = Math.min(1, (h * 0.8) / (fit.padding.top + fit.padding.bottom));
     const p = fit.padding;
     m.fitBounds(fit.bounds, {
       padding: { top: p.top * sy, bottom: p.bottom * sy, left: p.left * sx, right: p.right * sx },
       duration: reduce ? 0 : 1100, maxZoom: 9,
     });
-  }, [fit, reduce]);
+  }, [fit, reduce, ready]);
 
   const deckLayers = [
     layers.heat && new BitmapLayer({
@@ -176,6 +178,10 @@ export function MapView({ bundle, schools, schoolPm, frame, layers, selected, ro
       style={{ position: 'absolute', inset: 0 }}
       cursor={siteMode ? 'crosshair' : undefined}
       onClick={(e) => siteMode && onPickSite(e.lngLat.lat, e.lngLat.lng)}
+      onLoad={(e) => {
+        setReady(true);
+        if (import.meta.env.DEV) (window as unknown as { __spMap: unknown }).__spMap = e.target;
+      }}
     >
       <DeckOverlay layers={deckLayers} getTooltip={tooltip} />
       <NavigationControl position="top-left" showCompass={false} />

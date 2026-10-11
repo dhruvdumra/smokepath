@@ -106,9 +106,10 @@ export default function App() {
     if (!place) return null;
     const pts: [number, number][] = route ? [...route.path, [place.lon, place.lat]] : [[place.lon - 0.18, place.lat - 0.12], [place.lon + 0.18, place.lat + 0.12]];
     const lons = pts.map((p) => p[0]), lats = pts.map((p) => p[1]);
+    // Leave room for the top bar, the ticket and the timeline card (plus the school's ring) around the route.
     const padding = phone
-      ? { top: 70, right: 24, bottom: Math.round(window.innerHeight * PEEK) + 80, left: 24 }
-      : { top: 96, right: 408 + 56, bottom: 120, left: 72 };
+      ? { top: 76, right: 28, bottom: Math.round(window.innerHeight * PEEK) + 170, left: 28 }
+      : { top: 110, right: 408 + 64, bottom: 170, left: 80 };
     return { bounds: [[Math.min(...lons), Math.min(...lats)], [Math.max(...lons), Math.max(...lats)]] as [[number, number], [number, number]],
       padding, key: `${place.id}-${route?.key ?? 'none'}` };
   }, [place, route, phone]);

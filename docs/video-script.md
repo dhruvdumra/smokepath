@@ -17,7 +17,7 @@ Spoken lines are in quotes. **Bold** is what's on screen.
 > primary classes into hybrid mode. But that morning, across Delhi, kids were already standing in outdoor
 > assemblies and running PE periods. The global forecast model most apps rely on said the air would be 'Moderate'."
 
-**Toggle the legend to "Raw CAMS PM2.5", then back to "Station-corrected".**
+**Open Layers (top right) → pick "Raw model PM2.5", then back to "Station-corrected PM2.5". Close Layers.**
 
 ## 0:20–0:40 · Who it's for
 
@@ -37,20 +37,21 @@ Spoken lines are in quotes. **Bold** is what's on screen.
 
 > "Watch the counter: as the smoke and the night-time inversion arrive, every school's advisory switches on."
 
-**Type "Sardar Patel" in the search box and select it.**
+**In the ticket's "Which school?" field type "Sardar Patel" and select it. Pause while the route draws itself.**
 
-> "Pick a school. Tuesday: Severe from 7 to 2, peak at 8 am, six timetable changes. Assembly indoors, PE
-> indoors, recess indoors, gates open early so kids don't wait outside, N95s for the gate staff."
+> "Pick a school and SmokePath issues a ticket. The smoke left crop fires near Sangrur, Moga and Malerkotla,
+> and it arrives at Sardar Patel Vidyalaya at 8 am Tuesday: Severe, six timetable changes. Assembly indoors,
+> PE indoors, recess indoors, gates open early so kids don't wait outside."
 
-**Scroll to "Message for parents". Click Copy, hover "Share on WhatsApp".**
+**Scroll the ticket to the stub ("For parents"). Click Copy, hover WhatsApp.**
 
 > "And a ready message for parents, because that's how Indian schools actually reach them: WhatsApp."
 
-**Scroll to "Where the smoke comes from". Click "Show the air path on the map".**
+**Point at the route on the map: the dated stops (Moga 08:00 → Malerkotla 12:00 → Sangrur 17:00 → school 08:00).**
 
-> "Why? The air arriving at 8 am passed over 80 fire detections near Sangrur, Moga and Malerkotla about 15 hours earlier."
+> "Every stop is a real fire cluster the incoming air passed over, with the time it was there."
 
-**Back → "An outdoor work site" → click near Okhla on the map.**
+**Back → in the ticket choose "Outdoor work site" → click near Okhla on the map.**
 
 > "It isn't only schools. Click any construction site: heavy work moves to 2 to 5 pm, N95s for everyone, a
 > sheltered break every hour, and a Hindi message for the workers."
