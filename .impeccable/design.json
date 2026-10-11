@@ -1,0 +1,590 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-11T11:07:52.059Z",
+  "title": "Design System: SmokePath",
+  "extensions": {
+    "colorMeta": {
+      "deep-void": {
+        "role": "neutral",
+        "displayName": "Deep Void",
+        "canonical": "#0d1117",
+        "oklch": "oklch(17.6% 0.014 258.4)",
+        "tonalRamp": [
+          "#080b11",
+          "#21252c",
+          "#3d424a",
+          "#5c6269",
+          "#7d838b",
+          "#a0a5ae",
+          "#c4cad2",
+          "#e9eff8"
+        ]
+      },
+      "obsidian": {
+        "role": "neutral",
+        "displayName": "Obsidian",
+        "canonical": "#151a22",
+        "oklch": "oklch(21.6% 0.018 259.7)",
+        "tonalRamp": [
+          "#070b13",
+          "#20252e",
+          "#3d424c",
+          "#5b626b",
+          "#7c838d",
+          "#9fa5b0",
+          "#c3cad5",
+          "#e8effb"
+        ]
+      },
+      "slate-edge": {
+        "role": "neutral",
+        "displayName": "Slate Edge",
+        "canonical": "#21262d",
+        "oklch": "oklch(26.7% 0.015 256.8)",
+        "tonalRamp": [
+          "#070b11",
+          "#20252c",
+          "#3d424a",
+          "#5c626a",
+          "#7d838b",
+          "#9fa6af",
+          "#c3cad3",
+          "#e8eff9"
+        ]
+      },
+      "fog": {
+        "role": "neutral",
+        "displayName": "Fog",
+        "canonical": "#484f58",
+        "oklch": "oklch(42.5% 0.017 254.7)",
+        "tonalRamp": [
+          "#060c12",
+          "#1f262e",
+          "#3c434b",
+          "#5b626b",
+          "#7b838d",
+          "#9ea6b0",
+          "#c2cad5",
+          "#e7effa"
+        ]
+      },
+      "mercury": {
+        "role": "neutral",
+        "displayName": "Mercury",
+        "canonical": "#818b98",
+        "oklch": "oklch(63.3% 0.023 255.0)",
+        "tonalRamp": [
+          "#050c15",
+          "#1e2630",
+          "#3a434e",
+          "#59626e",
+          "#798390",
+          "#9ca6b3",
+          "#c0cad8",
+          "#e5f0fe"
+        ]
+      },
+      "pearl": {
+        "role": "neutral",
+        "displayName": "Pearl",
+        "canonical": "#a4aea6",
+        "oklch": "oklch(74.1% 0.016 151.7)",
+        "tonalRamp": [
+          "#060d08",
+          "#1f2721",
+          "#3c453e",
+          "#5b645d",
+          "#7c857e",
+          "#9ea8a0",
+          "#c2ccc4",
+          "#e7f2e9"
+        ]
+      },
+      "snow": {
+        "role": "neutral",
+        "displayName": "Snow",
+        "canonical": "#ffffff",
+        "oklch": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "terminal-green": {
+        "role": "primary",
+        "displayName": "Terminal Green",
+        "canonical": "#08872b",
+        "oklch": "oklch(54.3% 0.163 146.0)",
+        "tonalRamp": [
+          "#001700",
+          "#003500",
+          "#005600",
+          "#007819",
+          "#2c9b3f",
+          "#56bf62",
+          "#7ce586",
+          "#ccfece"
+        ]
+      },
+      "terminal-green-hover": {
+        "role": "primary",
+        "displayName": "Terminal Green (hover)",
+        "canonical": "#0b9c33",
+        "oklch": "oklch(60.4% 0.182 146.0)",
+        "tonalRamp": [
+          "#001700",
+          "#003700",
+          "#005700",
+          "#007a02",
+          "#0e9d34",
+          "#47c259",
+          "#70e87d",
+          "#ccfece"
+        ]
+      },
+      "sky": {
+        "role": "secondary",
+        "displayName": "Sky",
+        "canonical": "#8dd6ff",
+        "oklch": "oklch(84.3% 0.093 234.0)",
+        "tonalRamp": [
+          "#000c2b",
+          "#002a4a",
+          "#00496b",
+          "#1b698e",
+          "#438bb1",
+          "#67afd6",
+          "#8bd4fd",
+          "#b7f9ff"
+        ]
+      },
+      "violet": {
+        "role": "tertiary",
+        "displayName": "Halo Violet",
+        "canonical": "#8c93fb",
+        "oklch": "oklch(70.3% 0.151 278.8)",
+        "tonalRamp": [
+          "#0f0048",
+          "#1e076b",
+          "#35308f",
+          "#5153b4",
+          "#7075da",
+          "#9299ff",
+          "#b4beff",
+          "#e2eaff"
+        ]
+      },
+      "ember-pin": {
+        "role": "data",
+        "displayName": "Ember Pin",
+        "canonical": "#e03131",
+        "oklch": "oklch(59.3% 0.211 26.5)",
+        "tonalRamp": [
+          "#400000",
+          "#6a0000",
+          "#930000",
+          "#bc000c",
+          "#e53736",
+          "#ff6159",
+          "#ff887c",
+          "#ffdad1"
+        ]
+      },
+      "cpcb-good": {
+        "role": "data",
+        "displayName": "CPCB Good",
+        "canonical": "#00b050",
+        "oklch": "oklch(66.2% 0.183 149.8)",
+        "tonalRamp": [
+          "#001800",
+          "#003800",
+          "#005900",
+          "#007b19",
+          "#009f3f",
+          "#30c362",
+          "#5fe986",
+          "#c8ffd1"
+        ]
+      },
+      "cpcb-satisfactory": {
+        "role": "data",
+        "displayName": "CPCB Satisfactory",
+        "canonical": "#92d050",
+        "oklch": "oklch(78.9% 0.171 131.2)",
+        "tonalRamp": [
+          "#001300",
+          "#003100",
+          "#1a5100",
+          "#3b7200",
+          "#5b9600",
+          "#7dba37",
+          "#a0df60",
+          "#dbfbc1"
+        ]
+      },
+      "cpcb-moderate": {
+        "role": "data",
+        "displayName": "CPCB Moderate",
+        "canonical": "#ffff00",
+        "oklch": "oklch(96.8% 0.211 109.8)",
+        "tonalRamp": [
+          "#150900",
+          "#312400",
+          "#4e4400",
+          "#6d6600",
+          "#8e8900",
+          "#b0ad00",
+          "#d4d200",
+          "#f1f4b4"
+        ]
+      },
+      "cpcb-poor": {
+        "role": "data",
+        "displayName": "CPCB Poor",
+        "canonical": "#ff9900",
+        "oklch": "oklch(77.2% 0.174 64.6)",
+        "tonalRamp": [
+          "#320000",
+          "#560000",
+          "#7b1b00",
+          "#a04100",
+          "#c66500",
+          "#ed8900",
+          "#ffae32",
+          "#ffe4b5"
+        ]
+      },
+      "cpcb-very-poor": {
+        "role": "data",
+        "displayName": "CPCB Very Poor",
+        "canonical": "#ff0000",
+        "oklch": "oklch(62.8% 0.258 29.2)",
+        "tonalRamp": [
+          "#400000",
+          "#770000",
+          "#a10000",
+          "#cc0000",
+          "#f70000",
+          "#ff4434",
+          "#ff8771",
+          "#ffdacf"
+        ]
+      },
+      "cpcb-severe": {
+        "role": "data",
+        "displayName": "CPCB Severe",
+        "canonical": "#c00000",
+        "oklch": "oklch(50.7% 0.208 29.2)",
+        "tonalRamp": [
+          "#400000",
+          "#6a0000",
+          "#920000",
+          "#bb0000",
+          "#e43a2d",
+          "#ff6452",
+          "#ff8b75",
+          "#ffdacf"
+        ]
+      },
+      "sky-wash": {
+        "role": "secondary",
+        "displayName": "Sky Wash",
+        "canonical": "rgba(141, 214, 255, 0.14)",
+        "note": "Sky at 14%: changed-and-unseen status rows."
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Line",
+        "canonical": "rgba(255, 255, 255, 0.1)",
+        "note": "Card edges and row hairlines."
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Line Strong",
+        "canonical": "rgba(255, 255, 255, 0.16)",
+        "note": "Buttons, pills, popovers, perforation."
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The ARRIVES time only; 40px on phones; tabular figures."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Intro question and timeline tally figure."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "FROM / TO field values."
+      },
+      "section": {
+        "displayName": "Section",
+        "purpose": "In-ticket section titles, status row names (at 500), timeline current time."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Sub-copy, remarks, messages; page base is 16px/1.5, 1.6 in Hindi."
+      },
+      "label": {
+        "displayName": "Field Label",
+        "purpose": "Mono uppercase ticket field labels (FROM, TO, ARRIVES) in Mercury; Devanagari drops case and tracking."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "Status codes, row times, forecast lead, hour captions."
+      }
+    },
+    "shadows": [
+      {
+        "name": "none",
+        "value": "none",
+        "purpose": "No drop shadows; glass and hairlines carry depth."
+      },
+      {
+        "name": "pin-ring",
+        "value": "0 0 0 3px rgba(224, 49, 49, 0.22)",
+        "purpose": "FROM pin halo."
+      },
+      {
+        "name": "thumb-ring",
+        "value": "0 0 0 1px rgba(255, 255, 255, 0.16)",
+        "purpose": "Timeline slider thumb outline."
+      },
+      {
+        "name": "ticket-halo",
+        "value": "radial-gradient(closest-side, rgba(167, 162, 255, 0.28), transparent); filter: blur(60px)",
+        "purpose": "Diffused violet atmosphere behind the desktop ticket; never a fill."
+      }
+    ],
+    "glass": [
+      {
+        "name": "glass",
+        "value": "linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.035)), rgba(13,17,23,0.8)",
+        "backdropFilter": "blur(20px) saturate(140%)",
+        "purpose": "Ticket, timeline, calm and site hints floating over the map."
+      },
+      {
+        "name": "glass-solid",
+        "value": "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)), #0f141b",
+        "purpose": "Bottom sheet, layers popover, sticky stub."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-expo-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The single easing for all motion."
+      },
+      {
+        "name": "route-draw",
+        "value": "1.6s",
+        "purpose": "Selected route draws from FROM to the school."
+      },
+      {
+        "name": "map-fit",
+        "value": "1.1s",
+        "purpose": "Camera fit to the route."
+      },
+      {
+        "name": "arrival-count",
+        "value": "0.7s",
+        "purpose": "Arrival hour counts in."
+      },
+      {
+        "name": "time-flip",
+        "value": "0.28s",
+        "purpose": "Changed times flip in place (rotateX)."
+      },
+      {
+        "name": "content-swap",
+        "value": "0.22s",
+        "purpose": "Ticket intro / issued content transition."
+      },
+      {
+        "name": "popover",
+        "value": "0.18s",
+        "purpose": "Layers popover open."
+      },
+      {
+        "name": "ui-state",
+        "value": "0.2s ease",
+        "purpose": "Colour, border, opacity transitions."
+      },
+      {
+        "name": "lit-fade",
+        "value": "1.2s",
+        "purpose": "Sky wash fades from a changed row once seen."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce",
+        "purpose": "All transitions and animations collapse to ~0; route and numbers land on the final state."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "max-width: 860px",
+        "purpose": "Ticket becomes a bottom sheet (90dvh, peek 44dvh); timeline floats above the peek; 56px top bar."
+      },
+      {
+        "name": "desktop",
+        "value": "min-width: 861px",
+        "purpose": "408px ticket dock; sticky stub."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one Terminal Green action per view (stub: Telegram alerts).",
+      "html": "<a class=\"ds-btn-p\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m22 2-7 20-4-9-9-4Z\"/><path d=\"M22 2 11 13\"/></svg><span>Telegram alerts</span></a>",
+      "css": ".ds-btn-p { display:inline-flex; align-items:center; justify-content:center; gap:8px; height:44px; padding:0 14px; border-radius:6px; border:1px solid rgba(255,255,255,0.12); background:#08872b; color:#fff; font:500 15px/1 'Mona Sans', system-ui, sans-serif; text-decoration:none; cursor:pointer; transition:background-color .2s ease; } .ds-btn-p:hover { background:#0b9c33; } .ds-btn-p:focus-visible { outline:2px solid #8dd6ff; outline-offset:2px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Default action: copy, email, WhatsApp.",
+      "html": "<button class=\"ds-btn-o\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7.9 20A9 9 0 1 0 4 16.1L2 22Z\"/></svg>WhatsApp</button>",
+      "css": ".ds-btn-o { display:inline-flex; align-items:center; gap:8px; height:44px; padding:0 14px; border-radius:6px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.04); color:#fff; font:500 14px/1 'Mona Sans', system-ui, sans-serif; cursor:pointer; transition:background-color .2s ease, opacity .2s ease; } .ds-btn-o:hover { background:rgba(255,255,255,0.09); } .ds-btn-o:focus-visible { outline:2px solid #8dd6ff; outline-offset:2px; } .ds-btn-o:disabled { opacity:.55; cursor:progress; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Back, Hide the route, Layers.",
+      "html": "<button class=\"ds-btn-g\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m12 19-7-7 7-7\"/><path d=\"M19 12H5\"/></svg>Back</button>",
+      "css": ".ds-btn-g { display:inline-flex; align-items:center; gap:8px; height:36px; padding:0 14px; border-radius:6px; border:1px solid transparent; background:transparent; color:#a4aea6; font:500 14px/1 'Mona Sans', system-ui, sans-serif; cursor:pointer; transition:background-color .2s ease, color .2s ease; } .ds-btn-g:hover { color:#fff; background:rgba(255,255,255,0.06); } .ds-btn-g:focus-visible { outline:2px solid #8dd6ff; outline-offset:2px; }"
+    },
+    {
+      "name": "Pill Group",
+      "kind": "nav",
+      "refersTo": "pill",
+      "description": "Live/Replay and date tabs: 60px pills in a glass track.",
+      "html": "<div class=\"ds-pills\" role=\"tablist\"><button class=\"ds-pill\" role=\"tab\"><i class=\"ds-live\"></i>Live</button><button class=\"ds-pill\" role=\"tab\" aria-selected=\"true\">Replay · 11 Nov 2025</button></div>",
+      "css": ".ds-pills { display:inline-flex; gap:4px; padding:3px; border-radius:60px; border:1px solid rgba(255,255,255,0.1); background:rgba(13,17,23,0.6); backdrop-filter:blur(20px) saturate(140%); } .ds-pill { display:inline-flex; align-items:center; gap:8px; height:32px; padding:0 14px; border-radius:60px; border:1px solid transparent; background:transparent; color:#a4aea6; font:400 14px/1 'Mona Sans', system-ui, sans-serif; cursor:pointer; transition:color .2s ease, background-color .2s ease; } .ds-pill:hover { color:#fff; } .ds-pill[aria-selected=\"true\"] { background:rgba(255,255,255,0.1); color:#fff; border-color:rgba(255,255,255,0.16); } .ds-pill:focus-visible { outline:2px solid #8dd6ff; outline-offset:2px; } .ds-live { width:7px; height:7px; border-radius:50%; background:#3fb950; box-shadow:0 0 0 3px rgba(63,185,80,0.18); }"
+    },
+    {
+      "name": "Suggestion Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Try-a-school suggestions under the search.",
+      "html": "<button class=\"ds-chip\">Sardar Patel Vidyalaya</button>",
+      "css": ".ds-chip { height:30px; padding:0 12px; border-radius:60px; border:1px solid rgba(255,255,255,0.16); background:transparent; color:#a4aea6; font:400 13.5px/1 'Mona Sans', system-ui, sans-serif; cursor:pointer; transition:color .2s ease, border-color .2s ease; } .ds-chip:hover { color:#fff; border-color:rgba(255,255,255,0.4); } .ds-chip:focus-visible { outline:2px solid #8dd6ff; outline-offset:2px; }"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Which school? search inside the TO field.",
+      "html": "<label class=\"ds-search\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg><input placeholder=\"Which school?\" /></label>",
+      "css": ".ds-search { display:flex; align-items:center; gap:10px; height:48px; padding:0 12px; border-radius:8px; border:1px solid #21262d; background:#151a22; color:#818b98; transition:border-color .2s ease; } .ds-search:focus-within { border-color:#8dd6ff; } .ds-search input { flex:1; min-width:0; height:100%; border:0; background:transparent; outline:none; color:#fff; caret-color:#8dd6ff; font:400 16px 'Mona Sans', system-ui, sans-serif; } .ds-search input::placeholder { color:#818b98; }"
+    },
+    {
+      "name": "CPCB Category Pill",
+      "kind": "chip",
+      "refersTo": "category-pill",
+      "description": "Official CPCB colour with category ink plus mono value.",
+      "html": "<span class=\"ds-cat\" style=\"background:#C00000;color:#fff\">Severe <span class=\"ds-cat-v\">258</span></span> <span class=\"ds-cat\" style=\"background:#FF9900;color:#0d1117\">Poor <span class=\"ds-cat-v\">112</span></span>",
+      "css": ".ds-cat { display:inline-flex; align-items:center; gap:6px; border-radius:60px; padding:3px 10px; font:600 13px/1.4 'Mona Sans', system-ui, sans-serif; white-space:nowrap; } .ds-cat-v { font:500 12px 'JetBrains Mono', ui-monospace, monospace; opacity:.85; }"
+    },
+    {
+      "name": "Smoke Ticket",
+      "kind": "card",
+      "refersTo": "ticket",
+      "description": "Glass ticket: FROM/TO rail, ARRIVES, hairline status rows, perforation.",
+      "html": "<article class=\"ds-ticket\"><div class=\"ds-row\"><i class=\"ds-pin\"></i><div><div class=\"ds-lbl\">From</div><div class=\"ds-val\">Crop fires near Sangrur</div></div></div><div class=\"ds-row\"><i class=\"ds-pin ds-to\"></i><div><div class=\"ds-lbl\">To</div><div class=\"ds-val\">Sardar Patel Vidyalaya</div></div></div><div class=\"ds-arr\"><div><div class=\"ds-lbl\">Arrives</div><div class=\"ds-time\">08:00</div></div><span class=\"ds-sev\">Severe 258</span></div><ul class=\"ds-status\"><li class=\"ds-lit\"><span class=\"ds-t\">07:30</span><span>Arrival</span><span class=\"ds-code\">Masks · gates open early</span></li><li><span class=\"ds-t\">08:00</span><span>Morning assembly</span><span class=\"ds-code\">Indoors</span></li></ul><div class=\"ds-perf\"></div></article>",
+      "css": ".ds-ticket { position:relative; width:360px; padding:20px 24px 24px; display:grid; gap:14px; color:#fff; font:400 15px/1.5 'Mona Sans', system-ui, sans-serif; background:linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.035)), rgba(13,17,23,0.8); backdrop-filter:blur(20px) saturate(140%); border:1px solid rgba(255,255,255,0.1); border-radius:24px; } .ds-row { display:grid; grid-template-columns:18px 1fr; column-gap:12px; } .ds-pin { display:block; width:12px; height:12px; margin:5px auto 0; border-radius:50%; background:#e03131; box-shadow:0 0 0 3px rgba(224,49,49,0.22); box-sizing:border-box; } .ds-to { background:transparent; border:2px solid #fff; box-shadow:none; } .ds-lbl { font:400 11.5px 'JetBrains Mono', ui-monospace, monospace; letter-spacing:.06em; text-transform:uppercase; color:#818b98; } .ds-val { font-size:17px; font-weight:500; line-height:1.35; } .ds-arr { display:flex; align-items:flex-end; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.1); padding-top:4px; } .ds-time { font-size:48px; font-weight:425; line-height:1; letter-spacing:-.035em; font-variant-numeric:tabular-nums; } .ds-sev { background:#C00000; color:#fff; border-radius:60px; padding:3px 10px; font:600 13px 'Mona Sans', system-ui, sans-serif; } .ds-status { list-style:none; margin:0 -24px; padding:0; } .ds-status li { display:grid; grid-template-columns:48px 1fr; gap:4px 12px; padding:10px 24px; border-top:1px solid rgba(255,255,255,0.1); transition:background-color 1.2s cubic-bezier(0.16,1,0.3,1); } .ds-lit { background:rgba(141,214,255,0.14); } .ds-lit .ds-code { color:#8dd6ff; } .ds-t { font:400 13px 'JetBrains Mono', ui-monospace, monospace; color:#a4aea6; font-variant-numeric:tabular-nums; } .ds-code { grid-column:2; font:400 12px 'JetBrains Mono', ui-monospace, monospace; letter-spacing:.04em; text-transform:uppercase; color:#a4aea6; } .ds-perf { position:relative; height:1px; margin:4px -24px; border-top:1.5px dashed rgba(255,255,255,0.16); } .ds-perf::before, .ds-perf::after { content:\"\"; position:absolute; top:-9px; width:16px; height:16px; border-radius:50%; background:#0d1117; border:1px solid rgba(255,255,255,0.1); } .ds-perf::before { left:-9px; clip-path:inset(0 0 0 50%); } .ds-perf::after { right:-9px; clip-path:inset(0 50% 0 0); }"
+    },
+    {
+      "name": "GRAP Featured Card",
+      "kind": "card",
+      "refersTo": "featured-card",
+      "description": "The one bordered inset in the ticket; Violet border and label.",
+      "html": "<div class=\"ds-grap\"><strong>GRAP Stage IV</strong>Outdoor physical activity suspended; hybrid classes for primary grades.</div>",
+      "css": ".ds-grap { border:1px solid #8c93fb; border-radius:16px; padding:12px 14px; background:rgba(140,147,251,0.07); color:#fff; font:400 14.5px/1.5 'Mona Sans', system-ui, sans-serif; } .ds-grap strong { display:block; margin-bottom:4px; font:500 13px 'JetBrains Mono', ui-monospace, monospace; letter-spacing:.04em; color:#8c93fb; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Smoke Ticket",
+    "overview": "SmokePath sets tomorrow's stubble smoke as a journey to one school. It has a departure (the fires), a route across the map, an arrival time and a status list for the school day. The world comes from GitHub's dark product language: a Deep Void canvas, frosted glass laid over a live map, Mona Sans at weight 425, JetBrains Mono for stamped codes, and one green action. The ticket idiom (FROM / TO fields, a perforated stub, hairline rows, tabular figures) carries the information. The page has no dashboard chrome.\n\nThe map is the ground and runs full-bleed. Glass objects float over it: the ticket, the timeline bar and the top bar's pill group. Everything outside pollution data stays greyscale, and Sky marks the route plus anything the user can follow. CPCB category colours are the only warm or saturated colours on screen, apart from the red FROM pin, so pollution always reads as pollution.\n\nThe density suits an operator: someone who has to decide in seconds on a phone in the evening. Data sits in hairline rows, never in boxes inside boxes. Motion stays functional (the route draws itself, the arrival time counts in, changed times flip) and all of it switches off under reduced motion.",
+    "keyCharacteristics": [
+      "Full-bleed dark map with glass objects floating over it, never a sidebar layout.",
+      "One ticket: FROM / TO rail, ARRIVES time, CPCB pill, hour grid, status rows, remarks, perforated stub.",
+      "Two shapes: 60px pills for navigation and tags, 6px rectangles for actions, 24px for glass cards.",
+      "Greyscale chrome with three signals: Sky (route, links, focus), Terminal Green (the one action), CPCB (pollution).",
+      "Mono uppercase only for field labels, times and status codes. Devanagari never gets uppercase or tracking."
+    ],
+    "rules": [
+      {
+        "name": "The Pollution-Owns-Colour Rule",
+        "body": "Saturated warm colour appears only on pollution data, in the official CPCB colours from the single table. Chrome never borrows a CPCB colour, and pollution data never gets a custom palette.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Green Rule",
+        "body": "Terminal Green marks one action per view. If a second thing wants to be green, it becomes an outline button.",
+        "section": "colors"
+      },
+      {
+        "name": "The Sky Is the Path Rule",
+        "body": "Sky means \"route, link, or where focus is\". Use it nowhere else.",
+        "section": "colors"
+      },
+      {
+        "name": "The Stamped Field Rule",
+        "body": "Mono uppercase is reserved for what a ticket machine would print: field names, times, codes and status words. Headings, prose and buttons are always Mona Sans.",
+        "section": "typography"
+      },
+      {
+        "name": "The Devanagari Rule",
+        "body": "In Hindi, every label, mono and status-code style drops uppercase and tracking and switches to the text face. Body line-height rises to 1.6.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Rule",
+        "body": "Every time, PM2.5 value and count uses tabular figures, so flipping digits never shift sideways.",
+        "section": "typography"
+      },
+      {
+        "name": "The Glass-Not-Shadow Rule",
+        "body": "Anything floating over the map is frosted glass with a hairline edge. Never use a drop shadow to lift it.",
+        "section": "elevation"
+      },
+      {
+        "name": "The No-Box-In-Box Rule",
+        "body": "Inside the ticket, content is separated by hairline rows and the perforation. The GRAP card is the one bordered inset.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do float every map overlay as glass: white film on 80% Deep Void, blur(20px) saturate(140%), 1px 10% white edge, 24px radius.",
+      "Do take every pollution colour from the single CPCB table (`lib/colors.ts`). Use Deep Void ink on all CPCB fills except Severe, which takes Snow.",
+      "Do keep exactly one Terminal Green action per view, and keep it in the first viewport.",
+      "Do use Sky for the route, links, disclosures and focus, and a Sky wash for \"changed and unseen\".",
+      "Do set times, values and counts in tabular figures, and the arrival time at 48px/425.",
+      "Do separate ticket content with hairline rows and the perforation, bleeding rows to the card edge.",
+      "Do drop uppercase and tracking on Devanagari labels and use the text face.",
+      "Do give every animation a reduced-motion path that lands on the final state."
+    ],
+    "donts": [
+      "Don't build the AQI dashboard: no big standalone AQI number, no gauge, no sidebar list of places.",
+      "Don't use CPCB colours, or any saturated warm colour, on chrome. Don't invent a custom pollution palette.",
+      "Don't add a second green button. Secondary actions are outline or ghost.",
+      "Don't use Violet as a fill or a general accent. It belongs to the GRAP featured border and the diffused halo only.",
+      "Don't lift surfaces with drop shadows or nest bordered boxes inside the ticket.",
+      "Don't set headings, prose or buttons in mono, and don't put mono uppercase labels above headings as decoration.",
+      "Don't go neon: no glowing strokes, gradients on text, or saturated dark-mode accents beyond the three signals."
+    ]
+  }
+}
