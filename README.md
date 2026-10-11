@@ -4,7 +4,12 @@
 
 AWS Environmental Hacks 2026 · Air track (stubble burning, school safety on bad days)
 
-Live: https://d35jtpishdgz20.cloudfront.net · Code: https://github.com/dhruvdumra/smokepath · Replay of the Nov 2025 Delhi smog: https://d35jtpishdgz20.cloudfront.net/?dataset=replay
+- Home: https://d35jtpishdgz20.cloudfront.net
+- Map app: https://d35jtpishdgz20.cloudfront.net/app (replay of the 11 Nov 2025 smog: `/app?dataset=replay`)
+- How to use it: https://d35jtpishdgz20.cloudfront.net/how
+- Telegram bot: https://t.me/coolgrid_bot
+- Code: https://github.com/dhruvdumra/smokepath
+- Bot health check: `backend/scripts/check_bot.py` (see [docs/testing-telegram.md](docs/testing-telegram.md))
 
 ---
 

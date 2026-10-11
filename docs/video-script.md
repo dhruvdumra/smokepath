@@ -1,7 +1,7 @@
 # SmokePath: 3-minute demo video script
 
 Target: 2:50. Record at 1440×900, browser zoom 100%, dark OS theme. Open these in tabs before recording:
-1. https://d35jtpishdgz20.cloudfront.net/?dataset=replay
+1. https://d35jtpishdgz20.cloudfront.net/app?dataset=replay (and the home page https://d35jtpishdgz20.cloudfront.net for the opening shot)
 2. Telegram on your phone (screen-mirrored) or Telegram Desktop with @coolgrid_bot open
 3. `docs/architecture.svg`
 
