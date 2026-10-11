@@ -137,8 +137,8 @@ export function MapView({ bundle, schools, schoolPm, frame, layers, selected, ro
     }),
     route && new ScatterplotLayer({
       // The FROM terminus, matching the ticket's red FROM pin.
-      id: 'route-from', data: [route.path[0]], getPosition: (d) => d, radiusUnits: 'pixels', getRadius: 8,
-      getFillColor: [224, 49, 49, 255], stroked: true, getLineColor: [224, 49, 49, 70], lineWidthUnits: 'pixels', getLineWidth: 6,
+      id: 'route-from', data: [route.path[0]], getPosition: (d) => d, radiusUnits: 'pixels', getRadius: 5.5,
+      getFillColor: [224, 49, 49, 255], stroked: true, getLineColor: [224, 49, 49, 70], lineWidthUnits: 'pixels', getLineWidth: 4,
     }),
     route && new ScatterplotLayer({
       id: 'route-stops', data: route.stops, getPosition: (d) => d.pos, radiusUnits: 'pixels', getRadius: 5,

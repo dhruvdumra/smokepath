@@ -10,7 +10,7 @@ export function HourStrip({ adv, lang }: { adv: Advisory; lang: Lang }) {
   const [b0, b1] = work ? [8, 17] : [7, 14];
   const vals = HOURS.map((h) => adv.hourly[h]);
   const max = Math.max(150, ...vals.map((v) => Math.max(v.pm, v.raw))) * 1.1;
-  const W = 360, H = 112, base = H - 18, top = 14, cw = W / HOURS.length;
+  const W = 360, H = 92, base = H - 18, top = 14, cw = W / HOURS.length;
   const y = (v: number) => base - (v / max) * (base - top);
   const summary = vals.map((v, i) => `${HOURS[i]}:00 ${v.pm}`).join(', ');
 

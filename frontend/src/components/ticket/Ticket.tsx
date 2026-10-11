@@ -5,7 +5,7 @@ import { TicketRoute } from './TicketRoute';
 import { HourStrip } from './HourStrip';
 import { StatusList } from './StatusList';
 import { Remarks } from './Remarks';
-import { Stub } from './Stub';
+import { ShareMessage, Stub } from './Stub';
 import { Fineprint } from './Fineprint';
 import { dateLabel } from '../../lib/time';
 import { tr } from '../../lib/ui';
@@ -75,6 +75,7 @@ export function Ticket(p: Props) {
                 <HourStrip adv={p.adv} lang={p.lang} />
                 <StatusList adv={p.adv} lang={p.lang} />
                 <Remarks adv={p.adv} lang={p.lang} />
+                <ShareMessage adv={p.adv} lang={p.lang} />
                 <Fineprint adv={p.adv} lang={p.lang} />
                 <Stub adv={p.adv} lang={p.lang} />
               </div>

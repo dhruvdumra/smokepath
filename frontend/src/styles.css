@@ -196,11 +196,16 @@ input { caret-color: var(--sky); }
 
 /* stub: share + alerts */
 .stub { display: grid; gap: 12px; }
-.stub-actions { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; }
-.stub .btn-primary { width: 100%; }
+.stub-row { display: flex; gap: 8px; }
+.stub-row .btn-primary { flex: 1; min-width: 0; }
+.btn .label { overflow: hidden; text-overflow: ellipsis; }
+/* Grid children never grow past the ticket's column (long labels ellipsize instead). */
+.ticket-inner, .ticket-inner > *, .ticket-inner > * > div { grid-template-columns: minmax(0, 1fr); min-width: 0; }
+.ticket { overflow-x: hidden; }
+.stub-row .icon-btn { width: 44px; height: 44px; }
 @media (min-width: 861px) {
   /* The ticket stub stays in view: the one green action is always in the first viewport. */
-  .stub { position: sticky; bottom: 0; z-index: 2; margin: 0 -24px -24px; padding: 0 24px 20px;
+  .stub { position: sticky; bottom: 0; z-index: 2; margin: 0 -24px -24px; padding: 0 24px 16px; gap: 10px;
     background: linear-gradient(180deg, rgba(15, 20, 27, 0.9), #0f141b 18px); border-radius: 0 0 var(--r-card) var(--r-card); }
   .stub .perf { margin: 0 -24px 6px; }
 }

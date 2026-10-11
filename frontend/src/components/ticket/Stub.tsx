@@ -13,27 +13,14 @@ const EMAIL_MSG: Record<string, [string, string]> = {
   local: ['Saved (local dev mode).', 'सहेजा गया (लोकल)।'],
 };
 
-/** The ticket stub, torn off below the perforation: the message to forward and the one green action.
- *  On desktop it stays pinned to the bottom of the ticket so the action is always in view. */
-export function Stub({ adv, lang }: { adv: Advisory; lang: Lang }) {
-  const [copied, setCopied] = useState(false);
+/** The message to forward and the email option, in the scrolling ticket just above the stub. */
+export function ShareMessage({ adv, lang }: { adv: Advisory; lang: Lang }) {
   const [read, setRead] = useState(false);
   const [email, setEmail] = useState('');
   const [showEmail, setShowEmail] = useState(false);
   const [state, setState] = useState<{ busy: boolean; msg: string | null; error: boolean }>({ busy: false, msg: null, error: false });
   const text = adv.share_message?.[lang];
   const work = adv.profile === 'work';
-
-  const copy = async () => {
-    if (!text) return;
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1800);
-    } catch {
-      setRead(true); // clipboard blocked: show the text so it can be selected
-    }
-  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,32 +34,18 @@ export function Stub({ adv, lang }: { adv: Advisory; lang: Lang }) {
   };
 
   return (
-    <section className="stub" aria-label={tr(work ? 'workers' : 'parents', lang)}>
-      <div className="perf" aria-hidden />
-      {text && (
-        <button className="more" aria-expanded={read} onClick={() => setRead(!read)} style={{ justifySelf: 'start' }}>
-          {tr(work ? 'workers' : 'parents', lang)}<ChevronDown aria-hidden />
-        </button>
-      )}
-      {text && read && <p className="message">{text}</p>}
-      {BOT && (
-        <a className="btn btn-primary" href={`https://t.me/${BOT}?start=${encodeURIComponent(adv.school.id)}`} target="_blank" rel="noreferrer">
-          <Send aria-hidden />{tr('alerts', lang)}
-        </a>
-      )}
-      <div className="stub-actions">
+    <section aria-label={tr(work ? 'workers' : 'parents', lang)} style={{ display: 'grid', gap: 8 }}>
+      <div className="row" style={{ justifyContent: 'space-between' }}>
         {text ? (
-          <>
-            <button className="btn" onClick={copy}>{copied ? <Check aria-hidden /> : <Copy aria-hidden />}{copied ? tr('copied', lang) : tr('copy', lang)}</button>
-            <a className="btn" href={`https://wa.me/?text=${encodeURIComponent(text)}`} target="_blank" rel="noreferrer">
-              <MessageCircle aria-hidden />{tr('whatsapp', lang)}
-            </a>
-          </>
+          <button className="more" aria-expanded={read} onClick={() => setRead(!read)}>
+            {tr(work ? 'workers' : 'parents', lang)}<ChevronDown aria-hidden />
+          </button>
         ) : <span />}
-        <button className="btn" aria-expanded={showEmail} onClick={() => setShowEmail(!showEmail)} aria-label={tr('orEmail', lang)} title={tr('orEmail', lang)}>
-          <Mail aria-hidden />
+        <button className="more" aria-expanded={showEmail} onClick={() => setShowEmail(!showEmail)}>
+          <Mail aria-hidden />{tr('orEmail', lang)}
         </button>
       </div>
+      {text && read && <p className="message">{text}</p>}
       {showEmail && (
         <form onSubmit={submit} className="email-form">
           <label htmlFor="sub-email" className="sr-only">Email</label>
@@ -82,6 +55,48 @@ export function Stub({ adv, lang }: { adv: Advisory; lang: Lang }) {
         </form>
       )}
       {state.msg && <p className={state.error ? 'status-msg error' : 'status-msg'} role="status">{state.msg}</p>}
+    </section>
+  );
+}
+
+/** The ticket stub below the perforation: one row holding the one green action and the share shortcuts.
+ *  On desktop it stays pinned to the bottom of the ticket so the action is always in view. */
+export function Stub({ adv, lang }: { adv: Advisory; lang: Lang }) {
+  const [copied, setCopied] = useState(false);
+  const text = adv.share_message?.[lang];
+
+  const copy = async () => {
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      /* clipboard blocked: the message above stays selectable */
+    }
+  };
+
+  return (
+    <section className="stub" aria-label={tr('alerts', lang)}>
+      <div className="perf" aria-hidden />
+      <div className="stub-row">
+        {BOT && (
+          <a className="btn btn-primary" href={`https://t.me/${BOT}?start=${encodeURIComponent(adv.school.id)}`} target="_blank" rel="noreferrer">
+            <Send aria-hidden /><span className="label">{tr('alerts', lang)}</span>
+          </a>
+        )}
+        {text && (
+          <>
+            <button className="btn icon-btn" onClick={copy} aria-label={copied ? tr('copied', lang) : tr('copy', lang)} title={tr('copy', lang)}>
+              {copied ? <Check aria-hidden /> : <Copy aria-hidden />}
+            </button>
+            <a className="btn icon-btn" href={`https://wa.me/?text=${encodeURIComponent(text)}`} target="_blank" rel="noreferrer"
+               aria-label={tr('whatsapp', lang)} title={tr('whatsapp', lang)}>
+              <MessageCircle aria-hidden />
+            </a>
+          </>
+        )}
+      </div>
     </section>
   );
 }
