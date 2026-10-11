@@ -1,4 +1,4 @@
-import { Layers } from 'lucide-react';
+import { CircleHelp, Layers } from 'lucide-react';
 import { tr } from '../lib/ui';
 import type { Dataset, Lang } from '../lib/types';
 
@@ -35,6 +35,9 @@ export function TopBar({ dataset, lang, layersOpen, onDataset, onLang, onLayers 
         ))}
       </div>
       <span className="spacer" />
+      <a className="btn btn-ghost btn-pill" href={lang === 'hi' ? '/how?lang=hi' : '/how'}>
+        <CircleHelp aria-hidden /><span className="hide-sm">{lang === 'en' ? 'How to use' : 'कैसे इस्तेमाल करें'}</span>
+      </a>
       <button className="btn btn-ghost btn-pill" aria-expanded={layersOpen} onClick={onLayers}>
         <Layers aria-hidden /><span className="hide-sm">{tr('layers', lang)}</span>
       </button>

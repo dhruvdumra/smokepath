@@ -69,7 +69,7 @@ export default function App() {
     if (placeId) q.set('school', placeId);
     if (dataset !== 'live') q.set('dataset', dataset);
     if (lang !== 'en') q.set('lang', lang);
-    window.history.replaceState(null, '', q.toString() ? `?${q}` : window.location.pathname);
+    window.history.replaceState(null, '', `/app${q.toString() ? `?${q}` : ''}`);
   }, [placeId, dataset, lang]);
 
   useEffect(() => {

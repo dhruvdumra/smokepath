@@ -35,6 +35,7 @@ interface Props {
 
 const BASEMAP = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
 const TRIGGER = 120; // above Poor: the school's advisory changes the timetable
+const CLUSTER_ZOOM = 7.2; // below this the schools collapse into one NCR marker
 const SKY: [number, number, number] = [141, 214, 255];
 
 function DeckOverlay(props: MapboxOverlayProps) {
@@ -70,6 +71,16 @@ export function MapView({ bundle, schools, schoolPm, frame, layers, selected, ro
   const wind = useMemo(() => (layers.wind ? windArrows(bundle, Math.round(frame)) : []), [bundle, frame, layers.wind]);
   const triggered = useMemo(() => schools.filter((_, i) => schoolPm[i] > TRIGGER), [schools, schoolPm]);
   const dim = !!selected;
+
+  // Zoomed out, 1,034 school dots would pile into a solid block over Delhi: show one NCR marker instead.
+  const [zoom, setZoom] = useState(6.1);
+  const near = zoom >= CLUSTER_ZOOM;
+  const ncr = useMemo(() => {
+    if (!schools.length) return [];
+    const lat = schools.reduce((a, s) => a + s.lat, 0) / schools.length;
+    const lon = schools.reduce((a, s) => a + s.lon, 0) / schools.length;
+    return [{ pos: [lon, lat] as [number, number], label: `Delhi NCR · ${schools.length.toLocaleString('en-IN')} schools` }];
+  }, [schools]);
 
   // Signature interaction: the route draws itself from the fires to the school when a ticket is issued.
   const [draw, setDraw] = useState(0);
@@ -150,20 +161,30 @@ export function MapView({ bundle, schools, schoolPm, frame, layers, selected, ro
       getPixelOffset: [0, -16], background: true, getBackgroundColor: [13, 17, 23, 210], backgroundPadding: [6, 3],
       characterSet: 'auto',
     }),
-    layers.stations && new ScatterplotLayer({
+    layers.stations && zoom >= 6.6 && new ScatterplotLayer({
       id: 'stations', data: bundle.stations, pickable: true, stroked: true, filled: true, opacity: dim ? 0.25 : 1,
       getPosition: (d) => [d.lon, d.lat], radiusUnits: 'pixels', getRadius: 3.5,
       getFillColor: [15, 19, 24, 160], getLineColor: [230, 236, 242, 130], lineWidthUnits: 'pixels', getLineWidth: 1,
     }),
     // Schools whose advisory is triggered at this hour get a ring: the plume switching timetables on.
-    layers.schools && new ScatterplotLayer({
+    layers.schools && zoom >= 8.2 && new ScatterplotLayer({
       id: 'triggered', data: triggered, getPosition: (d) => [d.lon, d.lat], radiusUnits: 'pixels', getRadius: 6.5,
       stroked: true, filled: false, getLineColor: [255, 255, 255, dim ? 40 : 110], lineWidthUnits: 'pixels', getLineWidth: 1,
       updateTriggers: { getLineColor: dim },
     }),
-    layers.schools && new ScatterplotLayer({
+    layers.schools && !near && !selected && new TextLayer({
+      id: 'ncr', data: ncr, getPosition: (d) => d.pos, getText: (d) => d.label, pickable: true,
+      getSize: 13, getColor: [255, 255, 255, 240], fontFamily: 'Mona Sans, sans-serif', fontWeight: 600,
+      background: true, getBackgroundColor: [13, 17, 23, 225], backgroundPadding: [10, 6], getBorderColor: [255, 255, 255, 60],
+      getBorderWidth: 1, characterSet: 'auto',
+      onClick: ({ object }) => {
+        if (object) mapRef.current?.flyTo({ center: object.pos, zoom: 9, duration: reduce ? 0 : 900 });
+        return true;
+      },
+    }),
+    layers.schools && (near || selected) && new ScatterplotLayer({
       id: 'schools', data: schools, pickable: true, autoHighlight: true, highlightColor: [255, 255, 255, 200],
-      getPosition: (d) => [d.lon, d.lat], radiusUnits: 'pixels', getRadius: 3.2,
+      getPosition: (d) => [d.lon, d.lat], radiusUnits: 'meters', getRadius: 260, radiusMinPixels: 1.5, radiusMaxPixels: 6,
       getFillColor: (_d, { index }) => [...rgb(schoolPm[index] ?? 0), dim ? 45 : 235] as [number, number, number, number],
       updateTriggers: { getFillColor: [schoolPm, dim] },
       onClick: ({ object }) => {
@@ -187,6 +208,7 @@ export function MapView({ bundle, schools, schoolPm, frame, layers, selected, ro
       style={{ position: 'absolute', inset: 0 }}
       cursor={siteMode ? 'crosshair' : undefined}
       onClick={(e) => siteMode && onPickSite(e.lngLat.lat, e.lngLat.lng)}
+      onZoom={(e) => setZoom(Math.round(e.viewState.zoom * 10) / 10)}
       onLoad={(e) => {
         setReady(true);
         if (import.meta.env.DEV) (window as unknown as { __spMap: unknown }).__spMap = e.target;

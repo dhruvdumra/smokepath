@@ -68,7 +68,7 @@ def telegram_text(adv, lang="en", site_url=None):
     lines += [f"• {esc(a[lang])}" for a in adv["actions"][:8]]
     lines += ["", f"<i>{esc(_l('footer', lang).format(conf=adv['correction']['confidence']))}</i>"]
     if site_url:
-        lines.append(f'<a href="{esc(site_url)}?school={adv["school"]["id"]}&amp;dataset={adv["dataset"]}">{_l("open", lang)}</a>')
+        lines.append(f'<a href="{esc(site_url)}/app?school={adv["school"]["id"]}&amp;dataset={adv["dataset"]}">{_l("open", lang)}</a>')
     return "\n".join(lines)
 
 

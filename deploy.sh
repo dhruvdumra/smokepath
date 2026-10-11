@@ -30,10 +30,14 @@ if grep -q '^TELEGRAM_BOT_TOKEN=.\+' .env 2>/dev/null; then
   BOT=$("$PY" backend/scripts/telegram_setup.py "$SITE" | sed -n 's/^bot username: //p')
 fi
 (cd frontend && VITE_TELEGRAM_BOT="$BOT" npm run build)
-aws s3 sync frontend/dist "s3://$BUCKET/" --exclude "data/*" --delete --region $REGION
+aws s3 sync frontend/dist "s3://$BUCKET/" --exclude "data/*" --exclude "app" --exclude "how" --delete --region $REGION
 aws s3 cp backend/smokepath/static/schools.json "s3://$BUCKET/data/static/schools.json" --region $REGION \
   --content-type application/json --cache-control "public, max-age=3600"
 aws s3 cp "s3://$BUCKET/index.html" "s3://$BUCKET/index.html" --metadata-directive REPLACE \
   --content-type text/html --cache-control "no-cache" --region $REGION >/dev/null
-MSYS_NO_PATHCONV=1 aws cloudfront create-invalidation --distribution-id "$DIST" --paths "/index.html" "/data/static/*" >/dev/null
+# Client-side routes: /app (the map) and /how (the guide) are the same SPA shell, stored under their own keys.
+for route in app how; do
+  aws s3 cp frontend/dist/index.html "s3://$BUCKET/$route" --content-type text/html --cache-control "no-cache" --region $REGION >/dev/null
+done
+MSYS_NO_PATHCONV=1 aws cloudfront create-invalidation --distribution-id "$DIST" --paths "/index.html" "/app" "/how" "/data/static/*" >/dev/null
 echo "Deployed: $SITE"

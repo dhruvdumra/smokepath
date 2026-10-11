@@ -40,7 +40,6 @@ body {
   font: 400 16px/1.5 var(--font);
   -webkit-font-smoothing: antialiased;
   font-feature-settings: 'ss01' on, 'cv11' on;
-  overflow: hidden;
 }
 html[lang='hi'] body { line-height: 1.6; }
 /* Devanagari has no case and breaks apart under tracking: labels keep the text face, no uppercase, no spacing. */
@@ -199,8 +198,8 @@ input { caret-color: var(--sky); }
 .stub-row { display: flex; gap: 8px; }
 .stub-row .btn-primary { flex: 1; min-width: 0; }
 .btn .label { overflow: hidden; text-overflow: ellipsis; }
-/* Grid children never grow past the ticket's column (long labels ellipsize instead). */
-.ticket-inner, .ticket-inner > *, .ticket-inner > * > div { grid-template-columns: minmax(0, 1fr); min-width: 0; }
+/* Grid stacks never grow past the ticket's column (long labels ellipsize instead). */
+.ticket-inner, .ticket-stack { grid-template-columns: minmax(0, 1fr); min-width: 0; }
 .ticket { overflow-x: hidden; }
 .stub-row .icon-btn { width: 44px; height: 44px; }
 @media (min-width: 861px) {

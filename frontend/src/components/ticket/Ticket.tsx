@@ -43,12 +43,12 @@ export function Ticket(p: Props) {
     <div className="ticket-inner">
       <AnimatePresence initial={false}>
         {!p.place ? (
-          <motion.div key="intro" {...anim} transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }} style={{ display: 'grid', gap: 20 }}>
+          <motion.div key="intro" className="ticket-stack" {...anim} transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }} style={{ display: 'grid', gap: 20 }}>
             <TicketIntro schools={p.schools} bundle={p.bundle} lang={p.lang} siteMode={p.siteMode}
                          onSiteMode={p.onSiteMode} onSelect={p.onSelect} />
           </motion.div>
         ) : (
-          <motion.div key={p.place.id} {...anim} transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }} style={{ display: 'grid', gap: 20 }}
+          <motion.div key={p.place.id} className="ticket-stack" {...anim} transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }} style={{ display: 'grid', gap: 20 }}
                       aria-busy={p.loading}>
             <div className="ticket-head">
               <button className="btn btn-ghost" onClick={p.onBack}><ArrowLeft aria-hidden />{tr('back', p.lang)}</button>
@@ -65,7 +65,7 @@ export function Ticket(p: Props) {
             {p.loading && !p.adv && <div className="skeleton" aria-label={tr('loading', p.lang)}><div /><div /><div /><div /></div>}
 
             {p.adv && (
-              <div style={{ display: 'grid', gap: 20, opacity: p.loading ? 0.6 : 1, transition: 'opacity 0.2s ease' }}>
+              <div className="ticket-stack" style={{ display: 'grid', gap: 20, opacity: p.loading ? 0.6 : 1, transition: 'opacity 0.2s ease' }}>
                 <TicketRoute adv={p.adv} lang={p.lang} />
                 {hasRoute && (
                   <button className="btn btn-ghost" style={{ justifySelf: 'start', marginTop: -10 }} aria-pressed={p.showRoute} onClick={p.onToggleRoute}>

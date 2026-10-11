@@ -21,10 +21,12 @@ export function heatImage(b: Bundle, f: number, corrected: boolean): ImageData {
     for (let ix = 0; ix < nx; ix++) {
       const k = iy * nx + ix;
       const v = lerp(A[k], B[k], t) * (corrected ? b.ratio[k] : 1);
-      // Fade the outer ring so the model domain doesn't end in a hard rectangle.
-      const edge = Math.min(ix, iy, nx - 1 - ix, ny - 1 - iy);
+      // Feather the model domain into a soft ellipse so its edge never reads as a box on the map.
+      const ex = (ix - (nx - 1) / 2) / ((nx - 1) / 2), ey = (iy - (ny - 1) / 2) / ((ny - 1) / 2);
+      const d = Math.hypot(ex, ey);
+      const fade = d <= 0.62 ? 1 : d >= 1.05 ? 0 : 1 - (d - 0.62) / 0.43;
       const c = ramp(v);
-      c[3] *= edge === 0 ? 0 : edge === 1 ? 0.55 : 1;
+      c[3] *= fade * fade * (3 - 2 * fade);
       img.data.set(c.map(Math.round), ((ny - 1 - iy) * nx + ix) * 4);
     }
   }
