@@ -53,7 +53,7 @@ const S = {
   copy: ['Copy', 'कॉपी'],
   copied: ['Copied', 'कॉपी हो गया'],
   whatsapp: ['WhatsApp', 'WhatsApp'],
-  alerts: ['Evening alerts on Telegram', 'हर शाम Telegram पर अलर्ट'],
+  alerts: ['Telegram alerts', 'Telegram अलर्ट'],
   orEmail: ['Or by email', 'या ईमेल से'],
   emailPh: ['principal@school.in', 'principal@school.in'],
   emailBtn: ['Subscribe', 'सदस्यता लें'],

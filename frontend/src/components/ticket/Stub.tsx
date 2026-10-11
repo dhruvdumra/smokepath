@@ -90,9 +90,8 @@ export function Stub({ adv, lang }: { adv: Advisory; lang: Lang }) {
             <button className="btn icon-btn" onClick={copy} aria-label={copied ? tr('copied', lang) : tr('copy', lang)} title={tr('copy', lang)}>
               {copied ? <Check aria-hidden /> : <Copy aria-hidden />}
             </button>
-            <a className="btn icon-btn" href={`https://wa.me/?text=${encodeURIComponent(text)}`} target="_blank" rel="noreferrer"
-               aria-label={tr('whatsapp', lang)} title={tr('whatsapp', lang)}>
-              <MessageCircle aria-hidden />
+            <a className="btn" href={`https://wa.me/?text=${encodeURIComponent(text)}`} target="_blank" rel="noreferrer" style={{ height: 44 }}>
+              <MessageCircle aria-hidden />{tr('whatsapp', lang)}
             </a>
           </>
         )}
