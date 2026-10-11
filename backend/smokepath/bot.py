@@ -13,6 +13,14 @@ TXT = {
     "pick_or_site": ("Pick your school, or mark this spot as an outdoor work site (construction, kiln, market):",
                      "अपना स्कूल चुनें, या इस जगह को बाहरी कार्यस्थल (निर्माण, भट्ठा, बाज़ार) चुनें:"),
     "site_btn": ("🏗 This spot is an outdoor work site", "🏗 यह जगह बाहरी कार्यस्थल है"),
+    "site_only": ("No school within 60 km. Is this spot an outdoor work site (construction, kiln, farm, market)?",
+                  "60 किमी में कोई स्कूल नहीं। क्या यह जगह बाहरी कार्यस्थल (निर्माण, भट्ठा, खेत, बाज़ार) है?"),
+    "out_of_area": ("SmokePath covers Delhi NCR schools and the Punjab–Haryana–Delhi smoke belt. You're about "
+                    "{km:,} km from the nearest school we cover. Type a Delhi school's name, or send /demo to see "
+                    "a real smog day (11 Nov 2025).",
+                    "SmokePath अभी दिल्ली NCR के स्कूलों और पंजाब–हरियाणा–दिल्ली धुएँ वाले क्षेत्र को कवर करता है। आप हमारे "
+                    "सबसे नज़दीकी स्कूल से लगभग {km:,} किमी दूर हैं। दिल्ली के किसी स्कूल का नाम लिखें, या असली स्मॉग वाला "
+                    "दिन (11 नवंबर 2025) देखने के लिए /demo भेजें।"),
     "none": ("No school found. Try another part of the name, or share your location.",
              "कोई स्कूल नहीं मिला। नाम का कोई और हिस्सा लिखें या लोकेशन भेजें।"),
     "subscribed": ("Subscribed to {name}. You'll get an alert the evening before a bad-air school day.",
@@ -24,6 +32,9 @@ TXT = {
     "stopped": ("Unsubscribed. Send /start any time.", "सदस्यता समाप्त। कभी भी /start भेजें।"),
     "lang": ("Language: English. Send /lang to switch to Hindi.", "भाषा: हिंदी। अंग्रेज़ी के लिए /lang भेजें।"),
 }
+
+
+NEAR_KM = 60  # beyond this the "nearest school" is not the user's school
 
 
 def t(key, lang, **kw):
@@ -86,10 +97,18 @@ def handle(update, site_url=None):
 
     if "location" in msg:
         loc = msg["location"]
-        found = service.nearest_schools(loc["latitude"], loc["longitude"], 5)
-        site = service.site_id(loc["latitude"], loc["longitude"])
-        buttons = _school_buttons(found) + [[{"text": t("site_btn", lang), "callback_data": f"sub:{site}"}]]
-        alerts.send_telegram(chat, t("pick_or_site", lang), buttons)
+        lat, lon = loc["latitude"], loc["longitude"]
+        found = service.nearest_schools(lat, lon, 5)
+        near = found[0]["km"] <= NEAR_KM
+        inside = service.in_domain(lat, lon)
+        if not near and not inside:
+            alerts.send_telegram(chat, t("out_of_area", lang, km=round(found[0]["km"])))
+            return
+        site = [[{"text": t("site_btn", lang), "callback_data": f"sub:{service.site_id(lat, lon)}"}]] if inside else []
+        if near:
+            alerts.send_telegram(chat, t("pick_or_site" if inside else "pick", lang), _school_buttons(found) + site)
+        else:
+            alerts.send_telegram(chat, t("site_only", lang), site)
         return
 
     text = (msg.get("text") or "").strip()

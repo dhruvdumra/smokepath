@@ -60,10 +60,16 @@ def place(place_id):
     m = SITE_RE.match(place_id or "")
     if m:
         lat, lon = float(m.group(1)), float(m.group(2))
-        if config.NCR_BBOX[0] - 2 <= lat <= config.NCR_BBOX[2] + 4 and config.NCR_BBOX[1] - 3 <= lon <= config.NCR_BBOX[3] + 2:
+        if in_domain(lat, lon):
             return {"id": place_id, "name": f"Work site {lat:.3f}°N {lon:.3f}°E", "name_hi": None,
                     "lat": lat, "lon": lon, "level": "", "operator": "", "addr": ""}, "work"
     raise KeyError(f"unknown place {place_id}")
+
+
+def in_domain(lat, lon):
+    """Inside the forecast grid (Punjab, Haryana, Delhi NCR, western UP)."""
+    g = config.GRID
+    return g["lat_min"] <= lat <= g["lat_max"] and g["lon_min"] <= lon <= g["lon_max"]
 
 
 def site_id(lat, lon):

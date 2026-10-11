@@ -98,6 +98,18 @@ def test_location_offers_schools_and_work_site(env):
     assert f"sub:{SCHOOL}" in data and data[-1].startswith("sub:site:")
 
 
+def test_location_outside_coverage_is_honest(env):
+    bot.handle(msg(location={"latitude": 16.46, "longitude": 80.51}))  # Amaravati, ~1,360 km away
+    method, payload = env[-1]
+    assert "reply_markup" not in payload and "1,3" in payload["text"] and "/demo" in payload["text"]
+
+
+def test_location_in_smoke_belt_far_from_schools_offers_work_site_only(env):
+    bot.handle(msg(location={"latitude": 30.25, "longitude": 75.84}))  # Sangrur, Punjab
+    buttons = env[-1][1]["reply_markup"]["inline_keyboard"]
+    assert len(buttons) == 1 and buttons[0][0]["callback_data"].startswith("sub:site:")
+
+
 def test_subscribe_by_button_then_demo_and_hindi(env):
     bot.handle({"callback_query": {"id": "q", "message": {"chat": {"id": 42}}, "data": f"sub:{SCHOOL}"}})
     assert subs.get("tg#42")["schools"] == [SCHOOL]
