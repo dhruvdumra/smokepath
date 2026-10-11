@@ -1,8 +1,8 @@
 # SmokePath: 3-minute demo video script
 
-Presenter: Pulkit Singh. Target: 2:50, hard limit 3:00 (about 420 spoken words at a calm pace).
+Team: The Bay Harbor Hackers (Akhil Dadipally, Rizwan Pinjari, Dhruv Dumra, Pulkit Singh). Presenter: Pulkit Singh. Target: 2:50, hard limit 3:00 (about 420 spoken words at a calm pace).
 
-Spoken lines are in quotes. **Bold** is what's on screen. Fill in the two bracketed names before recording.
+Spoken lines are in quotes. **Bold** is what's on screen.
 
 Open these tabs first, in this order:
 1. Home: https://d35jtpishdgz20.cloudfront.net
@@ -16,8 +16,8 @@ Open these tabs first, in this order:
 
 **Home page, top. Let the globe turn; the smoke line runs from Punjab into Delhi.**
 
-> "Hi, I'm Pulkit Singh from team [team name], with [teammate names]. This is SmokePath. The evening before,
-> it tells a Delhi school when crop-fire smoke will reach it tomorrow, and what to change in tomorrow's timetable."
+> "Hi, I'm Pulkit Singh from The Bay Harbor Hackers, with Akhil Dadipally, Rizwan Pinjari and Dhruv Dumra.
+> This is SmokePath. The evening before, it tells a Delhi school when crop-fire smoke will reach it tomorrow, and what to change in tomorrow's timetable."
 
 ## 0:15–0:35 · The problem
 
