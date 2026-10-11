@@ -27,14 +27,13 @@ the AWS paragraph, and the 90 / 281 / 255 section during the last paragraph.
 > NCR, in English and Hindi, on the web and on Telegram.
 >
 > Under the hood, it's serverless on AWS. Every three hours, EventBridge Scheduler runs a Lambda that pulls the
-> CAMS smoke forecast, NASA fire detections and NOAA winds, and corrects the forecast against about 120 government
-> air monitors. The results go to S3 behind CloudFront. API Gateway and a second Lambda serve the advisories and
+> global smoke forecast, NASA fire data and wind forecasts, and corrects it using about 120 government air
+> monitors. The results go to S3 behind CloudFront. API Gateway and a second Lambda serve the advisories and
 > our Telegram bot, DynamoDB stores subscriptions, and SES sends email alerts. Amazon Bedrock with Claude is built
 > in to write the parent message. Our account is new and its Bedrock quota is still zero, so today you'll see the
 > template version.
 >
-> Does it work? We tested it on a month of real monitor data from the OpenAQ archive on the AWS Open Data
-> Registry. Our error was 39 percent lower than the raw model, and we caught 86 percent of Very Poor days instead
+> Does it work? We tested it on a month of real monitor data from the AWS Open Data Registry. Our error was 39 percent lower than the raw model, and we caught 86 percent of Very Poor days instead
 > of 27. Let me show you."
 
 ---
@@ -45,6 +44,17 @@ Screen only. Keep the commentary light; let the product do the talking.
 
 | Time | On screen | Commentary |
 |---|---|---|
+| 1:30 | Map tab. Press Play; let the trails run for about 5 s. | "This is a replay of a real smog day in Delhi. The lines show smoke moving from crop fires in Punjab toward the city." |
+| 1:40 | Drag the timeline from Mon 13:30 to Tue 07:30; point at the counter. | "As the night goes on, more and more schools fall into bad air." |
+| 1:50 | Type "Sardar" in the search and pick the first school. Let the route draw. | "Now I pick a school. SmokePath gives it a ticket: where the smoke comes from, when it arrives, 8 am, and how bad it will be." |
+| 2:05 | Scroll the ticket's period list. | "Below that, what to change in each period: assembly, PE and recess move indoors." |
+| 2:15 | Scroll to the parents' message. Click Copy, hover WhatsApp. | "One tap copies a message for parents." |
+| 2:20 | Click हिंदी. | "It all works in Hindi too." |
+| 2:25 | *Optional, cut if over time:* Back → "Outdoor work site" → click anywhere in the city. | "And it works for construction sites too." |
+| 2:30 | Telegram: /start → share location → tap the school → the ticket arrives. | "Principals can also get this on Telegram. Share your location, pick your school, and the alert comes the evening before." |
+| 2:45 | Home page, top. | "That's SmokePath: know tomorrow's air today, and plan the school day around it. Thank you." |
+
+---|---|---|
 | 1:30 | Map tab. Press Play; let the trails stream for about 5 s. | "This is the replay of the 11th of November. The trails show smoke moving from the Punjab fires toward Delhi." |
 | 1:40 | Drag the timeline from Mon 13:30 to Tue 07:30; point at the counter. | "Overnight, school after school slips into Very Poor air." |
 | 1:50 | Type "Sardar Patel" in "Which school?" and pick it. Let the route draw. | "Here's one school's ticket. Smoke from fires near Sangrur, Moga and Malerkotla arrives at 8 am. Severe, six changes to the day." |
