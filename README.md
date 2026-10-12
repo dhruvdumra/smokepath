@@ -4,6 +4,8 @@
 
 AWS Environmental Hacks 2026 · Air track (stubble burning, school safety on bad days)
 
+Team **The Bay Harbor Hackers**: Pulkit Singh (team lead), Akhil Dadipally, Rizwan Pinjari, Dhruv Dumra.
+
 - Home: https://d35jtpishdgz20.cloudfront.net
 - Map app: https://d35jtpishdgz20.cloudfront.net/app (replay of the 11 Nov 2025 smog: `/app?dataset=replay`)
 - How to use it: https://d35jtpishdgz20.cloudfront.net/how
@@ -156,5 +158,5 @@ Secrets go in `.env` (see `.env.example`); `deploy.sh` pushes them to SSM Parame
 
 ## Built with AI assistance
 
-Code was written with Claude Code (Anthropic) under the author's direction. Design decisions, scope and data
-choices were reviewed by the author.
+Code was written with Claude Code (Anthropic) under the team's direction. Design decisions, scope and data
+choices were reviewed by the team.
