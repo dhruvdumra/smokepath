@@ -63,7 +63,7 @@ function placeLabels(route: Route, px: (p: [number, number]) => number[], safe: 
       const cy = y + slot.offset[1];
       const b = [cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2];
       const hitsLabel = kept.some((k) => b[0] < k[2] + 4 && b[2] > k[0] - 4 && b[1] < k[3] + 4 && b[3] > k[1] - 4);
-      const hitsPin = pins.some(([qx, qy]) => qx > b[0] - 7 && qx < b[2] + 7 && qy > b[1] - 7 && qy < b[3] + 7);
+      const hitsPin = pins.some(([qx, qy], j) => j !== i && qx > b[0] - 7 && qx < b[2] + 7 && qy > b[1] - 7 && qy < b[3] + 7);
       const outside = b[0] < safe[0] || b[1] < safe[1] || b[2] > safe[2] || b[3] > safe[3];
       if (!hitsLabel && !hitsPin && !outside) { kept.push(b); out.push({ ...s, text, ...slot }); return; }
     }
