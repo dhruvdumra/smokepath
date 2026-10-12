@@ -10,16 +10,21 @@
 .text-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 .text-link svg { width: 16px; height: 16px; }
 
-/* nav */
+/* nav: a floating glass island, detached from the top */
 .site-nav {
-  position: sticky; top: 0; z-index: 20; height: 64px; display: flex; align-items: center; gap: 24px; padding: 0 24px;
-  background: rgba(13, 17, 23, 0.82); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-bottom: 1px solid var(--line);
+  position: fixed; top: 14px; left: 50%; transform: translateX(-50%); z-index: 40; height: 56px; width: max-content; max-width: calc(100vw - 24px);
+  display: flex; align-items: center; gap: 18px; padding: 0 8px 0 18px; border-radius: 999px;
+  background: rgba(13, 17, 23, 0.72); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+  border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.6);
 }
-.site-nav nav { display: flex; gap: 20px; }
-.site-nav nav a { color: var(--pearl); text-decoration: none; font-size: 15px; }
+.site-nav nav { display: flex; gap: 18px; }
+.site-nav nav a { color: var(--pearl); text-decoration: none; font-size: 14.5px; transition: color 0.2s ease; }
 .site-nav nav a:hover, .site-nav nav a[aria-current='page'] { color: var(--snow); }
-.site-nav .spacer { flex: 1; }
-.nav-map { border-color: rgba(255, 255, 255, 0.5); }
+.site-nav .spacer { width: 8px; }
+.site-nav .btn { height: 40px; }
+.nav-map { background: var(--snow); color: var(--void) !important; border-color: var(--snow) !important; }
+.nav-map:hover { background: #e6ebef !important; }
+.doc { padding-top: 120px !important; }
 
 /* hero: copy + the arrivals board */
 .hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 56px; align-items: start; padding-top: 80px; padding-bottom: 96px; }
@@ -139,7 +144,11 @@ html[lang='hi'] .board-cols, html[lang='hi'] .codes th, html[lang='hi'] .defs dt
   .toc { position: static; }
   .doc-body h1 { font-size: 34px; }
   .bar-row { grid-template-columns: 1fr; gap: 6px; }
-  .site-nav { gap: 12px; padding: 0 16px; }
+  .site-nav { gap: 10px; padding: 0 6px 0 16px; height: 52px; }
+  .site-nav .wordmark span { display: inline; font-size: 16px; }
+  .site-nav .wordmark svg { width: 22px; height: 22px; }
+  .site-nav .btn { height: 38px; padding: 0 14px; }
+  .site-nav .spacer { display: none; }
   .site-nav nav { display: none; }
   .hide-narrow { display: none; }
   .board-cols, .board-row { grid-template-columns: 58px minmax(0, 1fr) auto; padding: 0 16px; }
