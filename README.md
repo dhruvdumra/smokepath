@@ -160,3 +160,5 @@ Secrets go in `.env` (see `.env.example`); `deploy.sh` pushes them to SSM Parame
 
 Code was written with Claude Code (Anthropic) under the team's direction. Design decisions, scope and data
 choices were reviewed by the team.
+
+---------------------
