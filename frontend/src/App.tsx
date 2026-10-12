@@ -60,7 +60,8 @@ export default function App() {
   const bundle = useBundle(dataset);
   const schools = useSchools();
   const b = bundle.data;
-  const place = schools.data?.find((s) => s.id === placeId) ?? siteFromId(placeId);
+  // Stable per selection: a fresh work-site object on every render would re-fit the map on every timeline tick.
+  const place = useMemo(() => schools.data?.find((s) => s.id === placeId) ?? siteFromId(placeId), [schools.data, placeId]);
   const adv = useAdvisory(placeId, dataset, date, b?.meta.generated);
 
   useEffect(() => {

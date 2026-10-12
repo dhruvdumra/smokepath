@@ -38,8 +38,43 @@ const TRIGGER = 120; // above Poor: the school's advisory changes the timetable
 const CLUSTER_ZOOM = 7.2; // below this the schools collapse into one NCR marker
 const SKY: [number, number, number] = [141, 214, 255];
 
+type Anchor = 'start' | 'middle' | 'end';
+type Placed = Route['stops'][number] & { text: string; offset: [number, number]; anchor: Anchor };
+// Where a stop label may sit around its pin, in order of preference.
+const SLOTS: { offset: [number, number]; anchor: Anchor }[] = [
+  { offset: [0, -17], anchor: 'middle' }, { offset: [0, 17], anchor: 'middle' },
+  { offset: [12, 0], anchor: 'start' }, { offset: [-12, 0], anchor: 'end' },
+];
+
+/**
+ * Keeps every route label readable at any zoom: each takes the first slot around its pin that collides with no other
+ * label or pin and stays inside the uncovered part of the map (`safe`, in screen pixels). A label with no room
+ * shortens to its district name ("Sangrur · Mon 10 Nov 17:00" → "Sangrur"), and only then steps aside.
+ */
+function placeLabels(route: Route, px: (p: [number, number]) => number[], safe: number[]): Placed[] {
+  const pins = [...route.stops.map((s) => s.pos), route.path[0], route.path[route.path.length - 1]].map(px);
+  const kept: number[][] = [];
+  const out: Placed[] = [];
+  route.stops.forEach((s, i) => {
+    const [x, y] = pins[i];
+    for (const text of new Set([s.label, s.label.split(' · ')[0]])) for (const slot of SLOTS) {
+      const w = text.length * 6.6 + 14, h = 22;
+      const cx = x + slot.offset[0] + (slot.anchor === 'start' ? w / 2 : slot.anchor === 'end' ? -w / 2 : 0);
+      const cy = y + slot.offset[1];
+      const b = [cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2];
+      const hitsLabel = kept.some((k) => b[0] < k[2] + 4 && b[2] > k[0] - 4 && b[1] < k[3] + 4 && b[3] > k[1] - 4);
+      const hitsPin = pins.some(([qx, qy]) => qx > b[0] - 7 && qx < b[2] + 7 && qy > b[1] - 7 && qy < b[3] + 7);
+      const outside = b[0] < safe[0] || b[1] < safe[1] || b[2] > safe[2] || b[3] > safe[3];
+      if (!hitsLabel && !hitsPin && !outside) { kept.push(b); out.push({ ...s, text, ...slot }); return; }
+    }
+  });
+  return out;
+}
+
+// Interleaved: deck draws inside MapLibre's own render pass and WebGL context, so every dot, trail and label
+// moves in the same frame as the basemap while zooming (a separate overlay canvas can trail it by a frame).
 function DeckOverlay(props: MapboxOverlayProps) {
-  const overlay = useControl(() => new MapboxOverlay(props));
+  const overlay = useControl(() => new MapboxOverlay({ ...props, interleaved: true }));
   overlay.setProps(props);
   return null;
 }
@@ -96,8 +131,27 @@ export function MapView({ bundle, schools, schoolPm, frame, layers, selected, ro
 
   // react-map-gl creates the map asynchronously; a fit requested before 'load' must wait for it.
   const [ready, setReady] = useState(false);
+  // The forecast field sits under the basemap's place names, so towns stay readable through the smoke.
+  const [placeNames, setPlaceNames] = useState<string | undefined>(undefined);
+  // Fit once per selection (keyed), never on ordinary re-renders: otherwise the map fights the user's own zoom.
+  const fitRef = useRef(fit);
+  fitRef.current = fit;
+  const fitKey = fit ? `${fit.key}:${fit.padding.bottom}:${fit.padding.right}` : null;
+
+  // Route labels are re-placed after every zoom step and every finished move, against what is visible right now:
+  // the map minus the top bar, the ticket panel and the timeline, which the fit padding already describes.
+  const [moved, setMoved] = useState(0);
+  const labels = useMemo(() => {
+    const m = mapRef.current?.getMap();
+    if (!route || !m || !ready) return [];
+    const { clientWidth: w, clientHeight: h } = m.getContainer();
+    const pad = fitRef.current?.padding ?? { top: 0, right: 0, bottom: 0, left: 0 };
+    const safe = [8, 64, Math.min(w - 8, w - pad.right + 48), Math.min(h - 8, h - pad.bottom + 60)];
+    return placeLabels(route, (p) => { const q = m.project(p); return [q.x, q.y]; }, safe);
+  }, [route, zoom, moved, ready]);
   useEffect(() => {
     const m = mapRef.current?.getMap();
+    const fit = fitRef.current;
     if (!fit || !m || !ready) return;
     m.resize();
     // Padding reserves room for the ticket and timeline; never let it exceed the canvas it is applied to.
@@ -109,15 +163,15 @@ export function MapView({ bundle, schools, schoolPm, frame, layers, selected, ro
       padding: { top: p.top * sy, bottom: p.bottom * sy, left: p.left * sx, right: p.right * sx },
       duration: reduce ? 0 : 1100, maxZoom: 9,
     });
-  }, [fit, reduce, ready]);
+  }, [fitKey, reduce, ready]);
 
   const deckLayers = [
     layers.heat && new BitmapLayer({
-      id: 'heat', image, bounds: heatBounds(bundle), opacity: dim ? 0.35 : 1,
+      id: 'heat', beforeId: placeNames, image, bounds: heatBounds(bundle), opacity: dim ? 0.35 : 1,
       textureParameters: { minFilter: 'linear', magFilter: 'linear' },
     }),
     layers.wind && new LineLayer({
-      id: 'wind', data: wind, getSourcePosition: (d) => d.s, getTargetPosition: (d) => d.t,
+      id: 'wind', beforeId: placeNames, data: wind, getSourcePosition: (d) => d.s, getTargetPosition: (d) => d.t,
       getColor: [150, 200, 255, 150], widthUnits: 'pixels', getWidth: 1.2,
     }),
     layers.smoke && new TripsLayer({
@@ -155,11 +209,11 @@ export function MapView({ bundle, schools, schoolPm, frame, layers, selected, ro
       id: 'route-stops', data: route.stops, getPosition: (d) => d.pos, radiusUnits: 'pixels', getRadius: 5,
       getFillColor: [224, 49, 49, 255], stroked: true, getLineColor: [13, 17, 23, 255], lineWidthUnits: 'pixels', getLineWidth: 2,
     }),
-    route && new TextLayer({
-      id: 'route-labels', data: route.stops, getPosition: (d) => d.pos, getText: (d) => d.label,
+    route && new TextLayer<Placed>({
+      id: 'route-labels', data: labels, getPosition: (d) => d.pos, getText: (d) => d.text,
       getSize: 12.5, getColor: [255, 255, 255, 235], fontFamily: 'Mona Sans, sans-serif', fontWeight: 600,
-      getPixelOffset: [0, -16], background: true, getBackgroundColor: [13, 17, 23, 210], backgroundPadding: [6, 3],
-      characterSet: 'auto',
+      getPixelOffset: (d) => d.offset, getTextAnchor: (d) => d.anchor, getAlignmentBaseline: 'center',
+      background: true, getBackgroundColor: [13, 17, 23, 210], backgroundPadding: [6, 3], characterSet: 'auto',
     }),
     layers.stations && zoom >= 6.6 && new ScatterplotLayer({
       id: 'stations', data: bundle.stations, pickable: true, stroked: true, filled: true, opacity: dim ? 0.25 : 1,
@@ -203,13 +257,16 @@ export function MapView({ bundle, schools, schoolPm, frame, layers, selected, ro
     <Map
       ref={mapRef}
       initialViewState={{ longitude: 76.1, latitude: 29.7, zoom: 6.1 }}
+      minZoom={4}
       mapStyle={BASEMAP}
       attributionControl={false}
       style={{ position: 'absolute', inset: 0 }}
       cursor={siteMode ? 'crosshair' : undefined}
       onClick={(e) => siteMode && onPickSite(e.lngLat.lat, e.lngLat.lng)}
       onZoom={(e) => setZoom(Math.round(e.viewState.zoom * 10) / 10)}
+      onMoveEnd={() => setMoved((n) => n + 1)}
       onLoad={(e) => {
+        setPlaceNames(e.target.getStyle().layers.find((l) => l.type === 'symbol')?.id);
         setReady(true);
         if (import.meta.env.DEV) (window as unknown as { __spMap: unknown }).__spMap = e.target;
       }}
